@@ -1,0 +1,63 @@
+<div class="show">
+  <!-- Analysis Summary -->
+  {% if analysis and analysis.get("core_message") %}
+  <div class="analysis-section">
+    <h3>📋 分析 / Analysis</h3>
+    <p><strong>核心信息:</strong> {{ analysis.get("core_message", "") }}</p>
+    {% if analysis.get("target_audience") %}
+    <p><strong>目标受众:</strong> {{ analysis.get("target_audience", "") }}</p>
+    {% endif %}
+    {% if analysis.get("tone") %}
+    <p><strong>语气:</strong> {{ analysis.get("tone", "") }}</p>
+    {% endif %}
+    {% if analysis.get("usp") or analysis.get("unique_selling_point") %}
+    <p><strong>独特卖点:</strong> {{ analysis.get("usp", analysis.get("unique_selling_point", "")) }}</p>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Localized Version -->
+  {% if localized %}
+  <div class="analysis-section">
+    <h3>🌐 本地化 / Localized</h3>
+    <div class="content">{{ localized }}</div>
+  </div>
+  {% endif %}
+
+  <!-- Platform Versions -->
+  {% if versions %}
+    {% for platform_key, item in versions.items() %}
+    <div class="platform-result">
+      <h3>
+        {% if platform_key == "x" %}𝕏
+        {% elif platform_key == "linkedin" %}💼
+        {% elif platform_key == "reddit" %}🔴
+        {% else %}📝{% endif %}
+        {{ platform_key|capitalize }}
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('content-{{ platform_key }}').innerText)">📋 复制</button>
+      </h3>
+      <div class="content" id="content-{{ platform_key }}">{{ item.get("content", item.get("result", "")) }}</div>
+
+      <!-- Thread posts for X -->
+      {% if item.get("thread_posts") and item.thread_posts|length > 0 %}
+      <div class="thread-section">
+        <strong>🧵 线程 / Thread</strong>
+        {% for post in item.thread_posts %}
+        <div class="thread-post">
+          <span class="thread-num">{{ loop.index }}/{{ item.thread_posts|length }}</span>
+          {{ post }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Usage -->
+  {% if usage %}
+  <div style="text-align:center; padding:12px; font-size:0.75rem; color:var(--text-dim)">
+    消耗 tokens: {{ usage.get("total_tokens", 0) }} | 成本: ${{ "%.4f"|format(usage.get("cost_usd", usage.get("total_cost_usd", 0))) }}
+  </div>
+  {% endif %}
+</div>

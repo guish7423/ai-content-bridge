@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Content Bridge — China → Global in One Click</title>
+  <meta name="description" content="AI-powered content localization: transform Chinese content into culturally-adapted English posts for X, LinkedIn & Reddit.">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <script src="https://unpkg.com/htmx.org@2.0.4/dist/ext/json-enc.js"></script>
+</head>
+<body>
+  <nav>
+    <div class="logo"><span>◆</span> Content Bridge</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+      <a href="#" onclick="toggleLang()" class="lang-toggle" id="lang-toggle">🇨🇳 中文</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- ── Hero ────────────────────────────────────────────────────────────── -->
+    <div class="hero">
+      <div class="badge">✨ AI-Powered • Cultural Adaptation • One Click</div>
+      <h1 class="i18n" data-en="China → Global in One Click" data-zh="中文内容 → 全球影响力">China → Global in One Click</h1>
+      <p class="i18n" data-en="Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations." data-zh="把你的中文想法、产品、洞见，一键转化为适合 X、LinkedIn、Reddit 的英文内容。文化适配，告别机翻。">
+        Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations.
+      </p>
+    </div>
+
+    <!-- ── How It Works ──────────────────────────────────────────────────── -->
+    <div class="section" id="features">
+      <h2 class="section-title i18n" data-en="How It Works" data-zh="工作原理">How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3 class="i18n" data-en="Analyze" data-zh="分析">Analyze</h3>
+          <p class="i18n" data-en="AI extracts the core message, target audience, and key points from your Chinese text." data-zh="AI 提取中文内容的核心信息、目标受众和关键论点。">AI extracts the core message, target audience, and key points from your Chinese text.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3 class="i18n" data-en="Localize" data-zh="本地化">Localize</h3>
+          <p class="i18n" data-en="Deep cultural adaptation — idioms, concepts, humor, and examples reworked for international audiences." data-zh="深度文化适配——习语、概念、幽默、案例为国际受众重新打造。">Deep cultural adaptation — idioms, concepts, humor, and examples reworked for international audiences.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3 class="i18n" data-en="Adapt" data-zh="适配">Adapt</h3>
+          <p class="i18n" data-en="Optimized formatting for each platform: X threads, LinkedIn articles, Reddit community posts." data-zh="为每个平台优化格式：X 推文串、LinkedIn 文章、Reddit 社区帖。">Optimized formatting for each platform: X threads, LinkedIn articles, Reddit community posts.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Try It ─────────────────────────────────────────────────────────── -->
+    <div class="bridge-card">
+      <h2 class="card-title i18n" data-en="Try It Now" data-zh="立即体验">Try It Now</h2>
+      <p class="card-subtitle i18n" data-en="Paste your Chinese content — get culturally-adapted English in seconds." data-zh="粘贴你的中文内容，秒得文化适配的英文内容。">Paste your Chinese content — get culturally-adapted English in seconds.</p>
+
+      <form hx-post="/bridge"
+            hx-ext="json-enc"
+            hx-target="#results"
+            hx-swap="innerHTML"
+            hx-indicator="#submit-btn"
+            id="bridge-form">
+
+        <label for="text" class="i18n" data-en="Chinese Input" data-zh="中文输入">Chinese Input</label>
+        <textarea id="text" name="text" placeholder='e.g. 我用AI帮跨境电商做海外营销，三个月获客200+，分享一下我的方法。'
+                  required></textarea>
+
+        <label style="margin-top:16px" class="i18n" data-en="Target Platforms" data-zh="目标平台">Target Platforms</label>
+        <div class="platform-grid" id="platforms">
+          <button type="button" class="platform-btn active" data-value="x" onclick="togglePlatform(this)">𝕏  X / Twitter</button>
+          <button type="button" class="platform-btn" data-value="linkedin" onclick="togglePlatform(this)">💼 LinkedIn</button>
+          <button type="button" class="platform-btn" data-value="reddit" onclick="togglePlatform(this)">🔴 Reddit</button>
+        </div>
+        <input type="hidden" name="platforms" id="platforms-input" value='["x"]'>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <span class="i18n" data-en="✦ Bridge to English" data-zh="✦ 生成英文内容">✦ Bridge to English</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Results injected here by HTMX -->
+    <div id="results" class="results"></div>
+
+    <!-- ── Pricing ────────────────────────────────────────────────────────── -->
+    <div class="section" id="pricing">
+      <h2 class="section-title i18n" data-en="Pricing" data-zh="定价">Pricing</h2>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3 class="i18n" data-en="Free" data-zh="免费">Free</h3>
+          <div class="price">$0</div>
+          <ul>
+            <li>10 translations/month</li>
+            <li>All platforms</li>
+            <li>Mock mode (no API key)</li>
+          </ul>
+        </div>
+        <div class="pricing-card featured">
+          <div class="popular-badge">POPULAR</div>
+          <h3 class="i18n" data-en="Starter" data-zh="入门">Starter</h3>
+          <div class="price">$19<span>/mo</span></div>
+          <ul>
+            <li>100 translations/month</li>
+            <li>1 social account</li>
+            <li>Direct publishing</li>
+          </ul>
+        </div>
+        <div class="pricing-card">
+          <h3 class="i18n" data-en="Pro" data-zh="专业">Pro</h3>
+          <div class="price">$49<span>/mo</span></div>
+          <ul>
+            <li>Unlimited translations</li>
+            <li>All platforms</li>
+            <li>Priority support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Built with ❤️ for the global Chinese creator community</p>
+    <p style="margin-top:4px; font-size:0.8rem; color:var(--text-dim)">
+      <a href="https://github.com/guish7423/ai-content-bridge" style="color:var(--accent)">GitHub</a> •
+      <span class="i18n" data-en="AI Content Bridge v0.1" data-zh="AI Content Bridge v0.1">AI Content Bridge v0.1</span>
+    </p>
+  </footer>
+
+  <script>
+    // ── Platform toggle ────────────────────────────────────────────────────
+    function togglePlatform(btn) {
+      btn.classList.toggle('active');
+      const selected = [...document.querySelectorAll('.platform-btn.active')].map(b => b.dataset.value);
+      document.getElementById('platforms-input').value = JSON.stringify(selected.length ? selected : ['x']);
+    }
+
+    // ── HTMX handlers ──────────────────────────────────────────────────────
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+      if (evt.detail.target.id === 'results') {
+        document.getElementById('results').classList.add('show');
+        document.getElementById('submit-btn').querySelector('span').textContent = '✦ Bridge Again';
+        document.getElementById('submit-btn').querySelector('span').dataset.en = '✦ Bridge Again';
+        document.getElementById('submit-btn').querySelector('span').dataset.zh = '✦ 再次生成';
+        // Scroll to results
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    document.body.addEventListener('htmx:beforeSend', function(evt) {
+      if (evt.detail.target.id === 'results') {
+        document.getElementById('results').classList.remove('show');
+      }
+    });
+
+    // ── Language toggle (simple client-side i18n) ───────────────────────────
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      document.querySelectorAll('.i18n').forEach(el => {
+        if (el.dataset[lang]) {
+          el.textContent = el.dataset[lang];
+        }
+      });
+      document.getElementById('lang-toggle').textContent = lang === 'en' ? '🇨🇳 中文' : '🇬🇧 English';
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+    }
+
+    function toggleLang() {
+      applyLang(currentLang === 'en' ? 'zh' : 'en');
+    }
+
+    // Initial apply
+    applyLang(currentLang);
+  </script>
+</body>
+</html>
