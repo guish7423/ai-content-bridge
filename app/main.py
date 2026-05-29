@@ -26,6 +26,8 @@ app = FastAPI(
     title="AI Content Bridge",
     description="CN to EN AI content localization platform",
     version="0.2.1",
+)
+# Global error handler to debug production issues
 # Global error handler to debug production issues
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
