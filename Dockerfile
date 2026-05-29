@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+# AI Content Bridge - production image
 
 WORKDIR /app
 
