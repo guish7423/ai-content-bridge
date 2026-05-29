@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-lang>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="signup.title">Sign Up - AI Content Bridge</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script defer src="/static/i18n.js"></script>
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">AI Content Bridge</a>
+      <div class="nav-links">
+        <a href="/pricing" data-i18n="nav.pricing">Pricing</a>
+        <a href="/login" data-i18n="nav.login">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="auth-card">
+      <h1 data-i18n="signup.title">Create Your Account</h1>
+      <p class="auth-subtitle" data-i18n="signup.subtitle">Start bridging your content to the global audience</p>
+
+      <form id="signup-form" class="auth-form">
+        <div class="form-group">
+          <label for="email" data-i18n="signup.email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="password" data-i18n="signup.password">Password</label>
+          <input type="password" id="password" name="password" required minlength="8" placeholder="At least 8 characters" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="signup.submit">
+          Create Account
+        </button>
+        <p class="auth-terms" data-i18n="signup.terms">
+          Free plan: 10 conversions/month. No credit card required.
+        </p>
+      </form>
+
+      <div id="signup-error" class="alert alert-error" style="display:none"></div>
+
+      <p class="auth-footer">
+        <span data-i18n="signup.have_account">Already have an account?</span>
+        <a href="/login" data-i18n="signup.login">Log in</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button[type="submit"]');
+      const error = document.getElementById('signup-error');
+
+      btn.disabled = true;
+      btn.textContent = 'Creating…';
+      error.style.display = 'none';
+
+      try {
+        const resp = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: form.email.value,
+            password: form.password.value,
+          }),
+        });
+
+        if (!resp.ok) {
+          const data = await resp.json();
+          throw new Error(data.detail || 'Signup failed');
+        }
+
+        window.location.href = '/dashboard';
+      } catch (err) {
+        error.textContent = err.message;
+        error.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+      }
+    });
+  </script>
+</body>
+</html>

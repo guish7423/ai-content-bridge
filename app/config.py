@@ -78,6 +78,19 @@ class Settings:
     )
 
     # App
+
+    # Stripe
+    stripe_api_key: str = field(
+        default_factory=lambda: os.getenv("STRIPE_API_KEY", "")
+    )
+    stripe_webhook_secret: str = field(
+        default_factory=lambda: os.getenv("STRIPE_WEBHOOK_SECRET", "")
+    )
+    app_url: str = field(
+        default_factory=lambda: os.getenv(
+            "APP_URL", "http://localhost:8000"
+        )
+    )
     debug: bool = field(
         default_factory=lambda: os.getenv("DEBUG", "false").lower() in ("true", "1")
     )

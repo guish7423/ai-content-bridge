@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-lang>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="dashboard.title">Dashboard - AI Content Bridge</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script defer src="/static/i18n.js"></script>
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">AI Content Bridge</a>
+      <div class="nav-links">
+        <a href="/" data-i18n="nav.bridge">Bridge</a>
+        <a href="/pricing" data-i18n="nav.pricing">Pricing</a>
+        <a href="/logout" id="logout-link" data-i18n="nav.logout">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="dashboard">
+      <h1 data-i18n="dashboard.title">Dashboard</h1>
+
+      <!-- Stats Row -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="dashboard.plan">Plan</div>
+          <div class="stat-value" id="stat-plan">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="dashboard.usage">Usage (month)</div>
+          <div class="stat-value" id="stat-usage">—</div>
+          <div class="stat-bar" id="usage-bar"><div class="stat-fill"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="dashboard.limit">Limit</div>
+          <div class="stat-value" id="stat-limit">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label" data-i18n="dashboard.api_key">API Key</div>
+          <div class="stat-value" id="stat-apikey" style="font-size:0.7em;font-family:monospace">—</div>
+          <button class="btn btn-sm" onclick="copyApiKey()" style="margin-top:4px" data-i18n="dashboard.copy">Copy</button>
+        </div>
+      </div>
+
+      <!-- Recent Conversions -->
+      <section class="dash-section">
+        <h2 data-i18n="dashboard.recent">Recent Conversions</h2>
+        <div id="recent-list" class="conv-list">
+          <p class="text-muted" data-i18n="dashboard.loading">Loading…</p>
+        </div>
+      </section>
+
+      <!-- Upgrade CTA (shown for free plan) -->
+      <div id="upgrade-cta" class="upgrade-banner" style="display:none">
+        <p data-i18n="dashboard.upgrade_cta">Upgrade to Starter ($19/mo) for 100 conversions/month and social publishing.</p>
+        <a href="/pricing" class="btn btn-primary" data-i18n="dashboard.upgrade_btn">See Plans</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function loadDashboard() {
+      try {
+        const resp = await fetch('/api/auth/me');
+        if (!resp.ok) { window.location.href = '/login'; return; }
+        const data = await resp.json();
+
+        document.getElementById('stat-plan').textContent = data.plan || 'free';
+        document.getElementById('stat-usage').textContent = data.monthly_usage ?? 0;
+        document.getElementById('stat-limit').textContent = data.plan_limit ?? 10;
+        document.getElementById('stat-apikey').textContent = data.api_key
+          ? data.api_key.slice(0, 16) + '…' : '—';
+
+        // Usage bar
+        const pct = data.plan_limit > 0
+          ? Math.min(100, ((data.monthly_usage ?? 0) / data.plan_limit) * 100)
+          : 0;
+        const fill = document.querySelector('#usage-bar .stat-fill');
+        fill.style.width = pct + '%';
+        fill.style.background = pct > 80 ? '#ef4444' : pct > 50 ? '#f59e0b' : '#22c55e';
+
+        // Upgrade CTA
+        if (data.plan === 'free') {
+          document.getElementById('upgrade-cta').style.display = 'block';
+        }
+
+        // Recent conversions
+        loadRecent();
+      } catch (e) {
+        window.location.href = '/login';
+      }
+    }
+
+    async function loadRecent() {
+      const el = document.getElementById('recent-list');
+      try {
+        const resp = await fetch('/api/bridge/history?limit=10');
+        if (!resp.ok) { el.innerHTML = '<p class="text-muted" data-i18n="dashboard.no_history">No conversions yet.</p>'; return; }
+        const items = await resp.json();
+        if (!items.length) {
+          el.innerHTML = '<p class="text-muted" data-i18n="dashboard.no_history">No conversions yet.</p>';
+          return;
+        }
+        el.innerHTML = items.map(item => `
+          <div class="conv-item">
+            <div class="conv-text">${escapeHtml(item.original_text?.slice(0, 80) || '')}…</div>
+            <div class="conv-meta">${item.created_at?.slice(0, 10) || ''} · ${item.platforms?.join(', ') || ''}</div>
+          </div>
+        `).join('');
+      } catch {
+        el.innerHTML = '<p class="text-muted" data-i18n="dashboard.error">Failed to load.</p>';
+      }
+    }
+
+    function escapeHtml(text) {
+      const d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+
+    function copyApiKey() {
+      fetch('/api/auth/me')
+        .then(r => r.json())
+        .then(d => {
+          navigator.clipboard.writeText(d.api_key || '');
+          const btn = document.querySelector('.stat-card:last-child .btn');
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+        });
+    }
+
+    document.getElementById('logout-link')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      fetch('/api/auth/logout', { method: 'POST' }).then(() => {
+        window.location.href = '/';
+      });
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>
