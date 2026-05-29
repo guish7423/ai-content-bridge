@@ -25,6 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent
 app = FastAPI(
     title="AI Content Bridge",
     description="CN to EN AI content localization platform",
+    version="0.3.0",
     version="0.2.1",
 )
 # Global error handler to debug production issues
