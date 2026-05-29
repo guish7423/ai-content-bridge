@@ -6,9 +6,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app code
+# Copy app code (includes static/ and templates/)
 COPY app/ app/
-COPY marketing/ marketing/
+# Remove marketing/ from .dockerignore or remove this line
 
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
