@@ -1,8 +1,8 @@
 """AI Content Bridge — configuration with auto-detect."""
 
+import json
 import os
 from dataclasses import dataclass, field
-
 
 @dataclass
 class Settings:
@@ -60,7 +60,20 @@ class Settings:
     )
     llm_mock_response: str = field(
         default_factory=lambda: os.getenv(
-            "LLM_MOCK_RESPONSE", '{"result": "mock"}'
+            "LLM_MOCK_RESPONSE",
+            json.dumps({
+                "result": "mock",
+                "content": "Looking to expand your AI startup globally? Localize your content for Western markets.",
+                "localized_text": "AI-powered localization for Chinese entrepreneurs going global.",
+                "hashtags": ["AI", "Startup", "Global"],
+                "notes": "Adapted for English-speaking audience",
+                "changes_made": ["Cultural reference update"],
+                "core_message": "AI-powered cross-cultural localization",
+                "target_audience": "Chinese entrepreneurs expanding globally",
+                "key_points": ["Cultural adaptation", "Native English output"],
+                "tone": "Professional",
+                "unique_selling_point": "One-click CN to EN localization"
+            })
         )
     )
 

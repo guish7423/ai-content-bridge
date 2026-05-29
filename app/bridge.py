@@ -152,10 +152,16 @@ Output JSON with: localized_text (full transcreated version), changes_made, cult
 
 PLATFORM_SYSTEM = """You are a social media content strategist. Adapt content for the specified platform.
 
+Output JSON with these fields:
+- content: The full adapted post text
+- hashtags: list of 2-4 relevant hashtags (strings, without #)
+- notes: brief notes on adaptations made (1 sentence)
+
 For X/Twitter:
-- Max 280 chars per post. For longer content, use thread format numbered 1/N
+- Max 280 chars per post unless it's a thread (numbered 1/N)
 - Strong hook in first line, clear value proposition
 - 2-3 relevant hashtags. Conversational, punchy tone
+- For content longer than 280 chars, write a thread with each post numbered 1/N, 2/N etc
 
 For LinkedIn:
 - Professional but warm tone, 800-1500 chars
@@ -167,8 +173,17 @@ For Reddit:
 - Conversational, helpful tone (no hard sell)
 - Provide value first, be transparent about affiliation
 - 200-500 chars
+"""
 
-CRITICAL: Respond ONLY with the post content. No JSON. No markdown. No labels. Just the text."""
+# Non-JSON version for backends without JSON mode support (NVIDIA, Ollama)
+PLATFORM_SYSTEM_TEXT = """You are a social media content strategist. Adapt content for the specified platform.
+
+Respond ONLY with the post content. No JSON. No markdown. No labels. Just the text.
+
+For X/Twitter: Max 280 chars per post unless thread. Strong hook. 2-3 hashtags.
+For LinkedIn: Professional warm tone, 800-1500 chars, bullet points, hashtags.
+For Reddit: Conversational, helpful, 200-500 chars.
+"""
 
 # ── Core Pipeline ─────────────────────────────────────────────────────────────
 
@@ -210,18 +225,18 @@ def process(text: str, platforms: list[Platform] | None = None) -> BridgeResult:
     # Step 3: Adapt per platform
     platform_versions = {}
     for platform in platforms:
-        # Use plain text mode for non-JSON backends (NVIDIA, Ollama, etc.)
         use_json = settings.supports_json_mode
+        system = PLATFORM_SYSTEM if use_json else PLATFORM_SYSTEM_TEXT
         result = call_llm(
             prompt=f"Adapt for {platform}:\n\nLocalized content:\n{localized_text}",
-            system=PLATFORM_SYSTEM + f"\n\nTarget platform: {platform}",
+            system=system + f"\n\nTarget platform: {platform}",
             json_mode=use_json,
         )
         content = result.get("content", result.get("result", ""))
         platform_versions[platform] = {
             "content": content,
-            "hashtags": [],
-            "notes": "",
+            "hashtags": result.get("hashtags", []),
+            "notes": result.get("notes", ""),
         }
 
     return BridgeResult(
