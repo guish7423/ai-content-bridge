@@ -4,10 +4,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 
-# Install system deps for native packages (bcrypt etc.)
-RUN apt-get update -qq && apt-get install -y -qq --no-install-recommends \
-    build-essential libffi-dev \
-    && rm -rf /var/lib/apt/lists/*
+# No native deps needed — all Python packages are pure or have wheels
 # Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
