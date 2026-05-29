@@ -2,11 +2,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install just Python deps (no build tools needed for pure Python packages)
-COPY pyproject.toml .
-RUN pip install --no-cache-dir fastapi uvicorn[standard] httpx pydantic aiosqlite 'sqlalchemy[asyncio]' jinja2 python-multipart
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# App code (has static/ and templates/ subdirs)
+# Copy app code
 COPY app/ app/
 COPY marketing/ marketing/
 
