@@ -6,7 +6,7 @@ import os
 import secrets
 from datetime import datetime, timedelta, timezone
 
-import bcrypt
+import jwt  # type: ignore[import-untyped]
 from jose import JWTError, jwt
 
 from app.config import settings
@@ -42,7 +42,7 @@ def decode_access_token(token: str) -> dict | None:
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[ALGORITHM])
         return payload
-    except JWTError:
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, jwt.DecodeError):
         return None
 
 
