@@ -6,8 +6,8 @@ import os
 import secrets
 from datetime import datetime, timedelta, timezone
 
+import bcrypt
 import jwt  # type: ignore[import-untyped]
-from jose import JWTError, jwt
 
 from app.config import settings
 
