@@ -370,6 +370,13 @@ async def billing_portal(user: User = Depends(require_user)):
 
 # ── Public Routes ──────────────────────────────────────────────────────────
 
+@app.get("/crosswave", response_class=HTMLResponse)
+async def crosswave_landing():
+    """CrossWave company landing page."""
+    html = (BASE_DIR / "static" / "crosswave" / "index.html").read_text()
+    return HTMLResponse(content=html)
+
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "app": "AI Content Bridge", "version": "0.2.0"}
