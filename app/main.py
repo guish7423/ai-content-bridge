@@ -25,8 +25,21 @@ BASE_DIR = Path(__file__).resolve().parent
 app = FastAPI(
     title="AI Content Bridge",
     description="CN to EN AI content localization platform",
-    version="0.2.0",
-)
+    version="0.2.1",
+# Global error handler to debug production issues
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """Catch all exceptions and return full error info."""
+    import traceback
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": str(exc),
+            "traceback": traceback.format_exc().split(chr(10)),
+            "type": type(exc).__name__,
+        }
+    )
+
 
 # Mount static files
 try:
