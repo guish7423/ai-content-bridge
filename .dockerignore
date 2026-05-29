@@ -1,0 +1,13 @@
+.venv
+.venv/
+.git
+.git/
+.gitignore
+__pycache__
+*.pyc
+.env
+.env.example
+content_bridge.db
+*.md
+README.md
+marketing/
