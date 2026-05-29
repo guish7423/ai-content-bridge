@@ -76,6 +76,13 @@
         </div>
         <input type="hidden" name="platforms" id="platforms-input" value='["x"]'>
 
+        <!-- Sample presets -->
+        <div class="samples">
+          <span class="sample-btn" onclick="setSample(1)">📱 产品推广</span>
+          <span class="sample-btn" onclick="setSample(2)">📝 经验分享</span>
+          <span class="sample-btn" onclick="setSample(3)">🏢 公司介绍</span>
+        </div>
+
         <button type="submit" class="submit-btn" id="submit-btn">
           <span class="i18n" data-en="✦ Bridge to English" data-zh="✦ 生成英文内容">✦ Bridge to English</span>
         </button>
@@ -130,6 +137,19 @@
   </footer>
 
   <script>
+    // ── Sample presets ────────────────────────────────────────────────────
+    const SAMPLES = [
+      "",
+      "我们是一家AI驱动的跨境电商营销公司，帮助中国卖家在Shopify和Amazon上提升转化率。我们的AI系统能自动分析产品卖点，生成多语言的产品描述和广告文案。使用我们服务的卖家平均转化率提升30%，客单价提升15%。目前已经有超过2000家商户在使用我们的平台。",
+      "做独立开发三年，最大的感悟是：不要等产品完美了再发布。我的第一个产品做了6个月，上线后无人问津。第二个产品只花了2周做MVP，发布当天就有3个付费用户。现在我的策略是：2周出MVP，2周收集反馈，然后决定是否继续。",
+      "我们公司专注于为企业提供AI驱动的数字化转型解决方案。成立于2020年，总部位于深圳，团队规模50人，服务客户涵盖金融、医疗、制造等行业。我们的核心产品是一款低代码AI平台，帮助企业快速构建和部署AI应用。2024年完成了2000万美元的A轮融资。",
+    ];
+    function setSample(n) {
+      document.getElementById('text').value = SAMPLES[n];
+      document.getElementById('results').innerHTML = '';
+      document.getElementById('submit-btn').scrollIntoView({ behavior: 'smooth' });
+    }
+
     // ── Platform toggle ────────────────────────────────────────────────────
     function togglePlatform(btn) {
       btn.classList.toggle('active');

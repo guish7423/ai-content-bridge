@@ -92,6 +92,20 @@ textarea::placeholder { color: var(--text-dim); opacity: 0.5; }
   background: var(--accent); color: white; border-color: var(--accent);
 }
 
+.samples {
+  display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 16px;
+}
+
+.sample-btn {
+  padding: 6px 14px; border-radius: 9999px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-dim); cursor: pointer; font-size: 0.8rem;
+  transition: all .2s; font-family: var(--font); user-select: none;
+}
+.sample-btn:hover {
+  border-color: var(--accent); color: var(--text); background: var(--accent-glow);
+}
+
 .submit-btn {
   width: 100%; padding: 14px; margin-top: 16px;
   background: var(--accent); color: white; border: none;
