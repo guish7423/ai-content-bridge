@@ -243,6 +243,13 @@ async def create_checkout(req: CheckoutRequest, user: User = Depends(require_use
     if req.plan not in ("starter", "pro"):
         raise HTTPException(status_code=400, detail="Invalid plan")
 
+    # Graceful mode: if Stripe not configured, inform user
+    if not settings.stripe_api_key or settings.stripe_api_key == "sk_test_dummy":
+        return {
+            "url": "/pricing?stripe=coming-soon",
+            "message": "Stripe payments coming soon. Your account is on Free plan for now.",
+        }
+
     stripe.api_key = settings.stripe_api_key
     price_ids = {
         "starter": os.getenv("STRIPE_STARTER_PRICE_ID", ""),
@@ -267,35 +274,29 @@ async def create_checkout(req: CheckoutRequest, user: User = Depends(require_use
         raise HTTPException(status_code=500, detail=f"Stripe error: {str(e)}")
 
 
-@app.post("/api/stripe/webhook")
 async def stripe_webhook(request: Request, db=Depends(get_db)):
-    """Handle Stripe webhook events."""
+    """Handle Stripe webhook events — gracefully skip if not configured."""
+    if not settings.stripe_api_key or settings.stripe_api_key == "sk_test_dummy":
+        return {"status": "skipped", "message": "Stripe not configured"}
     import stripe
     stripe.api_key = settings.stripe_api_key
-
     payload = await request.body()
     sig_header = request.headers.get("Stripe-Signature")
-
     if not sig_header:
         raise HTTPException(status_code=400, detail="Missing Stripe-Signature header")
-
     try:
         event = stripe.Webhook.construct_event(
             payload, sig_header, settings.stripe_webhook_secret
         )
     except (ValueError, stripe.error.SignatureVerificationError) as e:
         raise HTTPException(status_code=400, detail=f"Webhook error: {str(e)}")
-
     event_type = event.get("type")
     data = event.get("data", {}).get("object", {})
-
-    # Handle subscription events
     if event_type == "checkout.session.completed":
         user_id = data.get("metadata", {}).get("user_id")
         subscription_id = data.get("subscription")
         customer_id = data.get("customer")
         plan = data.get("metadata", {}).get("plan", "starter")
-
         if user_id:
             user = db.get(User, int(user_id))
             if user:
@@ -305,17 +306,13 @@ async def stripe_webhook(request: Request, db=Depends(get_db)):
                 user.monthly_usage = 0
                 user.usage_reset_at = datetime.now(timezone.utc)
                 db.commit()
-
     elif event_type == "customer.subscription.updated":
         customer_id = data.get("customer")
         status = data.get("status")
         items = data.get("items", {}).get("data", [])
-
         result = db.execute(select(User).where(User.stripe_customer_id == customer_id))
         user = result.scalar_one_or_none()
-
         if user and status == "active":
-            # Determine plan from price
             for item in items:
                 price_id = item.get("price", {}).get("id", "")
                 if price_id == os.getenv("STRIPE_STARTER_PRICE_ID"):
@@ -327,7 +324,6 @@ async def stripe_webhook(request: Request, db=Depends(get_db)):
             user.plan = "free"
             user.stripe_subscription_id = None
             db.commit()
-
     elif event_type == "customer.subscription.deleted":
         customer_id = data.get("customer")
         result = db.execute(select(User).where(User.stripe_customer_id == customer_id))
@@ -336,19 +332,17 @@ async def stripe_webhook(request: Request, db=Depends(get_db)):
             user.plan = "free"
             user.stripe_subscription_id = None
             db.commit()
-
     return {"status": "ok"}
 
 
-@app.get("/api/stripe/portal")
 async def billing_portal(user: User = Depends(require_user)):
-    """Redirect to Stripe Billing Portal for managing subscription."""
+    """Redirect to Stripe Billing Portal — gracefully handle missing config."""
+    if not settings.stripe_api_key or settings.stripe_api_key == "sk_test_dummy":
+        return {"url": "/pricing", "message": "Stripe billing portal coming soon."}
+    if not user.stripe_customer_id:
+        return {"url": "/pricing"}
     import stripe
     stripe.api_key = settings.stripe_api_key
-
-    if not user.stripe_customer_id:
-        return {"url": f"{settings.app_url}/pricing"}
-
     try:
         session = stripe.billing_portal.Session.create(
             customer=user.stripe_customer_id,

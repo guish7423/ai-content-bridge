@@ -58,6 +58,7 @@
       'pricing.pro.feature4': 'API access (10,000 req/hr)',
       'pricing.pro.feature5': 'Priority support',
       'pricing.pro.cta': 'Subscribe',
+      'pricing.coming_soon': 'Coming Soon',
     },
     zh: {
       'nav.bridge': '内容桥接',
@@ -116,6 +117,7 @@
       'pricing.pro.feature4': 'API 访问 (10,000 req/hr)',
       'pricing.pro.feature5': '优先支持',
       'pricing.pro.cta': '订阅',
+      'pricing.coming_soon': '即将推出',
     }
   };
 
