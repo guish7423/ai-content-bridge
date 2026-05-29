@@ -6,7 +6,6 @@ import os
 import secrets
 from datetime import datetime, timedelta, timezone
 
-import bcrypt
 import jwt  # type: ignore[import-untyped]
 
 from app.config import settings
@@ -16,13 +15,25 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
 
 def hash_password(password: str) -> str:
-    """Hash a password with bcrypt."""
-    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    """Hash a password with PBKDF2-SHA256 (pure Python, no native deps)."""
+    salt = os.urandom(16)
+    key = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, 600000)
+    return f"$pbkdf2-sha256$600000${salt.hex()}${key.hex()}"
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    """Verify a password against its hash."""
-    return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
+    """Verify a password against its hash (PBKDF2-SHA256)."""
+    try:
+        parts = hashed.split("$")
+        if parts[1] != "pbkdf2-sha256":
+            return False
+        iterations = int(parts[2])
+        salt = bytes.fromhex(parts[3])
+        expected = bytes.fromhex(parts[4])
+        key = hashlib.pbkdf2_hmac("sha256", plain.encode("utf-8"), salt, iterations)
+        return hmac.compare_digest(key, expected)
+    except (IndexError, ValueError, AttributeError):
+        return False
 
 
 def create_access_token(user_id: int, email: str) -> str:
