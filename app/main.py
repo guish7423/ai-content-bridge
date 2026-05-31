@@ -27,20 +27,20 @@ app = FastAPI(
     description="CN to EN AI content localization platform",
     version="0.3.1",
 )
-# Global error handler to debug production issues
-# Global error handler to debug production issues
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    """Catch all exceptions and return full error info."""
-    import traceback
-    return JSONResponse(
-        status_code=500,
-        content={
-            "error": str(exc),
-            "traceback": traceback.format_exc().split(chr(10)),
-            "type": type(exc).__name__,
-        }
-    )
+    """Catch all exceptions — return detail in debug mode, safe message in production."""
+    if settings.debug:
+        import traceback
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": str(exc),
+                "traceback": traceback.format_exc().split(chr(10)),
+                "type": type(exc).__name__,
+            }
+        )
+    return JSONResponse(status_code=500, content={"error": "Internal server error"})
 
 
 # Mount static files
