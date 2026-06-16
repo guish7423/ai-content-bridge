@@ -1,4 +1,19 @@
 <div class="show">
+  <script>
+  function copyContent(key) {
+    const el = document.getElementById('content-' + key);
+    let text = el.innerText;
+    const posts = el.closest('.platform-result').querySelectorAll('.thread-post');
+    if (posts.length) {
+      text += '\n\n--- Thread ---';
+      posts.forEach(function(p, i) {
+        text += '\n' + (i + 1) + '. ' + p.innerText;
+      });
+    }
+    navigator.clipboard.writeText(text);
+  }
+  </script>
+
   <!-- Analysis Summary -->
   {% if analysis and analysis.get("core_message") %}
   <div class="analysis-section">
@@ -34,7 +49,7 @@
         {% elif platform_key == "reddit" %}🔴
         {% else %}📝{% endif %}
         {{ platform_key|capitalize }}
-        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('content-{{ platform_key }}').innerText)">📋 复制</button>
+        <button class="copy-btn" onclick="copyContent('{{ platform_key }}')">📋 复制</button>
       </h3>
       <div class="content" id="content-{{ platform_key }}">{{ item.get("content", item.get("result", "")) }}</div>
 

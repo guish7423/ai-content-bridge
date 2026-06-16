@@ -368,6 +368,28 @@ async def billing_portal(user: User = Depends(require_user)):
         raise HTTPException(status_code=500, detail=f"Stripe error: {str(e)}")
 
 
+# ── Waitlist ────────────────────────────────────────────────────────────────
+
+@app.post("/api/waitlist")
+async def waitlist(request: Request):
+    """Capture waitlist email (for Stripe launch notifications)."""
+    try:
+        data = await request.json()
+        email = data.get("email", "")
+        if not email or "@" not in email:
+            return {"status": "error", "message": "Invalid email"}
+        # Append to file for now (simple persistence)
+        import os
+        from pathlib import Path
+        waitlist_file = Path(__file__).resolve().parent.parent / "waitlist.csv"
+        with open(str(waitlist_file), "a") as f:
+            from datetime import datetime, timezone
+            f.write(f"{email},{datetime.now(timezone.utc).isoformat()}\n")
+        return {"status": "ok", "message": "You're on the list!"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
 # ── Public Routes ──────────────────────────────────────────────────────────
 
 @app.get("/crosswave", response_class=HTMLResponse)
@@ -388,6 +410,7 @@ async def index(request: Request, user: User | None = Depends(get_current_user))
     return templates.TemplateResponse(request, "index.html", {
         "platforms": ["x", "linkedin", "reddit"],
         "user": user.to_dict() if user else None,
+        "mock_mode": settings.llm_api_mock or not settings.llm_api_key,
     })
 
 

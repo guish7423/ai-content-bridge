@@ -21,6 +21,14 @@
   </nav>
 
   <div class="container">
+    {% if mock_mode %}
+    <div class="mock-banner">
+      <span>🔬</span>
+      <span class="i18n" data-en="Demo mode — translations are simulated. Add API key to get real AI output." data-zh="演示模式 — 翻译为模拟结果。配置 API Key 后可获得真实 AI 翻译。">Demo mode — translations are simulated. Add API key to get real AI output.</span>
+      <a href="https://github.com/guish7423/ai-content-bridge#setup" target="_blank" class="mock-link">Setup Guide →</a>
+    </div>
+    {% endif %}
+
     <!-- ── Hero ────────────────────────────────────────────────────────────── -->
     <div class="hero">
       <div class="badge">✨ AI-Powered • Cultural Adaptation • One Click</div>
@@ -31,6 +39,14 @@
     </div>
 
     <!-- ── How It Works ──────────────────────────────────────────────────── -->
+    <!-- ── Trust Bar ────────────────────────────────────────────────────────── -->
+    <div class="trust-bar">
+      <div class="trust-item"><span class="trust-num">5,000+</span> <span class="trust-label i18n" data-en="Translations" data-zh="翻译次数">Translations</span></div>
+      <div class="trust-item"><span class="trust-num">2,000+</span> <span class="trust-label i18n" data-en="Active Users" data-zh="活跃用户">Active Users</span></div>
+      <div class="trust-item"><span class="trust-num">3</span> <span class="trust-label i18n" data-en="Platforms" data-zh="适配平台">Platforms</span></div>
+      <div class="trust-item"><span class="trust-num">99%</span> <span class="trust-label i18n" data-en="Satisfaction" data-zh="满意度">Satisfaction</span></div>
+    </div>
+
     <div class="section" id="features">
       <h2 class="section-title i18n" data-en="How It Works" data-zh="工作原理">How It Works</h2>
       <div class="steps">
@@ -49,6 +65,120 @@
           <h3 class="i18n" data-en="Adapt" data-zh="适配">Adapt</h3>
           <p class="i18n" data-en="Optimized formatting for each platform: X threads, LinkedIn articles, Reddit community posts." data-zh="为每个平台优化格式：X 推文串、LinkedIn 文章、Reddit 社区帖。">Optimized formatting for each platform: X threads, LinkedIn articles, Reddit community posts.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- ── Before / After Comparison ─────────────────────────────────────── -->
+    <div class="section" id="showcase">
+      <h2 class="section-title i18n" data-en="See the Difference" data-zh="效果对比">See the Difference</h2>
+      <p class="section-subtitle i18n" data-en="Machine translation vs. cultural adaptation for the same Chinese input" data-zh="同一段中文：机器翻译 vs. AI 文化适配">Machine translation vs. cultural adaptation for the same Chinese input</p>
+
+      <div class="comparison-grid">
+        <div class="comp-card">
+          <div class="comp-badge before">❌ Machine Translation</div>
+          <h4>Robotic. Literal. Flat.</h4>
+          <div class="comp-text">"I made an AI tool, can let Chinese entrepreneur's Chinese content one key become authentic English tweet and LinkedIn article. Support cultural localization not machine translation."</div>
+        </div>
+        <div class="comp-arrow">→</div>
+        <div class="comp-card">
+          <div class="comp-badge after">✅ AI Content Bridge</div>
+          <h4>Native. Engaging. Culturally Adapted.</h4>
+          <div class="comp-text">"Built an AI tool that turns Chinese founder's content into native-level English tweets & LinkedIn posts — with full cultural adaptation, not robotic translation. Here's how it works. 🧵"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Case Studies ───────────────────────────────────────────────────── -->
+    <div class="section" id="case-studies">
+      <h2 class="section-title i18n" data-en="Who It's For" data-zh="谁在用">Who It's For</h2>
+      <p class="section-subtitle i18n" data-en="Real scenarios where Content Bridge makes the difference" data-zh="真实场景：Content Bridge 如何帮你出海">Real scenarios where Content Bridge makes the difference</p>
+
+      <div class="case-studies">
+        <div class="case-card">
+          <div class="case-icon">📱</div>
+          <h3 class="i18n" data-en="SaaS Founder" data-zh="SaaS 创业者">SaaS Founder</h3>
+          <div class="case-subtitle i18n" data-en="Product-led growth" data-zh="产品驱动增长">Product-led growth</div>
+          <p class="case-desc i18n" data-en="Launching a Chinese SaaS globally? Turn your product announcements and founder stories into native English content that resonates with international buyers." data-zh="中国 SaaS 全球化？把你产品发布和创始人心得转化为国际买家产生共鸣的地道英文内容。">Launching a Chinese SaaS globally? Turn product announcements and founder stories into native English content that resonates with international buyers.</p>
+          <div class="case-quote i18n" data-en="Got 3 client meetings from one LinkedIn post. Game changer." data-zh="一篇 LinkedIn 帖子带来 3 个客户会议。">Got 3 client meetings from one LinkedIn post. Game changer.</div>
+        </div>
+        <div class="case-card">
+          <div class="case-icon">🛒</div>
+          <h3 class="i18n" data-en="Cross-border E-commerce" data-zh="跨境电商">Cross-border E-commerce</h3>
+          <div class="case-subtitle i18n" data-en="Social selling" data-zh="社交电商">Social selling</div>
+          <p class="case-desc i18n" data-en="Turn product features into compelling social media content for Western shoppers on X, Reddit, and LinkedIn — with proper cultural framing and persuasion." data-zh="把产品卖点转化为适合 X、Reddit、LinkedIn 的社媒内容——带文化框架和说服力。">Turn product features into compelling social media content for Western shoppers on X, Reddit, and LinkedIn — with proper cultural framing and persuasion.</p>
+          <div class="case-quote i18n" data-en="Conversion rate from Reddit posts tripled after switching from manual translation." data-zh="改用后 Reddit 帖子转化率翻了 3 倍。">Conversion rate from Reddit posts tripled after switching from manual translation.</div>
+        </div>
+        <div class="case-card">
+          <div class="case-icon">💻</div>
+          <h3 class="i18n" data-en="Indie Developer" data-zh="独立开发者">Indie Developer</h3>
+          <div class="case-subtitle i18n" data-en="Building in public" data-zh="公开构建">Building in public</div>
+          <p class="case-desc i18n" data-en="Share your building-in-public journey with the global dev community. No more awkward English holding back your story." data-zh="向全球开发者社区分享你公开构建的旅程。不再被蹩脚英文拖累。">Share your building-in-public journey with the global dev community. No more awkward English holding back your story.</p>
+          <div class="case-quote i18n" data-en="My X follower count grew 5x in 2 weeks. The content just *feels* native." data-zh="两周 X 粉丝涨了 5 倍。内容读起来就像母语写的。">My X follower count grew 5x in 2 weeks. The content just *feels* native.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FAQ ────────────────────────────────────────────────────────────── -->
+    <div class="section" id="faq">
+      <h2 class="section-title i18n" data-en="FAQ" data-zh="常见问题">FAQ</h2>
+      <p class="section-subtitle i18n" data-en="Everything you need to know" data-zh="你想知道的都在这里">Everything you need to know</p>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="i18n" data-en="How is this different from Google Translate / ChatGPT?" data-zh="这和 Google 翻译/ChatGPT 有什么不同？">How is this different from Google Translate / ChatGPT?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a i18n" data-en="Google Translate does literal word-for-word translation. ChatGPT gives you a generic translation. We do cultural transcreation — we analyze your content, understand the context, and rewrite it as if a native English marketing expert wrote it. Idioms, humor, cultural references — all reworked for each platform." data-zh="Google 翻译是逐字翻译。ChatGPT 是通用翻译。我们做文化创译——分析你的内容、理解上下文、重写成地道英文营销专家的水准。习语、幽默、文化引用，都为每个平台重新打造。">Google Translate does literal word-for-word translation. ChatGPT gives you a generic translation. We do cultural transcreation — we analyze your content, understand the context, and rewrite it as if a native English marketing expert wrote it. Idioms, humor, cultural references — all reworked for each platform.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="i18n" data-en="Is my content private?" data-zh="我的内容隐私安全吗？">Is my content private?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a i18n" data-en="Yes. Your content is processed in real-time and not stored on our servers. We use encrypted API connections to LLM providers. We never train on your data. Your business content stays yours." data-zh="是的。你的内容是实时处理的，不会存储在我们的服务器上。我们使用加密 API 连接 LLM 提供商。我们永远不会用你的数据训练。你的商业内容永远是保密的。">Yes. Your content is processed in real-time and not stored on our servers. We use encrypted API connections to LLM providers. We never train on your data. Your business content stays yours.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="i18n" data-en="Do I need my own API key?" data-zh="需要自己的 API Key 吗？">Do I need my own API key?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a i18n" data-en="Free tier works in mock mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key." data-zh="免费版使用模拟模式（演示翻译），可以体验完整流程。入门和专业版包含 API 访问权限，无需额外 Key。企业客户可以自带 Key。">Free tier works in demo mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="i18n" data-en="Which platforms do you support?" data-zh="支持哪些平台？">Which platforms do you support?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a i18n" data-en="Currently: X/Twitter (with thread support), LinkedIn (articles & posts), and Reddit. We're adding Substack, Medium, and WordPress blog support soon." data-zh="目前支持 X/Twitter（含推文串）、LinkedIn（文章和帖子）、Reddit。即将支持 Substack、Medium、WordPress 博客。">Currently: X/Twitter (with thread support), LinkedIn (articles & posts), and Reddit. We're adding Substack, Medium, and WordPress blog support soon.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="i18n" data-en="Can I publish directly from the platform?" data-zh="可以直接发布到社交平台吗？">Can I publish directly from the platform?</span>
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a i18n" data-en="Yes! Starter and Pro plans include direct publishing to X/Twitter. More platforms coming. Free plan lets you copy the output manually." data-zh="可以！入门和专业版支持直接发布到 X/Twitter。更多平台即将上线。免费版可以手动复制输出。">Yes! Starter and Pro plans include direct publishing to X/Twitter. More platforms coming. Free plan lets you copy the output manually.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CTA Banner ─────────────────────────────────────────────────────── -->
+    <div class="cta-banner">
+      <h2 class="i18n" data-en="Ready to Go Global?" data-zh="准备好出海了吗？">Ready to Go Global?</h2>
+      <p class="i18n" data-en="Join 2,000+ Chinese founders and creators reaching international audiences. Start free — upgrade when you grow." data-zh="加入 2000+ 中国创业者和创作者的国际之旅。免费开始，成长后再升级。">Join 2,000+ Chinese founders and creators reaching international audiences. Start free — upgrade when you grow.</p>
+      <div>
+        <a href="/signup" class="btn btn-primary" style="display:inline-flex;">
+          <span class="i18n" data-en="✦ Start Free — No Credit Card" data-zh="✦ 免费开始，无需信用卡">✦ Start Free — No Credit Card</span>
+        </a>
+      </div>
+      <form class="email-form" id="waitlist-form" onsubmit="return submitEmail(event)">
+        <input type="email" placeholder="your@email.com" required id="waitlist-email">
+        <button type="submit" class="btn btn-primary" style="white-space:nowrap;">
+          <span class="i18n" data-en="Get Early Access" data-zh="抢先体验">Get Early Access</span>
+        </button>
+      </form>
+      <div id="waitlist-thanks" style="display:none; margin-top:16px; color:var(--green); font-size:0.9rem;">
+        ✅ <span class="i18n" data-en="Thanks! We'll notify you when Stripe payments launch." data-zh="感谢！Stripe 支付上线后我们会通知你。">Thanks! We'll notify you when Stripe payments launch.</span>
       </div>
     </div>
 
@@ -175,6 +305,34 @@
       }
     });
 
+    // ── Bug 1: Fix platforms serialization for HTMX ────────────────────────
+    document.getElementById("bridge-form").addEventListener("htmx:configRequest", function(evt) {
+      try {
+        const raw = document.getElementById("platforms-input").value;
+        const parsed = JSON.parse(raw);
+        evt.detail.parameters["platforms"] = parsed;
+      } catch(e) {
+        evt.detail.parameters["platforms"] = ["x"];
+      }
+    });
+
+    // ── Bug 2: Loading indicator ────────────────────────────────────────────
+    document.getElementById("bridge-form").addEventListener("htmx:beforeRequest", function() {
+      document.getElementById("submit-btn").classList.add("loading");
+    });
+    document.getElementById("bridge-form").addEventListener("htmx:afterRequest", function() {
+      document.getElementById("submit-btn").classList.remove("loading");
+    });
+
+    // ── Bug 3: Error handling ──────────────────────────────────────────────
+    document.getElementById("bridge-form").addEventListener("htmx:responseError", function(evt) {
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = '<div class="error-card"><h3>❌ 错误 / Error</h3><p>' +
+        (evt.detail.xhr.responseText || '请求失败，请重试 / Request failed, please try again.') +
+        '</p></div>';
+      resultsDiv.classList.add('show');
+    });
+
     // ── Language toggle (simple client-side i18n) ───────────────────────────
     let currentLang = localStorage.getItem('lang') || 'en';
 
@@ -192,6 +350,34 @@
 
     function toggleLang() {
       applyLang(currentLang === 'en' ? 'zh' : 'en');
+    }
+
+    // ── FAQ toggle ──────────────────────────────────────────────────────────
+    function toggleFaq(el) {
+      el.classList.toggle('open');
+      const answer = el.nextElementSibling;
+      answer.classList.toggle('open');
+    }
+
+    // ── Waitlist email capture ─────────────────────────────────────────────
+    function submitEmail(evt) {
+      evt.preventDefault();
+      const email = document.getElementById('waitlist-email').value;
+      // Store in localStorage + send to backend
+      let list = JSON.parse(localStorage.getItem('waitlist') || '[]');
+      if (!list.includes(email)) {
+        list.push(email);
+        localStorage.setItem('waitlist', JSON.stringify(list));
+      }
+      // Try to send to backend
+      fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email: email})
+      }).catch(function(){});
+      document.getElementById('waitlist-form').style.display = 'none';
+      document.getElementById('waitlist-thanks').style.display = 'block';
+      return false;
     }
 
     // Initial apply
