@@ -10,15 +10,27 @@
   <script src="https://unpkg.com/htmx.org@2.0.4/dist/ext/json-enc.js"></script>
 </head>
 <body>
-  <nav>
+  <nav id="navbar">
     <div class="logo"><span>◆</span> Content Bridge</div>
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
       <a href="#" onclick="toggleLang()" class="lang-toggle" id="lang-toggle">🇨🇳 中文</a>
+      <a href="/login" class="btn btn-sm btn-outline">Sign In</a>
+      <a href="/signup" class="btn btn-sm btn-primary">Get Started</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+    <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
+    <a href="/signup" class="btn btn-primary btn-lg">Get Started</a>
+  </div>
 
   <div class="container">
     {% if mock_mode %}
@@ -29,25 +41,31 @@
     </div>
     {% endif %}
 
-    <!-- ── Hero ────────────────────────────────────────────────────────────── -->
     <div class="hero">
-      <div class="badge">✨ AI-Powered • Cultural Adaptation • One Click</div>
-      <h1 class="i18n" data-en="China → Global in One Click" data-zh="中文内容 → 全球影响力">China → Global in One Click</h1>
-      <p class="i18n" data-en="Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations." data-zh="把你的中文想法、产品、洞见，一键转化为适合 X、LinkedIn、Reddit 的英文内容。文化适配，告别机翻。">
-        Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations.
-      </p>
+      <div class="hero-floats">
+        <span class="float-icon">X</span>
+        <span class="float-icon">in</span>
+        <span class="float-icon">Reddit</span>
+      </div>
+      <div class="container">
+        <div class="badge i18n" data-en="AI-Powered  Cultural Adaptation  One Click" data-zh="AI驱动  文化创译  一键完成">AI-Powered  Cultural Adaptation  One Click</div>
+        <h1 class="hero-title">China → <span class="gradient-text">Global</span><br>in One Click</h1>
+        <p class="hero-sub i18n" data-en="Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations." data-zh="将你的中文想法、产品、见解一键转化为适应X、LinkedIn、Reddit的文化适配英文内容。告别机器翻译。">Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations.</p>
+        <div class="hero-cta">
+          <a href="#try-it" class="btn btn-primary btn-glow btn-lg"> Try It Free</a>
+          <a href="#features" class="btn btn-outline btn-lg">How It Works →</a>
+        </div>
+      </div>
     </div>
 
-    <!-- ── How It Works ──────────────────────────────────────────────────── -->
-    <!-- ── Trust Bar ────────────────────────────────────────────────────────── -->
     <div class="trust-bar">
-      <div class="trust-item"><span class="trust-num">5,000+</span> <span class="trust-label i18n" data-en="Translations" data-zh="翻译次数">Translations</span></div>
-      <div class="trust-item"><span class="trust-num">2,000+</span> <span class="trust-label i18n" data-en="Active Users" data-zh="活跃用户">Active Users</span></div>
-      <div class="trust-item"><span class="trust-num">3</span> <span class="trust-label i18n" data-en="Platforms" data-zh="适配平台">Platforms</span></div>
-      <div class="trust-item"><span class="trust-num">99%</span> <span class="trust-label i18n" data-en="Satisfaction" data-zh="满意度">Satisfaction</span></div>
+      <div class="trust-item"><span class="trust-num count-up" data-target="5000">0</span> <span class="trust-label i18n" data-en="Translations" data-zh="翻译次数">Translations</span></div>
+      <div class="trust-item"><span class="trust-num count-up" data-target="2000">0</span> <span class="trust-label i18n" data-en="Active Users" data-zh="活跃用户">Active Users</span></div>
+      <div class="trust-item"><span class="trust-num count-up" data-target="3">0</span> <span class="trust-label i18n" data-en="Platforms" data-zh="适配平台">Platforms</span></div>
+      <div class="trust-item"><span class="trust-num count-up" data-target="99">0</span> <span class="trust-label i18n" data-en="Satisfaction" data-zh="满意度">Satisfaction</span></div>
     </div>
 
-    <div class="section" id="features">
+    <div class="section" id="features" data-aos="fade-up">
       <h2 class="section-title i18n" data-en="How It Works" data-zh="工作原理">How It Works</h2>
       <div class="steps">
         <div class="step">
@@ -68,11 +86,9 @@
       </div>
     </div>
 
-    <!-- ── Before / After Comparison ─────────────────────────────────────── -->
-    <div class="section" id="showcase">
+    <div class="section" id="showcase" data-aos="fade-up">
       <h2 class="section-title i18n" data-en="See the Difference" data-zh="效果对比">See the Difference</h2>
       <p class="section-subtitle i18n" data-en="Machine translation vs. cultural adaptation for the same Chinese input" data-zh="同一段中文：机器翻译 vs. AI 文化适配">Machine translation vs. cultural adaptation for the same Chinese input</p>
-
       <div class="comparison-grid">
         <div class="comp-card">
           <div class="comp-badge before">❌ Machine Translation</div>
@@ -88,17 +104,15 @@
       </div>
     </div>
 
-    <!-- ── Case Studies ───────────────────────────────────────────────────── -->
-    <div class="section" id="case-studies">
+    <div class="section" id="case-studies" data-aos="fade-up">
       <h2 class="section-title i18n" data-en="Who It's For" data-zh="谁在用">Who It's For</h2>
       <p class="section-subtitle i18n" data-en="Real scenarios where Content Bridge makes the difference" data-zh="真实场景：Content Bridge 如何帮你出海">Real scenarios where Content Bridge makes the difference</p>
-
       <div class="case-studies">
         <div class="case-card">
           <div class="case-icon">📱</div>
           <h3 class="i18n" data-en="SaaS Founder" data-zh="SaaS 创业者">SaaS Founder</h3>
           <div class="case-subtitle i18n" data-en="Product-led growth" data-zh="产品驱动增长">Product-led growth</div>
-          <p class="case-desc i18n" data-en="Launching a Chinese SaaS globally? Turn your product announcements and founder stories into native English content that resonates with international buyers." data-zh="中国 SaaS 全球化？把你产品发布和创始人心得转化为国际买家产生共鸣的地道英文内容。">Launching a Chinese SaaS globally? Turn product announcements and founder stories into native English content that resonates with international buyers.</p>
+          <p class="case-desc i18n" data-en="Launching a Chinese SaaS globally? Turn product announcements and founder stories into native English content that resonates with international buyers." data-zh="中国 SaaS 全球化？把你产品发布和创始人心得转化为国际买家产生共鸣的地道英文内容。">Launching a Chinese SaaS globally? Turn product announcements and founder stories into native English content that resonates with international buyers.</p>
           <div class="case-quote i18n" data-en="Got 3 client meetings from one LinkedIn post. Game changer." data-zh="一篇 LinkedIn 帖子带来 3 个客户会议。">Got 3 client meetings from one LinkedIn post. Game changer.</div>
         </div>
         <div class="case-card">
@@ -118,11 +132,9 @@
       </div>
     </div>
 
-    <!-- ── FAQ ────────────────────────────────────────────────────────────── -->
-    <div class="section" id="faq">
+    <div class="section" id="faq" data-aos="fade-up">
       <h2 class="section-title i18n" data-en="FAQ" data-zh="常见问题">FAQ</h2>
       <p class="section-subtitle i18n" data-en="Everything you need to know" data-zh="你想知道的都在这里">Everything you need to know</p>
-
       <div class="faq-list">
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)">
@@ -143,7 +155,7 @@
             <span class="i18n" data-en="Do I need my own API key?" data-zh="需要自己的 API Key 吗？">Do I need my own API key?</span>
             <span class="arrow">▼</span>
           </div>
-          <div class="faq-a i18n" data-en="Free tier works in mock mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key." data-zh="免费版使用模拟模式（演示翻译），可以体验完整流程。入门和专业版包含 API 访问权限，无需额外 Key。企业客户可以自带 Key。">Free tier works in demo mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key.</div>
+          <div class="faq-a i18n" data-en="Free tier works in demo mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key." data-zh="免费版使用模拟模式（演示翻译），可以体验完整流程。入门和专业版包含 API 访问权限，无需额外 Key。企业客户可以自带 Key。">Free tier works in demo mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="toggleFaq(this)">
@@ -162,7 +174,6 @@
       </div>
     </div>
 
-    <!-- ── CTA Banner ─────────────────────────────────────────────────────── -->
     <div class="cta-banner">
       <h2 class="i18n" data-en="Ready to Go Global?" data-zh="准备好出海了吗？">Ready to Go Global?</h2>
       <p class="i18n" data-en="Join 2,000+ Chinese founders and creators reaching international audiences. Start free — upgrade when you grow." data-zh="加入 2000+ 中国创业者和创作者的国际之旅。免费开始，成长后再升级。">Join 2,000+ Chinese founders and creators reaching international audiences. Start free — upgrade when you grow.</p>
@@ -182,8 +193,7 @@
       </div>
     </div>
 
-    <!-- ── Try It ─────────────────────────────────────────────────────────── -->
-    <div class="bridge-card">
+    <div class="bridge-card" id="try-it">
       <h2 class="card-title i18n" data-en="Try It Now" data-zh="立即体验">Try It Now</h2>
       <p class="card-subtitle i18n" data-en="Paste your Chinese content — get culturally-adapted English in seconds." data-zh="粘贴你的中文内容，秒得文化适配的英文内容。">Paste your Chinese content — get culturally-adapted English in seconds.</p>
 
@@ -193,37 +203,33 @@
             hx-swap="innerHTML"
             hx-indicator="#submit-btn"
             id="bridge-form">
-
         <label for="text" class="i18n" data-en="Chinese Input" data-zh="中文输入">Chinese Input</label>
-        <textarea id="text" name="text" placeholder='e.g. 我用AI帮跨境电商做海外营销，三个月获客200+，分享一下我的方法。'
-                  required></textarea>
+        <textarea id="text" name="text" data-char-count="char-counter" placeholder='e.g. 我用AI帮跨境电商做海外营销，三个月获客200+，分享一下我的方法。' required></textarea>
+        <div class="char-count" id="char-counter">0 chars</div>
 
         <label style="margin-top:16px" class="i18n" data-en="Target Platforms" data-zh="目标平台">Target Platforms</label>
         <div class="platform-grid" id="platforms">
-          <button type="button" class="platform-btn active" data-value="x" onclick="togglePlatform(this)">𝕏  X / Twitter</button>
-          <button type="button" class="platform-btn" data-value="linkedin" onclick="togglePlatform(this)">💼 LinkedIn</button>
-          <button type="button" class="platform-btn" data-value="reddit" onclick="togglePlatform(this)">🔴 Reddit</button>
+          <button type="button" class="platform-btn active" data-value="x" onclick="togglePlatform(this)">X  X / Twitter</button>
+          <button type="button" class="platform-btn" data-value="linkedin" onclick="togglePlatform(this)">LinkedIn</button>
+          <button type="button" class="platform-btn" data-value="reddit" onclick="togglePlatform(this)">Reddit</button>
         </div>
         <input type="hidden" name="platforms" id="platforms-input" value='["x"]'>
 
-        <!-- Sample presets -->
         <div class="samples">
-          <span class="sample-btn" onclick="setSample(1)">📱 产品推广</span>
-          <span class="sample-btn" onclick="setSample(2)">📝 经验分享</span>
-          <span class="sample-btn" onclick="setSample(3)">🏢 公司介绍</span>
+          <span class="sample-btn" onclick="setSample(1)"> Product</span>
+          <span class="sample-btn" onclick="setSample(2)">Experience</span>
+          <span class="sample-btn" onclick="setSample(3)">Company</span>
         </div>
 
         <button type="submit" class="submit-btn" id="submit-btn">
-          <span class="i18n" data-en="✦ Bridge to English" data-zh="✦ 生成英文内容">✦ Bridge to English</span>
+          <span class="i18n" data-en=" Bridge to English" data-zh=" 生成英文内容"> Bridge to English</span>
         </button>
       </form>
     </div>
 
-    <!-- Results injected here by HTMX -->
     <div id="results" class="results"></div>
 
-    <!-- ── Pricing ────────────────────────────────────────────────────────── -->
-    <div class="section" id="pricing">
+    <div class="section" id="pricing" data-aos="fade-up">
       <h2 class="section-title i18n" data-en="Pricing" data-zh="定价">Pricing</h2>
       <div class="pricing-grid">
         <div class="pricing-card">
@@ -258,21 +264,20 @@
     </div>
   </div>
 
-  <footer>
-    <p>Built with ❤️ for the global Chinese creator community</p>
+  <footer class="footer">
+    <p>Built with for the global Chinese creator community</p>
     <p style="margin-top:4px; font-size:0.8rem; color:var(--text-dim)">
-      <a href="https://github.com/guish7423/ai-content-bridge" style="color:var(--accent)">GitHub</a> •
+      <a href="https://github.com/guish7423/ai-content-bridge" style="color:var(--accent)">GitHub</a> 
       <span class="i18n" data-en="AI Content Bridge v0.1" data-zh="AI Content Bridge v0.1">AI Content Bridge v0.1</span>
     </p>
   </footer>
 
   <script>
-    // ── Sample presets ────────────────────────────────────────────────────
     const SAMPLES = [
       "",
-      "我们是一家AI驱动的跨境电商营销公司，帮助中国卖家在Shopify和Amazon上提升转化率。我们的AI系统能自动分析产品卖点，生成多语言的产品描述和广告文案。使用我们服务的卖家平均转化率提升30%，客单价提升15%。目前已经有超过2000家商户在使用我们的平台。",
-      "做独立开发三年，最大的感悟是：不要等产品完美了再发布。我的第一个产品做了6个月，上线后无人问津。第二个产品只花了2周做MVP，发布当天就有3个付费用户。现在我的策略是：2周出MVP，2周收集反馈，然后决定是否继续。",
-      "我们公司专注于为企业提供AI驱动的数字化转型解决方案。成立于2020年，总部位于深圳，团队规模50人，服务客户涵盖金融、医疗、制造等行业。我们的核心产品是一款低代码AI平台，帮助企业快速构建和部署AI应用。2024年完成了2000万美元的A轮融资。",
+      "We are an AI-driven cross-border e-commerce marketing company, helping Chinese sellers boost conversions on Shopify and Amazon. Our AI system automatically analyzes product selling points and generates multi-language product descriptions and ad copy. Sellers using our service see an average 30% increase in conversion rates and 15% higher average order values. Over 2,000 merchants currently use our platform.",
+      "Three years of indie development taught me: don't wait for perfection before launching. My first product took 6 months to build and flopped. The second took just 2 weeks for an MVP and had 3 paying customers on launch day. Now my strategy is: 2 weeks for MVP, 2 weeks for feedback, then decide whether to continue.",
+      "We are an enterprise-focused company providing AI-driven digital transformation solutions. Founded in 2020, headquartered in Shenzhen, team of 50, serving clients across finance, healthcare, and manufacturing. Our core product is a low-code AI platform that helps enterprises quickly build and deploy AI applications. Completed $20M Series A in 2024.",
     ];
     function setSample(n) {
       document.getElementById('text').value = SAMPLES[n];
@@ -280,21 +285,18 @@
       document.getElementById('submit-btn').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ── Platform toggle ────────────────────────────────────────────────────
     function togglePlatform(btn) {
       btn.classList.toggle('active');
       const selected = [...document.querySelectorAll('.platform-btn.active')].map(b => b.dataset.value);
       document.getElementById('platforms-input').value = JSON.stringify(selected.length ? selected : ['x']);
     }
 
-    // ── HTMX handlers ──────────────────────────────────────────────────────
     document.body.addEventListener('htmx:afterSwap', function(evt) {
       if (evt.detail.target.id === 'results') {
         document.getElementById('results').classList.add('show');
-        document.getElementById('submit-btn').querySelector('span').textContent = '✦ Bridge Again';
-        document.getElementById('submit-btn').querySelector('span').dataset.en = '✦ Bridge Again';
-        document.getElementById('submit-btn').querySelector('span').dataset.zh = '✦ 再次生成';
-        // Scroll to results
+        document.getElementById('submit-btn').querySelector('span').textContent = ' Bridge Again';
+        document.getElementById('submit-btn').querySelector('span').dataset.en = ' Bridge Again';
+        document.getElementById('submit-btn').querySelector('span').dataset.zh = ' 再次生成';
         document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
@@ -305,7 +307,6 @@
       }
     });
 
-    // ── Bug 1: Fix platforms serialization for HTMX ────────────────────────
     document.getElementById("bridge-form").addEventListener("htmx:configRequest", function(evt) {
       try {
         const raw = document.getElementById("platforms-input").value;
@@ -316,7 +317,6 @@
       }
     });
 
-    // ── Bug 2: Loading indicator ────────────────────────────────────────────
     document.getElementById("bridge-form").addEventListener("htmx:beforeRequest", function() {
       document.getElementById("submit-btn").classList.add("loading");
     });
@@ -324,16 +324,14 @@
       document.getElementById("submit-btn").classList.remove("loading");
     });
 
-    // ── Bug 3: Error handling ──────────────────────────────────────────────
     document.getElementById("bridge-form").addEventListener("htmx:responseError", function(evt) {
       const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = '<div class="error-card"><h3>❌ 错误 / Error</h3><p>' +
-        (evt.detail.xhr.responseText || '请求失败，请重试 / Request failed, please try again.') +
+      resultsDiv.innerHTML = '<div class="error-card"><h3> Error / Error</h3><p>' +
+        (evt.detail.xhr.responseText || 'Request failed, please try again.') +
         '</p></div>';
       resultsDiv.classList.add('show');
     });
 
-    // ── Language toggle (simple client-side i18n) ───────────────────────────
     let currentLang = localStorage.getItem('lang') || 'en';
 
     function applyLang(lang) {
@@ -344,7 +342,7 @@
           el.textContent = el.dataset[lang];
         }
       });
-      document.getElementById('lang-toggle').textContent = lang === 'en' ? '🇨🇳 中文' : '🇬🇧 English';
+      document.getElementById('lang-toggle').textContent = lang === 'en' ? 'CN' : 'EN';
       document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     }
 
@@ -352,24 +350,20 @@
       applyLang(currentLang === 'en' ? 'zh' : 'en');
     }
 
-    // ── FAQ toggle ──────────────────────────────────────────────────────────
     function toggleFaq(el) {
       el.classList.toggle('open');
       const answer = el.nextElementSibling;
       answer.classList.toggle('open');
     }
 
-    // ── Waitlist email capture ─────────────────────────────────────────────
     function submitEmail(evt) {
       evt.preventDefault();
       const email = document.getElementById('waitlist-email').value;
-      // Store in localStorage + send to backend
       let list = JSON.parse(localStorage.getItem('waitlist') || '[]');
       if (!list.includes(email)) {
         list.push(email);
         localStorage.setItem('waitlist', JSON.stringify(list));
       }
-      // Try to send to backend
       fetch('/api/waitlist', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -380,8 +374,8 @@
       return false;
     }
 
-    // Initial apply
     applyLang(currentLang);
   </script>
+  <script src="/static/animations.js"></script>
 </body>
 </html>
