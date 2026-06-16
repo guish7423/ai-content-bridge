@@ -1,89 +1,74 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-lang>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="signup.title">Sign Up - AI Content Bridge</title>
+  <title>Sign Up - AI Content Bridge</title>
   <link rel="stylesheet" href="/static/style.css" />
-  <script defer src="/static/i18n.js"></script>
-  <script defer src="/static/app.js"></script>
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">AI Content Bridge</a>
-      <div class="nav-links">
-        <a href="/pricing" data-i18n="nav.pricing">Pricing</a>
-        <a href="/login" data-i18n="nav.login">Login</a>
-      </div>
+  <nav id="navbar">
+    <div class="logo"><span>✦</span> Content Bridge</div>
+    <div class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/pricing">Pricing</a>
+      <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+      <a href="/login" class="btn btn-sm btn-outline">Sign In</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="/#features">Features</a>
+    <a href="/pricing">Pricing</a>
+    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+    <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
+  </div>
 
   <main class="main">
     <div class="auth-card">
-      <h1 data-i18n="signup.title">Create Your Account</h1>
-      <p class="auth-subtitle" data-i18n="signup.subtitle">Start bridging your content to the global audience</p>
-
+      <h1>Create Your Account</h1>
+      <p class="auth-subtitle">Start bridging your content to the global audience</p>
       <form id="signup-form" class="auth-form">
         <div class="form-group">
-          <label for="email" data-i18n="signup.email">Email</label>
+          <label for="email">Email</label>
           <input type="email" id="email" name="email" required placeholder="you@example.com" />
         </div>
         <div class="form-group">
-          <label for="password" data-i18n="signup.password">Password</label>
+          <label for="password">Password</label>
           <input type="password" id="password" name="password" required minlength="8" placeholder="At least 8 characters" />
         </div>
-        <button type="submit" class="btn btn-primary btn-block" data-i18n="signup.submit">
-          Create Account
-        </button>
-        <p class="auth-terms" data-i18n="signup.terms">
-          Free plan: 10 conversions/month. No credit card required.
-        </p>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        <p class="auth-terms">Free plan: 10 conversions/month. No credit card required.</p>
       </form>
-
       <div id="signup-error" class="alert alert-error" style="display:none"></div>
-
       <p class="auth-footer">
-        <span data-i18n="signup.have_account">Already have an account?</span>
-        <a href="/login" data-i18n="signup.login">Log in</a>
+        <span>Already have an account?</span>
+        <a href="/login">Log in</a>
       </p>
     </div>
   </main>
 
+  <footer class="footer">
+    <p>Built with ❤️ for the global Chinese creator community</p>
+    <p style="margin-top:4px; font-size:0.8rem; color:var(--text-dim)">
+      <a href="https://github.com/guish7423/ai-content-bridge" style="color:var(--accent)">GitHub</a> · AI Content Bridge v0.1
+    </p>
+  </footer>
+
+  <script src="/static/animations.js"></script>
   <script>
     document.getElementById('signup-form').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const error = document.getElementById('signup-error');
-
-      btn.disabled = true;
-      btn.textContent = 'Creating…';
-      error.style.display = 'none';
-
+      const form = e.target, btn = form.querySelector('button[type="submit"]'), error = document.getElementById('signup-error');
+      btn.disabled = true; btn.textContent = 'Creating\u2026'; error.style.display = 'none';
       try {
-        const resp = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: form.email.value,
-            password: form.password.value,
-          }),
-        });
-
-        if (!resp.ok) {
-          const data = await resp.json();
-          throw new Error(data.detail || 'Signup failed');
-        }
-
+        const resp = await fetch('/api/auth/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: form.email.value, password: form.password.value }) });
+        if (!resp.ok) { const d = await resp.json(); throw new Error(d.detail || 'Signup failed'); }
         window.location.href = '/dashboard';
-      } catch (err) {
-        error.textContent = err.message;
-        error.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Create Account';
-      }
+      } catch (err) { error.textContent = err.message; error.style.display = 'block'; }
+      finally { btn.disabled = false; btn.textContent = 'Create Account'; }
     });
   </script>
 </body>
