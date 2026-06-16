@@ -1,24 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-lang>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="login.title">Login - AI Content Bridge</title>
+  <title>Login - AI Content Bridge</title>
   <link rel="stylesheet" href="/static/style.css" />
-  <script defer src="/static/i18n.js"></script>
-  <script defer src="/static/app.js"></script>
 </head>
 <body>
+  <!-- Ambient Backgrounds -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Navigation -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-brand">AI Content Bridge</a>
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-logo">✦</span>
+        AI Content Bridge
+      </a>
       <div class="nav-links">
-        <a href="/pricing" data-i18n="nav.pricing">Pricing</a>
-        <a href="/signup" data-i18n="nav.signup">Sign Up</a>
+        <a href="/#features">Features</a>
+        <a href="/pricing">Pricing</a>
+        <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+        <a href="/signup" class="btn btn-sm btn-primary">Sign Up</a>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="/#features">Features</a>
+    <a href="/pricing">Pricing</a>
+    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+    <a href="/signup" class="btn btn-primary btn-lg">Sign Up</a>
+  </div>
+
+  <!-- Main Content -->
   <main class="main">
     <div class="auth-card">
       <h1 data-i18n="login.title">Welcome Back</h1>
@@ -47,6 +67,16 @@
     </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with ❤️ for the global Chinese creator community</p>
+    <p style="margin-top:4px; font-size:0.8rem;">
+      <a href="https://github.com/guish7423/ai-content-bridge">GitHub</a> · AI Content Bridge v0.1
+    </p>
+  </footer>
+
+  <script src="/static/animations.js"></script>
+  <script src="/static/i18n.js"></script>
   <script>
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -55,7 +85,7 @@
       const error = document.getElementById('login-error');
 
       btn.disabled = true;
-      btn.textContent = 'Logging in…';
+      btn.textContent = 'Logging in\u2026';
       error.style.display = 'none';
 
       try {
@@ -81,6 +111,12 @@
         btn.disabled = false;
         btn.textContent = 'Log In';
       }
+    });
+
+    // Hamburger toggle
+    document.getElementById('hamburger').addEventListener('click', function() {
+      this.classList.toggle('active');
+      document.getElementById('mobile-nav').classList.toggle('open');
     });
   </script>
 </body>

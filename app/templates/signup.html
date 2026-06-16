@@ -1,24 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-lang>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="signup.title">Sign Up - AI Content Bridge</title>
+  <title>Sign Up - AI Content Bridge</title>
   <link rel="stylesheet" href="/static/style.css" />
-  <script defer src="/static/i18n.js"></script>
-  <script defer src="/static/app.js"></script>
 </head>
 <body>
+  <!-- Ambient Backgrounds -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Navigation -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-brand">AI Content Bridge</a>
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-logo">✦</span>
+        AI Content Bridge
+      </a>
       <div class="nav-links">
-        <a href="/pricing" data-i18n="nav.pricing">Pricing</a>
-        <a href="/login" data-i18n="nav.login">Login</a>
+        <a href="/#features">Features</a>
+        <a href="/pricing">Pricing</a>
+        <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+        <a href="/login" class="btn btn-sm btn-outline">Sign In</a>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="/#features">Features</a>
+    <a href="/pricing">Pricing</a>
+    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+    <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
+  </div>
+
+  <!-- Main Content -->
   <main class="main">
     <div class="auth-card">
       <h1 data-i18n="signup.title">Create Your Account</h1>
@@ -36,7 +56,7 @@
         <button type="submit" class="btn btn-primary btn-block" data-i18n="signup.submit">
           Create Account
         </button>
-        <p class="auth-terms" data-i18n="signup.terms">
+        <p class="auth-terms">
           Free plan: 10 conversions/month. No credit card required.
         </p>
       </form>
@@ -50,6 +70,16 @@
     </div>
   </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with ❤️ for the global Chinese creator community</p>
+    <p style="margin-top:4px; font-size:0.8rem;">
+      <a href="https://github.com/guish7423/ai-content-bridge">GitHub</a> · AI Content Bridge v0.1
+    </p>
+  </footer>
+
+  <script src="/static/animations.js"></script>
+  <script src="/static/i18n.js"></script>
   <script>
     document.getElementById('signup-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -58,7 +88,7 @@
       const error = document.getElementById('signup-error');
 
       btn.disabled = true;
-      btn.textContent = 'Creating…';
+      btn.textContent = 'Creating\u2026';
       error.style.display = 'none';
 
       try {
@@ -84,6 +114,12 @@
         btn.disabled = false;
         btn.textContent = 'Create Account';
       }
+    });
+
+    // Hamburger toggle
+    document.getElementById('hamburger').addEventListener('click', function() {
+      this.classList.toggle('active');
+      document.getElementById('mobile-nav').classList.toggle('open');
     });
   </script>
 </body>

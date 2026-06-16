@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0f1e"/>
+      <stop offset="50%" stop-color="#0f1429"/>
+      <stop offset="100%" stop-color="#080b18"/>
+    </linearGradient>
+    <linearGradient id="glow1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="glow2" x1="1" y1="0.5" x2="0" y2="0.5">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="60" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1f35" stroke-width="0.5" stroke-opacity="0.5"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Glows -->
+  <ellipse cx="300" cy="315" rx="400" ry="300" fill="url(#glow1)"/>
+  <ellipse cx="900" cy="315" rx="350" ry="250" fill="url(#glow2)"/>
+
+  <!-- Content -->
+  <!-- Logo area -->
+  <g transform="translate(80, 60)">
+    <rect x="0" y="0" width="48" height="48" rx="12" fill="url(#accent)"/>
+    <text x="24" y="34" font-family="Inter, -apple-system, sans-serif" font-size="26" font-weight="800" fill="#ffffff" text-anchor="middle">✦</text>
+    <text x="64" y="32" font-family="Inter, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#e2e8f0">AI Content Bridge</text>
+  </g>
+
+  <!-- Main headline -->
+  <text x="80" y="240" font-family="Inter, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#ffffff" letter-spacing="-1">
+    China → Global
+  </text>
+  <text x="80" y="310" font-family="Inter, -apple-system, sans-serif" font-size="64" font-weight="800" fill="url(#accent)" letter-spacing="-1">
+    in One Click
+  </text>
+
+  <!-- Subtitle -->
+  <text x="80" y="380" font-family="Inter, -apple-system, sans-serif" font-size="22" fill="#94a3b8" letter-spacing="-0.3">
+    AI-powered cultural adaptation for X, LinkedIn &amp; Reddit
+  </text>
+
+  <!-- Badges -->
+  <g transform="translate(80, 440)">
+    <rect x="0" y="0" width="180" height="40" rx="8" fill="#1a1f35" stroke="#6366f1" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="90" y="26" font-family="Inter, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#818cf8" text-anchor="middle">AI-Powered</text>
+
+    <rect x="195" y="0" width="180" height="40" rx="8" fill="#1a1f35" stroke="#06b6d4" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="285" y="26" font-family="Inter, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#22d3ee" text-anchor="middle">Cultural Adaptation</text>
+
+    <rect x="390" y="0" width="180" height="40" rx="8" fill="#1a1f35" stroke="#6366f1" stroke-opacity="0.4" stroke-width="1"/>
+    <text x="480" y="26" font-family="Inter, -apple-system, sans-serif" font-size="15" font-weight="600" fill="#818cf8" text-anchor="middle">One Click</text>
+  </g>
+
+  <!-- URL -->
+  <text x="80" y="550" font-family="Inter, -apple-system, sans-serif" font-size="16" fill="#64748b">
+    ai-content-bridge-production.up.railway.app
+  </text>
+
+  <!-- Decorative elements -->
+  <g opacity="0.3">
+    <circle cx="950" cy="480" r="4" fill="#6366f1"/>
+    <circle cx="1050" cy="200" r="3" fill="#22d3ee"/>
+    <circle cx="1100" cy="380" r="5" fill="#6366f1" opacity="0.5"/>
+    <circle cx="850" cy="140" r="2" fill="#ffffff"/>
+  </g>
+</svg>

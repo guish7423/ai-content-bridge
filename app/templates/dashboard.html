@@ -1,30 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-lang>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="dashboard.title">Dashboard - AI Content Bridge</title>
+  <title>Dashboard - AI Content Bridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/style.css" />
-  <script defer src="/static/i18n.js"></script>
-  <script defer src="/static/app.js"></script>
 </head>
 <body>
-  <nav class="nav">
+  <!-- Ambient Background -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Glassmorphism Navbar -->
+  <nav class="nav" id="navbar">
     <div class="nav-inner">
-      <a href="/" class="nav-brand">AI Content Bridge</a>
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-logo">✦</span>
+        Content Bridge
+      </a>
       <div class="nav-links">
-        <a href="/" data-i18n="nav.bridge">Bridge</a>
-        <a href="/pricing" data-i18n="nav.pricing">Pricing</a>
-        <a href="/logout" id="logout-link" data-i18n="nav.logout">Logout</a>
+        <a href="/">Bridge</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/logout" id="logout-link">Logout</a>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
+  <!-- Mobile Nav Overlay -->
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="/">Bridge</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/logout" id="logout-link-mobile">Logout</a>
+  </div>
+
+  <!-- Main Content -->
   <main class="main">
     <div class="dashboard">
-      <h1 data-i18n="dashboard.title">Dashboard</h1>
+      <!-- Dashboard Header with CTA -->
+      <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <a href="/" class="btn btn-primary">
+          <span>+</span> New Bridge
+        </a>
+      </div>
 
-      <!-- Stats Row -->
+      <!-- Stats Grid — Glass Dashboard -->
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-label" data-i18n="dashboard.plan">Plan</div>
@@ -33,7 +59,7 @@
         <div class="stat-card">
           <div class="stat-label" data-i18n="dashboard.usage">Usage (month)</div>
           <div class="stat-value" id="stat-usage">—</div>
-          <div class="stat-bar" id="usage-bar"><div class="stat-fill"></div></div>
+          <div class="stat-bar" id="usage-bar"><div class="stat-fill" style="width:0%"></div></div>
         </div>
         <div class="stat-card">
           <div class="stat-label" data-i18n="dashboard.limit">Limit</div>
@@ -41,8 +67,8 @@
         </div>
         <div class="stat-card">
           <div class="stat-label" data-i18n="dashboard.api_key">API Key</div>
-          <div class="stat-value" id="stat-apikey" style="font-size:0.7em;font-family:monospace">—</div>
-          <button class="btn btn-sm" onclick="copyApiKey()" style="margin-top:4px" data-i18n="dashboard.copy">Copy</button>
+          <div class="stat-value" id="stat-apikey" style="font-size:0.7em;font-family:var(--font-mono)">—</div>
+          <button class="btn btn-sm btn-ghost" onclick="copyApiKey()" style="margin-top:4px" data-i18n="dashboard.copy">Copy</button>
         </div>
       </div>
 
@@ -54,7 +80,7 @@
         </div>
       </section>
 
-      <!-- Upgrade CTA (shown for free plan) -->
+      <!-- Upgrade CTA for Free Users -->
       <div id="upgrade-cta" class="upgrade-banner" style="display:none">
         <p data-i18n="dashboard.upgrade_cta">Upgrade to Starter ($19/mo) for 100 conversions/month and social publishing.</p>
         <a href="/pricing" class="btn btn-primary" data-i18n="dashboard.upgrade_btn">See Plans</a>
@@ -62,6 +88,17 @@
     </div>
   </main>
 
+  <!-- Footer — Design System Aligned -->
+  <footer class="footer">
+    <p>Built with ❤️ for the global Chinese creator community</p>
+    <p style="margin-top:4px; font-size:0.8rem; color:var(--text-tertiary)">
+      <a href="https://github.com/guish7423/ai-content-bridge" style="color:var(--brand)">GitHub</a>
+      · AI Content Bridge v0.1
+    </p>
+  </footer>
+
+  <script src="/static/animations.js"></script>
+  <script src="/static/i18n.js"></script>
   <script>
     async function loadDashboard() {
       try {
@@ -75,7 +112,6 @@
         document.getElementById('stat-apikey').textContent = data.api_key
           ? data.api_key.slice(0, 16) + '…' : '—';
 
-        // Usage bar
         const pct = data.plan_limit > 0
           ? Math.min(100, ((data.monthly_usage ?? 0) / data.plan_limit) * 100)
           : 0;
@@ -83,12 +119,10 @@
         fill.style.width = pct + '%';
         fill.style.background = pct > 80 ? '#ef4444' : pct > 50 ? '#f59e0b' : '#22c55e';
 
-        // Upgrade CTA
         if (data.plan === 'free') {
           document.getElementById('upgrade-cta').style.display = 'block';
         }
 
-        // Recent conversions
         loadRecent();
       } catch (e) {
         window.location.href = '/login';
@@ -99,10 +133,10 @@
       const el = document.getElementById('recent-list');
       try {
         const resp = await fetch('/api/bridge/history?limit=10');
-        if (!resp.ok) { el.innerHTML = '<p class="text-muted" data-i18n="dashboard.no_history">No conversions yet.</p>'; return; }
+        if (!resp.ok) { el.innerHTML = '<p class="text-muted">No conversions yet.</p>'; return; }
         const items = await resp.json();
         if (!items.length) {
-          el.innerHTML = '<p class="text-muted" data-i18n="dashboard.no_history">No conversions yet.</p>';
+          el.innerHTML = '<p class="text-muted">No conversions yet.</p>';
           return;
         }
         el.innerHTML = items.map(item => `
@@ -112,7 +146,7 @@
           </div>
         `).join('');
       } catch {
-        el.innerHTML = '<p class="text-muted" data-i18n="dashboard.error">Failed to load.</p>';
+        el.innerHTML = '<p class="text-muted">Failed to load.</p>';
       }
     }
 
@@ -133,12 +167,15 @@
         });
     }
 
-    document.getElementById('logout-link')?.addEventListener('click', (e) => {
+    function handleLogout(e) {
       e.preventDefault();
       fetch('/api/auth/logout', { method: 'POST' }).then(() => {
         window.location.href = '/';
       });
-    });
+    }
+
+    document.getElementById('logout-link')?.addEventListener('click', handleLogout);
+    document.getElementById('logout-link-mobile')?.addEventListener('click', handleLogout);
 
     loadDashboard();
   </script>

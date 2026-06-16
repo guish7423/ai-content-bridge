@@ -1,32 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-lang>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="pricing.title">Pricing - AI Content Bridge</title>
+  <meta name="description" content="Simple, transparent pricing for AI Content Bridge. Start free, upgrade when you grow. Cultural adaptation for X, LinkedIn & Reddit.">
   <link rel="stylesheet" href="/static/style.css" />
-  <script defer src="/static/i18n.js"></script>
 </head>
 <body>
+  <!-- Ambient Backgrounds -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Navigation -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-brand">AI Content Bridge</a>
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-logo">✦</span>
+        AI Content Bridge
+      </a>
       <div class="nav-links">
-        <a href="/" data-i18n="nav.bridge">Bridge</a>
-        <a href="/login" data-i18n="nav.login">Login</a>
+        <a href="/#features">Features</a>
+        <a href="/pricing">Pricing</a>
+        <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+        <a href="/login" class="btn btn-sm btn-outline">Sign In</a>
+        <a href="/signup" class="btn btn-sm btn-primary">Get Started</a>
       </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="/#features">Features</a>
+    <a href="/pricing">Pricing</a>
+    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
+    <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
+    <a href="/signup" class="btn btn-primary btn-lg">Get Started</a>
+  </div>
+
+  <!-- Main Content -->
   <main class="main">
-    <h1 class="section-title" data-i18n="pricing.title">Simple, Transparent Pricing</h1>
-    <p class="section-subtitle" data-i18n="pricing.subtitle">Start free, upgrade when you need more</p>
+    <div class="section-header" style="padding-top:100px;">
+      <h1 class="section-title" data-i18n="pricing.title">Simple, Transparent Pricing</h1>
+      <p class="section-subtitle" data-i18n="pricing.subtitle">Start free, upgrade when you need more</p>
+    </div>
 
     <div class="pricing-grid">
-      <!-- Free -->
+      <!-- Free Plan -->
       <div class="pricing-card">
         <h2 class="pricing-name" data-i18n="pricing.free.name">Free</h2>
-        <div class="pricing-price"><span class="price">$0</span><span class="period" data-i18n="pricing.month">/mo</span></div>
+        <div class="pricing-price">
+          <span class="price">$0</span>
+          <span class="period" data-i18n="pricing.month">/mo</span>
+        </div>
         <ul class="pricing-features">
           <li data-i18n="pricing.free.feature1">10 conversions/month</li>
           <li data-i18n="pricing.free.feature2">All platforms (X/LinkedIn/Reddit)</li>
@@ -36,11 +65,14 @@
         <a href="/signup" class="btn btn-outline btn-block" data-i18n="pricing.free.cta">Get Started</a>
       </div>
 
-      <!-- Starter -->
+      <!-- Starter Plan (Featured) -->
       <div class="pricing-card pricing-featured">
         <div class="pricing-badge" data-i18n="pricing.popular">Most Popular</div>
         <h2 class="pricing-name" data-i18n="pricing.starter.name">Starter</h2>
-        <div class="pricing-price"><span class="price">$19</span><span class="period" data-i18n="pricing.month">/mo</span></div>
+        <div class="pricing-price">
+          <span class="price">$19</span>
+          <span class="period" data-i18n="pricing.month">/mo</span>
+        </div>
         <ul class="pricing-features">
           <li data-i18n="pricing.starter.feature1">100 conversions/month</li>
           <li data-i18n="pricing.starter.feature2">All platforms + X Threads</li>
@@ -48,14 +80,16 @@
           <li data-i18n="pricing.starter.feature4">API access (1,000 req/hr)</li>
           <li data-i18n="pricing.starter.feature5">Direct social publishing</li>
         </ul>
-        <!-- <a href="/signup?plan=starter" class="btn btn-primary btn-block" data-i18n="pricing.starter.cta">Subscribe</a> -->
         <a href="/pricing?stripe=coming-soon" class="btn btn-primary btn-block" onclick="alert('Paid plans coming soon! Free tier available now.')" data-i18n="pricing.coming_soon">Coming Soon</a>
       </div>
 
-      <!-- Pro -->
+      <!-- Pro Plan -->
       <div class="pricing-card">
         <h2 class="pricing-name" data-i18n="pricing.pro.name">Pro</h2>
-        <div class="pricing-price"><span class="price">$49</span><span class="period" data-i18n="pricing.month">/mo</span></div>
+        <div class="pricing-price">
+          <span class="price">$49</span>
+          <span class="period" data-i18n="pricing.month">/mo</span>
+        </div>
         <ul class="pricing-features">
           <li data-i18n="pricing.pro.feature1">10,000 conversions/month</li>
           <li data-i18n="pricing.pro.feature2">All platforms + API priority</li>
@@ -63,10 +97,27 @@
           <li data-i18n="pricing.pro.feature4">API access (10,000 req/hr)</li>
           <li data-i18n="pricing.pro.feature5">Priority support</li>
         </ul>
-        <!-- <a href="/signup?plan=pro" class="btn btn-outline btn-block" data-i18n="pricing.pro.cta">Subscribe</a> -->
         <a href="/pricing?stripe=coming-soon" class="btn btn-outline btn-block" onclick="alert('Paid plans coming soon! Free tier available now.')" data-i18n="pricing.coming_soon">Coming Soon</a>
       </div>
     </div>
   </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with ❤️ for the global Chinese creator community</p>
+    <p style="margin-top:4px; font-size:0.8rem;">
+      <a href="https://github.com/guish7423/ai-content-bridge">GitHub</a> · AI Content Bridge v0.1
+    </p>
+  </footer>
+
+  <script src="/static/animations.js"></script>
+  <script src="/static/i18n.js"></script>
+  <script>
+    // Hamburger toggle
+    document.getElementById('hamburger').addEventListener('click', function() {
+      this.classList.toggle('active');
+      document.getElementById('mobile-nav').classList.toggle('open');
+    });
+  </script>
 </body>
 </html>
