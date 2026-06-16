@@ -1,145 +1,111 @@
 <!DOCTYPE html>
-<html lang="en" data-i18n-lang>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="dashboard.title">Dashboard - AI Content Bridge</title>
+  <title>Dashboard - AI Content Bridge</title>
   <link rel="stylesheet" href="/static/style.css" />
-  <script defer src="/static/i18n.js"></script>
-  <script defer src="/static/app.js"></script>
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">AI Content Bridge</a>
-      <div class="nav-links">
-        <a href="/" data-i18n="nav.bridge">Bridge</a>
-        <a href="/pricing" data-i18n="nav.pricing">Pricing</a>
-        <a href="/logout" id="logout-link" data-i18n="nav.logout">Logout</a>
-      </div>
+  <nav id="navbar">
+    <div class="logo"><span>✦</span> Content Bridge</div>
+    <div class="nav-links">
+      <a href="/">Bridge</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/logout" id="logout-link">Logout</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="/">Bridge</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/logout" id="logout-link-mobile">Logout</a>
+  </div>
 
   <main class="main">
     <div class="dashboard">
-      <h1 data-i18n="dashboard.title">Dashboard</h1>
+      <h1>Dashboard</h1>
 
-      <!-- Stats Row -->
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.plan">Plan</div>
-          <div class="stat-value" id="stat-plan">—</div>
+          <div class="stat-label">Plan</div>
+          <div class="stat-value" id="stat-plan">\u2014</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.usage">Usage (month)</div>
-          <div class="stat-value" id="stat-usage">—</div>
+          <div class="stat-label">Usage (month)</div>
+          <div class="stat-value" id="stat-usage">\u2014</div>
           <div class="stat-bar" id="usage-bar"><div class="stat-fill"></div></div>
         </div>
         <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.limit">Limit</div>
-          <div class="stat-value" id="stat-limit">—</div>
+          <div class="stat-label">Limit</div>
+          <div class="stat-value" id="stat-limit">\u2014</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.api_key">API Key</div>
-          <div class="stat-value" id="stat-apikey" style="font-size:0.7em;font-family:monospace">—</div>
-          <button class="btn btn-sm" onclick="copyApiKey()" style="margin-top:4px" data-i18n="dashboard.copy">Copy</button>
+          <div class="stat-label">API Key</div>
+          <div class="stat-value" id="stat-apikey" style="font-size:0.7em;font-family:monospace">\u2014</div>
+          <button class="btn btn-sm" onclick="copyApiKey()" style="margin-top:4px">Copy</button>
         </div>
       </div>
 
-      <!-- Recent Conversions -->
       <section class="dash-section">
-        <h2 data-i18n="dashboard.recent">Recent Conversions</h2>
+        <h2>Recent Conversions</h2>
         <div id="recent-list" class="conv-list">
-          <p class="text-muted" data-i18n="dashboard.loading">Loading…</p>
+          <p class="text-muted">Loading\u2026</p>
         </div>
       </section>
 
-      <!-- Upgrade CTA (shown for free plan) -->
       <div id="upgrade-cta" class="upgrade-banner" style="display:none">
-        <p data-i18n="dashboard.upgrade_cta">Upgrade to Starter ($19/mo) for 100 conversions/month and social publishing.</p>
-        <a href="/pricing" class="btn btn-primary" data-i18n="dashboard.upgrade_btn">See Plans</a>
+        <p>Upgrade to Starter ($19/mo) for 100 conversions/month and social publishing.</p>
+        <a href="/pricing" class="btn btn-primary">See Plans</a>
       </div>
     </div>
   </main>
 
+  <footer class="footer">
+    <p>Built with \u2764\ufe0f for the global Chinese creator community</p>
+    <p style="margin-top:4px; font-size:0.8rem; color:var(--text-dim)">
+      <a href="https://github.com/guish7423/ai-content-bridge" style="color:var(--accent)">GitHub</a> \u00b7 AI Content Bridge v0.1
+    </p>
+  </footer>
+
+  <script src="/static/animations.js"></script>
   <script>
     async function loadDashboard() {
       try {
         const resp = await fetch('/api/auth/me');
         if (!resp.ok) { window.location.href = '/login'; return; }
         const data = await resp.json();
-
         document.getElementById('stat-plan').textContent = data.plan || 'free';
         document.getElementById('stat-usage').textContent = data.monthly_usage ?? 0;
         document.getElementById('stat-limit').textContent = data.plan_limit ?? 10;
-        document.getElementById('stat-apikey').textContent = data.api_key
-          ? data.api_key.slice(0, 16) + '…' : '—';
-
-        // Usage bar
-        const pct = data.plan_limit > 0
-          ? Math.min(100, ((data.monthly_usage ?? 0) / data.plan_limit) * 100)
-          : 0;
+        document.getElementById('stat-apikey').textContent = data.api_key ? data.api_key.slice(0, 16) + '\u2026' : '\u2014';
+        const pct = data.plan_limit > 0 ? Math.min(100, ((data.monthly_usage ?? 0) / data.plan_limit) * 100) : 0;
         const fill = document.querySelector('#usage-bar .stat-fill');
         fill.style.width = pct + '%';
         fill.style.background = pct > 80 ? '#ef4444' : pct > 50 ? '#f59e0b' : '#22c55e';
-
-        // Upgrade CTA
-        if (data.plan === 'free') {
-          document.getElementById('upgrade-cta').style.display = 'block';
-        }
-
-        // Recent conversions
+        if (data.plan === 'free') document.getElementById('upgrade-cta').style.display = 'block';
         loadRecent();
-      } catch (e) {
-        window.location.href = '/login';
-      }
+      } catch (e) { window.location.href = '/login'; }
     }
-
     async function loadRecent() {
       const el = document.getElementById('recent-list');
       try {
         const resp = await fetch('/api/bridge/history?limit=10');
-        if (!resp.ok) { el.innerHTML = '<p class="text-muted" data-i18n="dashboard.no_history">No conversions yet.</p>'; return; }
+        if (!resp.ok) { el.innerHTML = '<p class="text-muted">No conversions yet.</p>'; return; }
         const items = await resp.json();
-        if (!items.length) {
-          el.innerHTML = '<p class="text-muted" data-i18n="dashboard.no_history">No conversions yet.</p>';
-          return;
-        }
-        el.innerHTML = items.map(item => `
-          <div class="conv-item">
-            <div class="conv-text">${escapeHtml(item.original_text?.slice(0, 80) || '')}…</div>
-            <div class="conv-meta">${item.created_at?.slice(0, 10) || ''} · ${item.platforms?.join(', ') || ''}</div>
-          </div>
-        `).join('');
-      } catch {
-        el.innerHTML = '<p class="text-muted" data-i18n="dashboard.error">Failed to load.</p>';
-      }
+        if (!items.length) { el.innerHTML = '<p class="text-muted">No conversions yet.</p>'; return; }
+        el.innerHTML = items.map(item => \x60<div class="conv-item"><div class="conv-text">\x24{escapeHtml(item.original_text?.slice(0, 80) || '')}\u2026</div><div class="conv-meta">\x24{item.created_at?.slice(0, 10) || ''} \u00b7 \x24{item.platforms?.join(', ') || ''}</div></div>\x60).join('');
+      } catch { el.innerHTML = '<p class="text-muted">Failed to load.</p>'; }
     }
-
-    function escapeHtml(text) {
-      const d = document.createElement('div');
-      d.textContent = text;
-      return d.innerHTML;
-    }
-
+    function escapeHtml(text) { const d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
     function copyApiKey() {
-      fetch('/api/auth/me')
-        .then(r => r.json())
-        .then(d => {
-          navigator.clipboard.writeText(d.api_key || '');
-          const btn = document.querySelector('.stat-card:last-child .btn');
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-        });
+      fetch('/api/auth/me').then(r=>r.json()).then(d=>{ navigator.clipboard.writeText(d.api_key||''); document.querySelector('.stat-card:last-child .btn').textContent='Copied!'; setTimeout(()=>document.querySelector('.stat-card:last-child .btn').textContent='Copy',2000); });
     }
-
-    document.getElementById('logout-link')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      fetch('/api/auth/logout', { method: 'POST' }).then(() => {
-        window.location.href = '/';
-      });
-    });
-
+    function handleLogout(e) { e.preventDefault(); fetch('/api/auth/logout',{method:'POST'}).then(()=>window.location.href='/'); }
+    document.getElementById('logout-link')?.addEventListener('click', handleLogout);
+    document.getElementById('logout-link-mobile')?.addEventListener('click', handleLogout);
     loadDashboard();
   </script>
 </body>
