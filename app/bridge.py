@@ -7,7 +7,6 @@ Pipeline: Analyze → Localize → Adapt → Polish
 import json
 import os
 import re
-import threading
 import time
 from dataclasses import dataclass, field
 from typing import Literal
@@ -16,9 +15,7 @@ from app.config import settings
 
 Platform = Literal["x", "linkedin", "reddit", "blog"]
 
-# ── Thread-safe cost tracking ─────────────────────────────────────────────
-
-_usage_lock = threading.Lock()
+# ── Cost tracking ─────────────────────────────────────────────────────────────
 
 @dataclass
 class Usage:
@@ -29,29 +26,29 @@ class Usage:
     calls: int = 0
 
     def record(self, prompt_t: int, completion_t: int, model: str):
-        with _usage_lock:
-            self.prompt_tokens += prompt_t
-            self.completion_tokens += completion_t
-            self.total_tokens += prompt_t + completion_t
-            self.calls += 1
-            model_lower = model.lower()
-            if 'llama' in model_lower or 'nvidia' in model_lower:
-                cost = (prompt_t + completion_t) * 0.10 / 1_000_000
-            elif 'deepseek' in model_lower or 'flash' in model_lower:
-                cost = prompt_t * 0.07 / 1_000_000 + completion_t * 0.28 / 1_000_000
-            elif 'pro' in model_lower:
-                cost = prompt_t * 0.14 / 1_000_000 + completion_t * 0.56 / 1_000_000
-            else:
-                cost = (prompt_t + completion_t) * 0.15 / 1_000_000
-            self.cost_usd += cost
+        self.prompt_tokens += prompt_t
+        self.completion_tokens += completion_t
+        self.total_tokens += prompt_t + completion_t
+        self.calls += 1
+        # Multi-model pricing per million tokens
+        model_lower = model.lower()
+        if 'llama' in model_lower or 'nvidia' in model_lower:
+            # Llama 3.1 8B: $0.10 in + $0.10 out
+            cost = (prompt_t + completion_t) * 0.10 / 1_000_000
+        elif 'deepseek' in model_lower or 'flash' in model_lower:
+            cost = prompt_t * 0.07 / 1_000_000 + completion_t * 0.28 / 1_000_000
+        elif 'pro' in model_lower:
+            cost = prompt_t * 0.14 / 1_000_000 + completion_t * 0.56 / 1_000_000
+        else:
+            cost = (prompt_t + completion_t) * 0.15 / 1_000_000
+        self.cost_usd += cost
 
     def summary(self) -> dict:
-        with _usage_lock:
-            return {
-                "calls": self.calls,
-                "tokens": self.total_tokens,
-                "cost_usd": round(self.cost_usd, 4),
-            }
+        return {
+            "calls": self.calls,
+            "tokens": self.total_tokens,
+            "cost_usd": round(self.cost_usd, 4),
+        }
 
 usage = Usage()
 
@@ -126,7 +123,7 @@ def call_llm(prompt: str, system: str = "", json_mode: bool = True) -> dict:
                 time.sleep(2.0 * (2 ** attempt))
     raise RuntimeError(f"LLM call failed: {last_err}")
 
-# ── SYSTEM PROMPTS (the secret sauce — aggressive cultural transcreation) ──────
+# ── SYSTEM PROMPTS (the secret sauce) ─────────────────────────────────────────
 
 ANALYZER_SYSTEM = """You are a bilingual content strategist. Analyze Chinese text for international adaptation.
 
@@ -140,48 +137,54 @@ Extract and return JSON:
 - usp: What makes this unique (1 sentence)
 - suggested_approach: Brief strategy for adaptation (1-2 sentences)"""
 
-LOCALIZER_SYSTEM = """You are a senior copywriter who specializes in making Chinese content FEEL like native English content. This is NOT translation.
+LOCALIZER_SYSTEM = """You are a senior copywriter who makes Chinese content FEEL like native English. NOT translation.
 
 CRITICAL RULES (follow every single one):
-1. Delete ALL Chinese-specific references — no "Spring Festival", no "996", no "Renminbi", no "Chinese internet slang"
+1. Delete ALL Chinese-specific references - no Chinese holidays, no Chinese internet slang, no local celebrities
 2. Replace ALL idioms and proverbs with Western equivalents or drop them entirely
-3. Add context that Western audiences need but Chinese writers assume — explain the "why"
-4. Use Western rhetorical patterns — problem → agitate → solution, storytelling hooks, credibility markers
-5. Strengthen the persuasive power — stronger verbs, social proof, specific numbers
-6. Expand by 1.5-2x — add examples, use cases, scenarios a Western reader would recognize
+3. Add context that Western audiences need but Chinese writers assume
+4. Use Western rhetorical patterns: problem-agitate-solution, storytelling hooks
+5. Strengthen persuasive power: stronger verbs, social proof, specific numbers
+6. Expand by 1.5-2x with examples a Western reader would recognize
 7. NEVER leave any Chinese characters in the output
-8. The result should read like a native English speaker wrote it, not a translation
+8. Read like a native English speaker wrote it, not a translation
 
 Output JSON: {"localized_text": "...", "changes_made": ["..."], "cultural_notes": "..."}"""
 
-PLATFORM_SYSTEM = """You are a social media strategist who makes Chinese brands sound native on Western platforms.
+PLATFORM_SYSTEM = """You are a social media content strategist. Adapt content for the specified platform.
 
-Output JSON: {"content": "...", "hashtags": ["..."], "notes": "..."}
+Output JSON with these fields:
+- content: The full adapted post text
+- hashtags: list of 2-4 relevant hashtags (strings, without #)
+- notes: brief notes on adaptations made (1 sentence)
 
 For X/Twitter:
-- Punchy, conversational, max 280 chars (or thread 1/N, 2/N...)
-- First line MUST be a hook — question, bold claim, or surprising stat
-- Use line breaks for readability
-- 2-3 hashtags max
+- Max 280 chars per post unless it's a thread (numbered 1/N)
+- Strong hook in first line, clear value proposition
+- 2-3 relevant hashtags. Conversational, punchy tone
+- For content longer than 280 chars, write a thread with each post numbered 1/N, 2/N etc
 
 For LinkedIn:
-- Professional storytelling, 800-1500 chars
-- Open with a personal insight or industry observation
+- Professional but warm tone, 800-1500 chars
+- Open with a short personal story or insight
 - 2-4 bullet points for key takeaways
-- End with an engagement question ("What's your take?")
-- 3-5 hashtags
+- 3-5 hashtags, end with an engagement question
 
 For Reddit:
-- Conversational, authentic, no marketing speak
-- Lead with value — teach something, share genuine experience
-- Be transparent about affiliation
-- 200-500 chars, no hashtags"""
+- Conversational, helpful tone (no hard sell)
+- Provide value first, be transparent about affiliation
+- 200-500 chars
+"""
 
-PLATFORM_SYSTEM_TEXT = """Write native English social media content (NO JSON).
+# Non-JSON version for backends without JSON mode support (NVIDIA, Ollama)
+PLATFORM_SYSTEM_TEXT = """You are a social media content strategist. Adapt content for the specified platform.
 
-For X/Twitter: Punchy hook, max 280 chars (or thread), 2-3 hashtags.
-For LinkedIn: Professional storytelling, 800-1500 chars, bullet points, end with question, hashtags.
-For Reddit: Conversational, helpful, no marketing speak, 200-500 chars.
+Respond ONLY with the post content. No JSON. No markdown. No labels. Just the text.
+
+For X/Twitter: Max 280 chars per post unless thread. Strong hook. 2-3 hashtags.
+For LinkedIn: Professional warm tone, 800-1500 chars, bullet points, hashtags.
+For Reddit: Conversational, helpful, 200-500 chars.
+"""
 
 # ── Core Pipeline ─────────────────────────────────────────────────────────────
 
