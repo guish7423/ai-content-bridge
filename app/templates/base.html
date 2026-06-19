@@ -14,6 +14,9 @@
   <meta property="og:image" content="{{ request.url.scheme }}://{{ request.url.netloc }}/static/og-image.svg" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- View Transitions API (SPA-like page transitions) -->
+  <meta name="htmx-config" content='{"defaultSwapStyle":"innerHTML","useViewTransition":true}' />
+
   <!-- Preload critical resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,6 +39,7 @@
   <link rel="stylesheet" href="/static/css/05-components.css" />
   <link rel="stylesheet" href="/static/css/06-utilities.css" />
   <link rel="stylesheet" href="/static/css/07-animations.css" />
+  <link rel="stylesheet" href="/static/css/08-tracing-beam.css" />
 
   {% block head_extra %}{% endblock %}
 </head>
