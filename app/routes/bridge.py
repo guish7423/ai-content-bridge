@@ -10,7 +10,7 @@ from pathlib import Path
 
 from app.bridge import process, process_quick, generate_thread, usage
 from app.social import publish_content
-from app.models import Conversion, PLANS
+from app.models import Conversion, PLANS, User
 from app.dependencies import get_db, get_current_user, require_user
 from app.services.usage import check_usage_limit, increment_usage
 

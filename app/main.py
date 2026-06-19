@@ -2,6 +2,7 @@
 
 import json
 import logging
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, Request
@@ -112,8 +113,8 @@ async def waitlist(request: Request):
 
 
 # ── Startup validation ──────────────────────────────────────────────────
-DEFAULT_SECRET = "dev-secret-key-change-in-prod"
-if settings.secret_key == DEFAULT_SECRET and not settings.debug:
+# Only block default secret key when DEBUG is explicitly off
+if settings.secret_key == "dev-secret-key-change-in-prod" and os.environ.get("DEBUG", "").lower() not in ("true", "1"):
     raise RuntimeError(
         "SECRET_KEY is still using the default dev value. "
         "Generate a secure random key and set it via the SECRET_KEY environment variable."
