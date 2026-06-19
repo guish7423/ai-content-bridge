@@ -1,123 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - AI Content Bridge</title>
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-  <!-- Ambient Backgrounds -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
+{% extends "base.html" %}
+{% block title %}Login - AI Content Bridge{% endblock %}
+{% block content %}
+<div class="auth-page flex flex-center" style="min-height:80vh">
+  <div class="auth-card ks-card" style="max-width:420px;width:100%">
+    <div class="text-center mb-lg">
+      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="login.title">Welcome Back</h1>
+      <p class="section__subtitle" style="font-size:var(--cw-text-sm)" data-i18n="login.subtitle">Sign in to your account</p>
+    </div>
 
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">
-        <span class="nav-brand-logo">✦</span>
-        AI Content Bridge
-      </a>
-      <div class="nav-links">
-        <a href="/#features">Features</a>
-        <a href="/pricing">Pricing</a>
-        <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
-        <a href="/signup" class="btn btn-sm btn-primary">Sign Up</a>
+    <form id="login-form">
+      <div class="ks-form-group">
+        <label class="ks-label" for="email" data-i18n="login.email">Email</label>
+        <input type="email" id="email" name="email" required class="ks-input" placeholder="you@example.com" />
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
+      <div class="ks-form-group">
+        <label class="ks-label" for="password" data-i18n="login.password">Password</label>
+        <input type="password" id="password" name="password" required class="ks-input" />
+      </div>
+      <div id="login-error" class="ks-badge ks-badge--error mb-md" style="display:none"></div>
+      <button type="submit" class="ks-button ks-button--primary ks-button--block" data-i18n="login.submit">Sign In</button>
+    </form>
 
-  <!-- Mobile Nav -->
-  <div class="mobile-nav" id="mobile-nav">
-    <a href="/#features">Features</a>
-    <a href="/pricing">Pricing</a>
-    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
-    <a href="/signup" class="btn btn-primary btn-lg">Sign Up</a>
-  </div>
-
-  <!-- Main Content -->
-  <main class="main">
-    <div class="auth-card">
-      <h1 data-i18n="login.title">Welcome Back</h1>
-      <p class="auth-subtitle" data-i18n="login.subtitle">Log in to your account</p>
-
-      <form id="login-form" class="auth-form">
-        <div class="form-group">
-          <label for="email" data-i18n="login.email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="you@example.com" />
-        </div>
-        <div class="form-group">
-          <label for="password" data-i18n="login.password">Password</label>
-          <input type="password" id="password" name="password" required placeholder="Your password" />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" data-i18n="login.submit">
-          Log In
-        </button>
-      </form>
-
-      <div id="login-error" class="alert alert-error" style="display:none"></div>
-
-      <p class="auth-footer">
-        <span data-i18n="login.no_account">Don't have an account?</span>
-        <a href="/signup" data-i18n="login.signup">Sign up</a>
-      </p>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>Built with ❤️ for the global Chinese creator community</p>
-    <p style="margin-top:4px; font-size:0.8rem;">
-      <a href="https://github.com/guish7423/ai-content-bridge">GitHub</a> · AI Content Bridge v0.1
+    <p class="text-center mt-lg text-muted" style="font-size:var(--cw-text-sm)">
+      <span data-i18n="login.no_account">Don't have an account?</span>
+      <a href="/signup" data-i18n="login.signup">Sign up</a>
     </p>
-  </footer>
-
-  <script src="/static/animations.js"></script>
-  <script src="/static/i18n.js"></script>
-  <script>
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const error = document.getElementById('login-error');
-
-      btn.disabled = true;
-      btn.textContent = 'Logging in\u2026';
-      error.style.display = 'none';
-
-      try {
-        const resp = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: form.email.value,
-            password: form.password.value,
-          }),
-        });
-
-        if (!resp.ok) {
-          const data = await resp.json();
-          throw new Error(data.detail || 'Login failed');
-        }
-
-        window.location.href = '/dashboard';
-      } catch (err) {
-        error.textContent = err.message;
-        error.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Log In';
-      }
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById('login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var btn = this.querySelector('button[type="submit"]');
+  var error = document.getElementById('login-error');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ks-spinner"></span>';
+  error.style.display = 'none';
+  try {
+    var resp = await fetch('/api/auth/login-form', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: this.email.value, password: this.password.value})
     });
-
-    // Hamburger toggle
-    document.getElementById('hamburger').addEventListener('click', function() {
-      this.classList.toggle('active');
-      document.getElementById('mobile-nav').classList.toggle('open');
-    });
-  </script>
-</body>
-</html>
+    if (!resp.ok) {
+      var data = await resp.json();
+      throw new Error(data.detail || 'Login failed');
+    }
+    window.location.href = '/dashboard';
+  } catch (err) {
+    error.textContent = err.message;
+    error.style.display = 'flex';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span data-i18n="login.submit">Sign In</span>';
+  }
+});
+</script>
+{% endblock %}

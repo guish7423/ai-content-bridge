@@ -1,126 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up - AI Content Bridge</title>
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-  <!-- Ambient Backgrounds -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
+{% extends "base.html" %}
+{% block title %}Sign Up - AI Content Bridge{% endblock %}
+{% block content %}
+<div class="auth-page flex flex-center" style="min-height:80vh">
+  <div class="auth-card ks-card" style="max-width:420px;width:100%">
+    <div class="text-center mb-lg">
+      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="signup.title">Create Your Account</h1>
+      <p class="section__subtitle" style="font-size:var(--cw-text-sm)" data-i18n="signup.subtitle">Start bridging your content to the global audience</p>
+    </div>
 
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">
-        <span class="nav-brand-logo">✦</span>
-        AI Content Bridge
-      </a>
-      <div class="nav-links">
-        <a href="/#features">Features</a>
-        <a href="/pricing">Pricing</a>
-        <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
-        <a href="/login" class="btn btn-sm btn-outline">Sign In</a>
+    <form id="signup-form">
+      <div class="ks-form-group">
+        <label class="ks-label" for="name" data-i18n="signup.name">Name</label>
+        <input type="text" id="name" name="name" class="ks-input" placeholder="Your name" />
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
+      <div class="ks-form-group">
+        <label class="ks-label" for="email" data-i18n="signup.email">Email</label>
+        <input type="email" id="email" name="email" required class="ks-input" placeholder="you@example.com" />
+      </div>
+      <div class="ks-form-group">
+        <label class="ks-label" for="password" data-i18n="signup.password">Password</label>
+        <input type="password" id="password" name="password" required minlength="8" class="ks-input" />
+        <small class="text-tertiary mt-xs" style="display:block;font-size:var(--cw-text-xs)" data-i18n="signup.password_hint">At least 8 characters</small>
+      </div>
+      <div id="signup-error" class="ks-badge ks-badge--error mb-md" style="display:none"></div>
+      <button type="submit" class="ks-button ks-button--primary ks-button--block" data-i18n="signup.submit">Create Account</button>
+    </form>
 
-  <!-- Mobile Nav -->
-  <div class="mobile-nav" id="mobile-nav">
-    <a href="/#features">Features</a>
-    <a href="/pricing">Pricing</a>
-    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
-    <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
-  </div>
-
-  <!-- Main Content -->
-  <main class="main">
-    <div class="auth-card">
-      <h1 data-i18n="signup.title">Create Your Account</h1>
-      <p class="auth-subtitle" data-i18n="signup.subtitle">Start bridging your content to the global audience</p>
-
-      <form id="signup-form" class="auth-form">
-        <div class="form-group">
-          <label for="email" data-i18n="signup.email">Email</label>
-          <input type="email" id="email" name="email" required placeholder="you@example.com" />
-        </div>
-        <div class="form-group">
-          <label for="password" data-i18n="signup.password">Password</label>
-          <input type="password" id="password" name="password" required minlength="8" placeholder="At least 8 characters" />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" data-i18n="signup.submit">
-          Create Account
-        </button>
-        <p class="auth-terms">
-          Free plan: 10 conversions/month. No credit card required.
-        </p>
-      </form>
-
-      <div id="signup-error" class="alert alert-error" style="display:none"></div>
-
-      <p class="auth-footer">
-        <span data-i18n="signup.have_account">Already have an account?</span>
-        <a href="/login" data-i18n="signup.login">Log in</a>
-      </p>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>Built with ❤️ for the global Chinese creator community</p>
-    <p style="margin-top:4px; font-size:0.8rem;">
-      <a href="https://github.com/guish7423/ai-content-bridge">GitHub</a> · AI Content Bridge v0.1
+    <p class="text-center mt-lg text-muted" style="font-size:var(--cw-text-sm)">
+      <span data-i18n="signup.have_account">Already have an account?</span>
+      <a href="/login" data-i18n="signup.login">Log in</a>
     </p>
-  </footer>
-
-  <script src="/static/animations.js"></script>
-  <script src="/static/i18n.js"></script>
-  <script>
-    document.getElementById('signup-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const error = document.getElementById('signup-error');
-
-      btn.disabled = true;
-      btn.textContent = 'Creating\u2026';
-      error.style.display = 'none';
-
-      try {
-        const resp = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: form.email.value,
-            password: form.password.value,
-          }),
-        });
-
-        if (!resp.ok) {
-          const data = await resp.json();
-          throw new Error(data.detail || 'Signup failed');
-        }
-
-        window.location.href = '/dashboard';
-      } catch (err) {
-        error.textContent = err.message;
-        error.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Create Account';
-      }
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById('signup-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var btn = this.querySelector('button[type="submit"]');
+  var error = document.getElementById('signup-error');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ks-spinner"></span>';
+  error.style.display = 'none';
+  try {
+    var resp = await fetch('/api/auth/signup-form', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: this.email.value, password: this.password.value, name: this.name.value})
     });
-
-    // Hamburger toggle
-    document.getElementById('hamburger').addEventListener('click', function() {
-      this.classList.toggle('active');
-      document.getElementById('mobile-nav').classList.toggle('open');
-    });
-  </script>
-</body>
-</html>
+    if (!resp.ok) {
+      var data = await resp.json();
+      throw new Error(data.detail || 'Registration failed');
+    }
+    window.location.href = '/dashboard';
+  } catch (err) {
+    error.textContent = err.message;
+    error.style.display = 'flex';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span data-i18n="signup.submit">Create Account</span>';
+  }
+});
+</script>
+{% endblock %}

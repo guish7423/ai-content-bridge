@@ -1,22 +1,66 @@
-"""AI Content Bridge — SQLite models for history, users, and subscriptions."""
+"""AI Content Bridge — Models with PostgreSQL support and lazy engine creation."""
 
 import json
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, Float, create_engine
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.config import settings
 
 Base = declarative_base()
 
+# ── Lazy engine/session — not created at import time ───────────────────────
+_engine = None
+_SessionLocal = None
+
+
+def init_db(database_url: str | None = None):
+    """Initialize the database engine and create tables.
+
+    Call this once at app startup (not at import time).
+    Supports both PostgreSQL and SQLite.
+    """
+    global _engine, _SessionLocal
+
+    url = database_url or settings.database_url
+
+    # SQLite needs check_same_thread=False for FastAPI
+    connect_args = {}
+    if url.startswith("sqlite"):
+        connect_args["check_same_thread"] = False
+
+    _engine = create_engine(url, echo=False, connect_args=connect_args)
+    _SessionLocal = sessionmaker(bind=_engine)
+    Base.metadata.create_all(_engine)
+    return _engine
+
+
+def get_engine():
+    """Get the initialized engine, or init with default URL."""
+    global _engine
+    if _engine is None:
+        init_db()
+    return _engine
+
+
+def SessionLocal():
+    """Get a new session. Initializes engine if needed."""
+    global _SessionLocal
+    if _SessionLocal is None:
+        init_db()
+    return _SessionLocal()
+
+
+# ── Models ─────────────────────────────────────────────────────────────────
 
 class Conversion(Base):
     """Stores a content bridge conversion."""
+
     __tablename__ = "conversions"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, nullable=True)  # Link to User
+    user_id = Column(Integer, nullable=True, index=True)
     original_text = Column(Text, nullable=False)
     analysis_json = Column(Text, default="{}")
     localized_text = Column(Text, default="")
@@ -38,6 +82,7 @@ class Conversion(Base):
 
 class User(Base):
     """User account with auth and subscription info."""
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -46,13 +91,17 @@ class User(Base):
     name = Column(String(255), default="")
     api_key = Column(String(64), unique=True, nullable=True, index=True)
     plan = Column(String(50), default="free")  # free, starter, pro
-    monthly_usage = Column(Integer, default=0)  # translations used this month
+    monthly_usage = Column(Integer, default=0)
     usage_reset_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     is_active = Column(Boolean, default=True)
     stripe_customer_id = Column(String(255), nullable=True)
     stripe_subscription_id = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
 
     def to_dict(self):
         return {
@@ -68,7 +117,7 @@ class User(Base):
         }
 
 
-# ── Pricing Plans ────────────────────────────────────────────────────────────
+# ── Pricing Plans ──────────────────────────────────────────────────────────
 
 PLANS = {
     "free": {
@@ -80,21 +129,16 @@ PLANS = {
     },
     "starter": {
         "name": "Starter",
-        "price_cents": 1999,  # $19.99/month
+        "price_cents": 1999,
         "translations_per_month": 100,
         "social_accounts": 1,
-        "stripe_price_id": None,  # Set via env STRIPE_STARTER_PRICE_ID
+        "stripe_price_id": None,
     },
     "pro": {
         "name": "Pro",
-        "price_cents": 4999,  # $49.99/month
+        "price_cents": 4999,
         "translations_per_month": 10000,
         "social_accounts": 3,
-        "stripe_price_id": None,  # Set via env STRIPE_PRO_PRICE_ID
+        "stripe_price_id": None,
     },
 }
-
-
-engine = create_engine(settings.database_url, echo=False)
-Base.metadata.create_all(engine)
-SessionLocal = sessionmaker(bind=engine)

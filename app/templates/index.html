@@ -1,650 +1,174 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Content Bridge — China → Global in One Click</title>
-  <meta name="description" content="AI-powered content localization: transform Chinese content into culturally-adapted English posts for X, LinkedIn & Reddit.">
-  <!-- OG / Social -->
-  <meta property="og:title" content="AI Content Bridge — China → Global in One Click">
-  <meta property="og:description" content="AI-powered content localization: transform Chinese content into culturally-adapted English posts for X, LinkedIn & Reddit.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ai-content-bridge-production.up.railway.app">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AI Content Bridge — China → Global in One Click">
-  <meta name="twitter:description" content="AI-powered content localization: transform Chinese content into culturally-adapted English posts for X, LinkedIn & Reddit.">
-  <meta property="og:image" content="https://ai-content-bridge-production.up.railway.app/static/og-image.svg">
-  <meta name="twitter:image" content="https://ai-content-bridge-production.up.railway.app/static/og-image.svg">
-  <link rel="canonical" href="https://ai-content-bridge-production.up.railway.app">
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Styles -->
-  <link rel="stylesheet" href="/static/style.css">
-  <!-- HTMX -->
-  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
-  <script src="https://unpkg.com/htmx.org@2.0.4/dist/ext/json-enc.js"></script>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
 
-  <!-- ── Ambient Background ────────────────────────────────────────── -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
-  <div class="particles" id="particles"></div>
+<!-- Mock Banner -->
+{% if mock_mode %}
+<div class="container">
+  <div class="mock-banner flex gap-sm" style="margin-top:var(--cw-space-lg);padding:12px 20px;background:var(--cw-orange-subtle);border:1px solid var(--cw-orange / 0.2);border-radius:var(--cw-radius-md);font-size:var(--cw-text-sm);color:var(--cw-orange)">
+    <span class="mock-indicator">◆</span>
+    <span data-i18n="mock.banner">Demo mode — translations are simulated. Add API key to get real AI output.</span>
+    <a href="https://github.com/guish7423/ai-content-bridge#setup" target="_blank" class="ks-button ks-button--sm" style="margin-left:auto;color:var(--cw-orange)" data-i18n="mock.setup">Setup Guide →</a>
+  </div>
+</div>
+{% endif %}
 
-  <!-- ── Navigation ────────────────────────────────────────────────── -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">
-        <span class="nav-brand-logo">◆</span>
-        <span>Content Bridge</span>
-      </a>
-      <div class="nav-links">
-        <a href="/#features" class="nav-desktop-only">
-          <span class="i18n" data-en="Features" data-zh="功能">Features</span>
-        </a>
-        <a href="/#pricing" class="nav-desktop-only">
-          <span class="i18n" data-en="Pricing" data-zh="定价">Pricing</span>
-        </a>
-        <a href="https://github.com/guish7423/ai-content-bridge" target="_blank" class="nav-desktop-only">GitHub</a>
-        <a href="/login" class="btn btn-ghost btn-sm nav-desktop-only">
-          <span class="i18n" data-en="Sign In" data-zh="登录">Sign In</span>
-        </a>
-        <a href="/signup" class="btn btn-primary btn-sm nav-desktop-only">
-          <span class="i18n" data-en="Get Started" data-zh="免费开始">Get Started</span>
-        </a>
-        <a href="#" onclick="toggleLang()" class="lang-toggle" id="lang-toggle" style="font-size:0.85rem; padding:8px 10px;" aria-label="Toggle language">🇨🇳 中文</a>
-        <button class="hamburger" onclick="toggleMobile()" aria-label="Toggle menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </nav>
+<!-- ═══ Hero ═══ -->
+<section class="hero">
+  <div class="hero__badge">
+    <span class="badge-icon">◆</span>
+    <span data-i18n="hero.badge">Cultural Adaptation • AI-Powered • One Click</span>
+  </div>
+  <h1 class="hero__title" data-i18n="hero.title">China → Global in One Click</h1>
+  <p class="hero__subtitle" data-i18n="hero.subtitle">Transform your Chinese ideas into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations.</p>
+  <div class="hero__actions">
+    <a href="#bridge" class="ks-button ks-button--primary ks-button--lg" data-i18n="hero.cta">✦ Try It Free</a>
+    <a href="#showcase" class="ks-button ks-button--secondary ks-button--lg" data-i18n="hero.examples">See Examples</a>
+  </div>
+</section>
 
-  <!-- ── Mobile Nav Overlay ────────────────────────────────────────── -->
-  <div class="mobile-nav" id="mobile-nav">
-    <a href="/#features" onclick="closeMobile()">
-      <span class="i18n" data-en="Features" data-zh="功能">Features</span>
-    </a>
-    <a href="/#pricing" onclick="closeMobile()">
-      <span class="i18n" data-en="Pricing" data-zh="定价">Pricing</span>
-    </a>
-    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank" onclick="closeMobile()">GitHub</a>
-    <a href="/login" onclick="closeMobile()" class="btn btn-outline" style="margin-top:20px;">
-      <span class="i18n" data-en="Sign In" data-zh="登录">Sign In</span>
-    </a>
-    <a href="/signup" onclick="closeMobile()" class="btn btn-primary">
-      <span class="i18n" data-en="Get Started" data-zh="免费开始">Get Started</span>
-    </a>
-    <a href="#" onclick="toggleLang(); return false;" class="lang-toggle" id="lang-toggle-mobile" style="margin-top:12px; font-size:0.9rem; color:var(--text-secondary);">
-      🇨🇳 中文
-    </a>
+<!-- ═══ How It Works ═══ -->
+<section class="section" id="features">
+  <div class="section__header reveal">
+    <span class="section__eyebrow" data-i18n="features.eyebrow">Pipeline</span>
+    <h2 class="section__title" data-i18n="features.title">How It Works</h2>
+    <p class="section__subtitle" data-i18n="features.subtitle">Three steps from Chinese idea to global content — powered by deep AI cultural adaptation.</p>
   </div>
 
-  <!-- ── Main Content ──────────────────────────────────────────────── -->
-  <main class="main">
-
-    <!-- ── Mock Banner ─────────────────────────────────────────────── -->
-    {% if mock_mode %}
-    <div class="mock-banner">
-      <span>🔬</span>
-      <span class="i18n" data-en="Demo mode — translations are simulated. Add API key to get real AI output." data-zh="演示模式 — 翻译为模拟结果。配置 API Key 后可获得真实 AI 翻译。">Demo mode — translations are simulated. Add API key to get real AI output.</span>
-      <a href="https://github.com/guish7423/ai-content-bridge#setup" target="_blank" class="mock-link">Setup Guide →</a>
-    </div>
-    {% endif %}
-
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── Hero ───────────────────────────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <section class="hero">
-      <div class="hero-badge">
-        <span>✨</span>
-        <span class="i18n" data-en="AI-Powered • Cultural Adaptation • One Click" data-zh="AI 驱动 • 文化适配 • 一键搞定">AI-Powered • Cultural Adaptation • One Click</span>
+  <div class="container">
+    <div class="ks-bento stagger">
+      <div class="ks-bento__tile ks-bento__tile--wide">
+        <span class="ks-bento__tile-icon">🔍</span>
+        <h3 class="ks-bento__tile-title" data-i18n="features.step1_title">Analyze</h3>
+        <p class="ks-bento__tile-text" data-i18n="features.step1_text">AI extracts the core message, target audience, and key points from your Chinese text.</p>
       </div>
-      <h1 class="i18n" data-en="China → Global in One Click" data-zh="中文内容 → 全球影响力">China → Global in One Click</h1>
-      <p class="i18n" data-en="Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations." data-zh="把你的中文想法、产品、洞见，一键转化为适合 X、LinkedIn、Reddit 的英文内容。文化适配，告别机翻。">
-        Transform your Chinese ideas, products, and insights into culturally-adapted English content for X, LinkedIn, and Reddit. No more robotic translations.
-      </p>
-      <div class="hero-actions">
-        <a href="/#bridge" class="btn btn-primary btn-lg">
-          <span class="i18n" data-en="✦ Try It Free" data-zh="✦ 免费体验">✦ Try It Free</span>
-        </a>
-        <a href="/#showcase" class="btn btn-outline btn-lg">
-          <span class="i18n" data-en="See Examples" data-zh="查看案例">See Examples</span>
-        </a>
+      <div class="ks-bento__tile ks-bento__tile--wide">
+        <span class="ks-bento__tile-icon">🌐</span>
+        <h3 class="ks-bento__tile-title" data-i18n="features.step2_title">Localize</h3>
+        <p class="ks-bento__tile-text" data-i18n="features.step2_text">Deep cultural adaptation — idioms, concepts, and examples reworked for international audiences.</p>
       </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── Trust Bar ──────────────────────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <div class="trust-bar" id="trust-bar">
-      <div class="trust-item">
-        <span class="trust-num" data-target="5000">5,000+</span>
-        <span class="trust-label i18n" data-en="Translations" data-zh="翻译次数">Translations</span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-num" data-target="2000">2,000+</span>
-        <span class="trust-label i18n" data-en="Active Users" data-zh="活跃用户">Active Users</span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-num" data-target="3">3</span>
-        <span class="trust-label i18n" data-en="Platforms" data-zh="适配平台">Platforms</span>
-      </div>
-      <div class="trust-item">
-        <span class="trust-num" data-target="99">99%</span>
-        <span class="trust-label i18n" data-en="Satisfaction" data-zh="满意度">Satisfaction</span>
+      <div class="ks-bento__tile ks-bento__tile--wide">
+        <span class="ks-bento__tile-icon">📤</span>
+        <h3 class="ks-bento__tile-title" data-i18n="features.step3_title">Adapt</h3>
+        <p class="ks-bento__tile-text" data-i18n="features.step3_text">Optimized formatting for each platform: X threads, LinkedIn articles, Reddit posts. One click, three platforms.</p>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── How It Works (Bento Grid) ──────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <section class="section" id="features">
-      <div class="section-header">
-        <h2 class="section-title i18n" data-en="How It Works" data-zh="工作原理">How It Works</h2>
-        <p class="section-subtitle i18n" data-en="Three steps from Chinese idea to global content — powered by deep AI cultural adaptation." data-zh="三步走：从中文想法到全球内容，由深度 AI 文化适配驱动。">Three steps from Chinese idea to global content — powered by deep AI cultural adaptation.</p>
+<!-- ═══ Before/After ═══ -->
+<section class="section" id="showcase">
+  <div class="section__header reveal">
+    <span class="section__eyebrow" data-i18n="showcase.eyebrow">Comparison</span>
+    <h2 class="section__title" data-i18n="showcase.title">See the Difference</h2>
+    <p class="section__subtitle" data-i18n="showcase.subtitle">Machine translation vs. cultural adaptation for the same Chinese input</p>
+  </div>
+
+  <div class="container">
+    <div class="ks-bento">
+      <div class="ks-bento__tile ks-bento__tile--wide reveal-left">
+        <span class="ks-badge ks-badge--error mb-sm" data-i18n="showcase.before">Machine Translation</span>
+        <h4 class="ks-bento__tile-title" data-i18n="showcase.before_title">Robotic. Literal. Flat.</h4>
+        <p class="ks-bento__tile-text mb-sm" data-i18n="showcase.before_text">"I made an AI tool, can let Chinese entrepreneur's Chinese content one key become authentic English tweet and LinkedIn article."</p>
       </div>
-
-      <div class="bento-grid">
-        <!-- Step 1: Analyze -->
-        <div class="bento-item bento-span-2">
-          <div class="item-icon">🔍</div>
-          <h3 class="i18n" data-en="Analyze" data-zh="分析">Analyze</h3>
-          <p class="i18n" data-en="AI extracts the core message, target audience, and key points from your Chinese text. We identify cultural context, tone, and intent." data-zh="AI 提取中文内容的核心信息、目标受众和关键论点。我们识别文化语境、语气和意图。">AI extracts the core message, target audience, and key points from your Chinese text. We identify cultural context, tone, and intent.</p>
-        </div>
-
-        <!-- Step 2: Localize -->
-        <div class="bento-item bento-span-2">
-          <div class="item-icon">🌐</div>
-          <h3 class="i18n" data-en="Localize" data-zh="本地化">Localize</h3>
-          <p class="i18n" data-en="Deep cultural adaptation — idioms, concepts, humor, and examples reworked for international audiences. It reads like a native wrote it." data-zh="深度文化适配——习语、概念、幽默、案例为国际受众重新打造。读起来就像母语写作。">Deep cultural adaptation — idioms, concepts, humor, and examples reworked for international audiences. It reads like a native wrote it.</p>
-        </div>
-
-        <!-- Step 3: Adapt -->
-        <div class="bento-item bento-span-2">
-          <div class="item-icon">📤</div>
-          <h3 class="i18n" data-en="Adapt" data-zh="适配">Adapt</h3>
-          <p class="i18n" data-en="Optimized formatting for each platform: X threads, LinkedIn articles, Reddit community posts. One click, three platforms." data-zh="为每个平台优化格式：X 推文串、LinkedIn 文章、Reddit 社区帖。一键完成。">Optimized formatting for each platform: X threads, LinkedIn articles, Reddit community posts. One click, three platforms.</p>
-        </div>
-
-        <!-- Deep Cultural Understanding -->
-        <div class="bento-item bento-span-3">
-          <div class="item-icon">🧠</div>
-          <h3 class="i18n" data-en="Deep Cultural Understanding" data-zh="深度文化理解">Deep Cultural Understanding</h3>
-          <p class="i18n" data-en="Beyond translation: our AI understands Chinese business culture, internet slang, and social nuances. It recontextualizes your message so Western audiences feel the same impact you intended for Chinese readers." data-zh="超越翻译：我们的 AI 理解中国商业文化、网络俚语和社会细微差异。它会重新语境化你的信息，让西方受众感受到你原本想传达的冲击力。">Beyond translation: our AI understands Chinese business culture, internet slang, and social nuances. It recontextualizes your message so Western audiences feel the same impact you intended for Chinese readers.</p>
-        </div>
-
-        <!-- Multi-Platform Ready -->
-        <div class="bento-item bento-span-3">
-          <div class="item-icon">🚀</div>
-          <h3 class="i18n" data-en="Multi-Platform Ready" data-zh="多平台就绪">Multi-Platform Ready</h3>
-          <p class="i18n" data-en="Each platform gets its own format: Twitter/X threads with optimal tweet length, LinkedIn articles with professional tone, Reddit posts with community-appropriate style. No copy-paste tweaking needed." data-zh="每个平台各有自己的格式：Twitter/X 推文串优化长度，LinkedIn 文章专业化语气，Reddit 帖子符合社区风格。无需手动调整。">Each platform gets its own format: Twitter/X threads with optimal tweet length, LinkedIn articles with professional tone, Reddit posts with community-appropriate style. No copy-paste tweaking needed.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── Before / After Comparison ──────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <section class="section" id="showcase">
-      <div class="section-header">
-        <h2 class="section-title i18n" data-en="See the Difference" data-zh="效果对比">See the Difference</h2>
-        <p class="section-subtitle i18n" data-en="Machine translation vs. cultural adaptation for the same Chinese input" data-zh="同一段中文：机器翻译 vs. AI 文化适配">Machine translation vs. cultural adaptation for the same Chinese input</p>
-      </div>
-
-      <div class="comparison-grid">
-        <div class="comp-card">
-          <div class="comp-badge before">❌ Machine Translation</div>
-          <h4 class="i18n" data-en="Robotic. Literal. Flat." data-zh="机械。字面。平淡。">Robotic. Literal. Flat.</h4>
-          <div class="comp-text">"I made an AI tool, can let Chinese entrepreneur's Chinese content one key become authentic English tweet and LinkedIn article. Support cultural localization not machine translation."</div>
-        </div>
-        <div class="comp-arrow">→</div>
-        <div class="comp-card">
-          <div class="comp-badge after">✅ AI Content Bridge</div>
-          <h4 class="i18n" data-en="Native. Engaging. Culturally Adapted." data-zh="地道。吸引人。文化适配。">Native. Engaging. Culturally Adapted.</h4>
-          <div class="comp-text">"Built an AI tool that turns Chinese founder's content into native-level English tweets & LinkedIn posts — with full cultural adaptation, not robotic translation. Here's how it works. 🧵"</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── Case Studies ───────────────────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <section class="section" id="case-studies">
-      <div class="section-header">
-        <h2 class="section-title i18n" data-en="Who It's For" data-zh="谁在用">Who It's For</h2>
-        <p class="section-subtitle i18n" data-en="Real scenarios where Content Bridge makes the difference" data-zh="真实场景：Content Bridge 如何帮你出海">Real scenarios where Content Bridge makes the difference</p>
-      </div>
-
-      <div class="case-studies">
-        <div class="case-card">
-          <span class="case-icon">📱</span>
-          <h3 class="i18n" data-en="SaaS Founder" data-zh="SaaS 创业者">SaaS Founder</h3>
-          <div class="case-subtitle i18n" data-en="Product-led growth" data-zh="产品驱动增长">Product-led growth</div>
-          <p class="case-desc i18n" data-en="Launching a Chinese SaaS globally? Turn your product announcements and founder stories into native English content that resonates with international buyers." data-zh="中国 SaaS 全球化？把你产品发布和创始人心得转化为国际买家产生共鸣的地道英文内容。">Launching a Chinese SaaS globally? Turn your product announcements and founder stories into native English content that resonates with international buyers.</p>
-          <div class="case-quote i18n" data-en="Got 3 client meetings from one LinkedIn post. Game changer." data-zh="一篇 LinkedIn 帖子带来 3 个客户会议。">Got 3 client meetings from one LinkedIn post. Game changer.</div>
-        </div>
-        <div class="case-card">
-          <span class="case-icon">🛒</span>
-          <h3 class="i18n" data-en="Cross-border E-commerce" data-zh="跨境电商">Cross-border E-commerce</h3>
-          <div class="case-subtitle i18n" data-en="Social selling" data-zh="社交电商">Social selling</div>
-          <p class="case-desc i18n" data-en="Turn product features into compelling social media content for Western shoppers on X, Reddit, and LinkedIn — with proper cultural framing and persuasion." data-zh="把产品卖点转化为适合 X、Reddit、LinkedIn 的社媒内容——带文化框架和说服力。">Turn product features into compelling social media content for Western shoppers on X, Reddit, and LinkedIn — with proper cultural framing and persuasion.</p>
-          <div class="case-quote i18n" data-en="Conversion rate from Reddit posts tripled after switching from manual translation." data-zh="改用后 Reddit 帖子转化率翻了 3 倍。">Conversion rate from Reddit posts tripled after switching from manual translation.</div>
-        </div>
-        <div class="case-card">
-          <span class="case-icon">💻</span>
-          <h3 class="i18n" data-en="Indie Developer" data-zh="独立开发者">Indie Developer</h3>
-          <div class="case-subtitle i18n" data-en="Building in public" data-zh="公开构建">Building in public</div>
-          <p class="case-desc i18n" data-en="Share your building-in-public journey with the global dev community. No more awkward English holding back your story." data-zh="向全球开发者社区分享你公开构建的旅程。不再被蹩脚英文拖累。">Share your building-in-public journey with the global dev community. No more awkward English holding back your story.</p>
-          <div class="case-quote i18n" data-en="My X follower count grew 5x in 2 weeks. The content just *feels* native." data-zh="两周 X 粉丝涨了 5 倍。内容读起来就像母语写的。">My X follower count grew 5x in 2 weeks. The content just *feels* native.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── FAQ ────────────────────────────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <section class="section" id="faq">
-      <div class="section-header">
-        <h2 class="section-title i18n" data-en="FAQ" data-zh="常见问题">FAQ</h2>
-        <p class="section-subtitle i18n" data-en="Everything you need to know" data-zh="你想知道的都在这里">Everything you need to know</p>
-      </div>
-
-      <div class="faq-list">
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="i18n" data-en="How is this different from Google Translate / ChatGPT?" data-zh="这和 Google 翻译/ChatGPT 有什么不同？">How is this different from Google Translate / ChatGPT?</span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="faq-a i18n" data-en="Google Translate does literal word-for-word translation. ChatGPT gives you a generic translation. We do cultural transcreation — we analyze your content, understand the context, and rewrite it as if a native English marketing expert wrote it. Idioms, humor, cultural references — all reworked for each platform." data-zh="Google 翻译是逐字翻译。ChatGPT 是通用翻译。我们做文化创译——分析你的内容、理解上下文、重写成地道英文营销专家的水准。习语、幽默、文化引用，都为每个平台重新打造。">Google Translate does literal word-for-word translation. ChatGPT gives you a generic translation. We do cultural transcreation — we analyze your content, understand the context, and rewrite it as if a native English marketing expert wrote it. Idioms, humor, cultural references — all reworked for each platform.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="i18n" data-en="Is my content private?" data-zh="我的内容隐私安全吗？">Is my content private?</span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="faq-a i18n" data-en="Yes. Your content is processed in real-time and not stored on our servers. We use encrypted API connections to LLM providers. We never train on your data. Your business content stays yours." data-zh="是的。你的内容是实时处理的，不会存储在我们的服务器上。我们使用加密 API 连接 LLM 提供商。我们永远不会用你的数据训练。你的商业内容永远是保密的。">Yes. Your content is processed in real-time and not stored on our servers. We use encrypted API connections to LLM providers. We never train on your data. Your business content stays yours.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="i18n" data-en="Do I need my own API key?" data-zh="需要自己的 API Key 吗？">Do I need my own API key?</span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="faq-a i18n" data-en="Free tier works in mock mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key." data-zh="免费版使用模拟模式（演示翻译），可以体验完整流程。入门和专业版包含 API 访问权限，无需额外 Key。企业客户可以自带 Key。">Free tier works in demo mode (simulated translations) so you can test the UX. Starter and Pro plans include API access — no additional key needed. Enterprise customers can bring their own key.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="i18n" data-en="Which platforms do you support?" data-zh="支持哪些平台？">Which platforms do you support?</span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="faq-a i18n" data-en="Currently: X/Twitter (with thread support), LinkedIn (articles & posts), and Reddit. We're adding Substack, Medium, and WordPress blog support soon." data-zh="目前支持 X/Twitter（含推文串）、LinkedIn（文章和帖子）、Reddit。即将支持 Substack、Medium、WordPress 博客。">Currently: X/Twitter (with thread support), LinkedIn (articles & posts), and Reddit. We're adding Substack, Medium, and WordPress blog support soon.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q" onclick="toggleFaq(this)">
-            <span class="i18n" data-en="Can I publish directly from the platform?" data-zh="可以直接发布到社交平台吗？">Can I publish directly from the platform?</span>
-            <span class="arrow">▼</span>
-          </div>
-          <div class="faq-a i18n" data-en="Yes! Starter and Pro plans include direct publishing to X/Twitter. More platforms coming. Free plan lets you copy the output manually." data-zh="可以！入门和专业版支持直接发布到 X/Twitter。更多平台即将上线。免费版可以手动复制输出。">Yes! Starter and Pro plans include direct publishing to X/Twitter. More platforms coming. Free plan lets you copy the output manually.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── CTA Banner ─────────────────────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <div class="cta-banner">
-      <h2 class="i18n" data-en="Ready to Go Global?" data-zh="准备好出海了吗？">Ready to Go Global?</h2>
-      <p class="i18n" data-en="Join 2,000+ Chinese founders and creators reaching international audiences. Start free — upgrade when you grow." data-zh="加入 2000+ 中国创业者和创作者的国际之旅。免费开始，成长后再升级。">Join 2,000+ Chinese founders and creators reaching international audiences. Start free — upgrade when you grow.</p>
-      <a href="/signup" class="btn btn-primary btn-lg">
-        <span class="i18n" data-en="✦ Start Free — No Credit Card" data-zh="✦ 免费开始，无需信用卡">✦ Start Free — No Credit Card</span>
-      </a>
-      <form class="email-form" id="waitlist-form" onsubmit="return submitEmail(event)">
-        <input type="email" placeholder="your@email.com" required id="waitlist-email">
-        <button type="submit" class="btn btn-primary" style="white-space:nowrap;">
-          <span class="i18n" data-en="Get Early Access" data-zh="抢先体验">Get Early Access</span>
-        </button>
-      </form>
-      <div id="waitlist-thanks" style="display:none; margin-top:16px; font-size:0.9rem; color:var(--green);">
-        ✅ <span class="i18n" data-en="Thanks! We'll notify you when Stripe payments launch." data-zh="感谢！Stripe 支付上线后我们会通知你。">Thanks! We'll notify you when Stripe payments launch.</span>
+      <div class="ks-bento__tile ks-bento__tile--wide reveal-right">
+        <span class="ks-badge ks-badge--success mb-sm" data-i18n="showcase.after">AI Content Bridge</span>
+        <h4 class="ks-bento__tile-title" data-i18n="showcase.after_title">Native. Engaging. Culturally Adapted.</h4>
+        <p class="ks-bento__tile-text mb-sm" data-i18n="showcase.after_text">"Built an AI tool that turns Chinese founder's content into native-level English tweets & LinkedIn posts — with full cultural adaptation. Here's how it works. 🧵"</p>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── Try It — Bridge Form ───────────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <div class="bridge-card" id="bridge">
-      <h2 class="card-title i18n" data-en="Try It Now" data-zh="立即体验">Try It Now</h2>
-      <p class="card-subtitle i18n" data-en="Paste your Chinese content — get culturally-adapted English in seconds." data-zh="粘贴你的中文内容，秒得文化适配的英文内容。">Paste your Chinese content — get culturally-adapted English in seconds.</p>
+<!-- ═══ Bridge Tool ═══ -->
+<section class="section" id="bridge">
+  <div class="container" style="max-width:720px">
+    <div class="section__header reveal">
+      <h2 class="section__title" data-i18n="bridge.title">Try It Now</h2>
+      <p class="section__subtitle" data-i18n="bridge.subtitle">Paste your Chinese content — get culturally-adapted English in seconds.</p>
+    </div>
 
-      <form hx-post="/bridge"
-            hx-ext="json-enc"
-            hx-target="#results"
-            hx-swap="innerHTML"
-            hx-indicator="#submit-btn"
-            id="bridge-form">
-
-        <label for="text" class="i18n" data-en="Chinese Input" data-zh="中文输入">Chinese Input</label>
-        <textarea id="text" name="text" placeholder='e.g. 我用AI帮跨境电商做海外营销，三个月获客200+，分享一下我的方法。'
-                  required></textarea>
-
-        <label style="margin-top:16px" class="i18n" data-en="Target Platforms" data-zh="目标平台">Target Platforms</label>
-        <div class="platform-grid" id="platforms">
-          <button type="button" class="platform-btn active" data-value="x" onclick="togglePlatform(this)">𝕏  X / Twitter</button>
-          <button type="button" class="platform-btn" data-value="linkedin" onclick="togglePlatform(this)">💼 LinkedIn</button>
-          <button type="button" class="platform-btn" data-value="reddit" onclick="togglePlatform(this)">🔴 Reddit</button>
-        </div>
-        <input type="hidden" name="platforms" id="platforms-input" value='["x"]'>
-
-        <!-- Sample presets -->
-        <div class="samples">
-          <span class="sample-btn" onclick="setSample(1)">📱 产品推广</span>
-          <span class="sample-btn" onclick="setSample(2)">📝 经验分享</span>
-          <span class="sample-btn" onclick="setSample(3)">🏢 公司介绍</span>
+    <div class="ks-card">
+      <form hx-post="/bridge" hx-ext="json-enc" hx-target="#results" hx-swap="innerHTML" hx-indicator="#submit-btn" id="bridge-form">
+        <div class="ks-form-group">
+          <label class="ks-label" for="text" data-i18n="bridge.input_label">Chinese Input</label>
+          <textarea id="text" name="text" class="ks-input" style="min-height:140px;resize:vertical" placeholder="e.g. 我用AI帮跨境电商做海外营销，三个月获客200+，分享一下我的方法。" required></textarea>
+          <div class="flex flex-between mt-sm">
+            <span id="char-count" class="text-tertiary" style="font-size:var(--cw-text-xs)">0 chars</span>
+            <span id="cost-estimate" class="text-tertiary" style="font-size:var(--cw-text-xs)">~$0.0000</span>
+          </div>
         </div>
 
-        <button type="submit" class="submit-btn" id="submit-btn">
-          <span class="i18n" data-en="✦ Bridge to English" data-zh="✦ 生成英文内容">✦ Bridge to English</span>
+        <div class="ks-form-group">
+          <label class="ks-label" data-i18n="bridge.platforms_label">Target Platforms</label>
+          <div class="flex gap-sm flex-wrap" id="platforms">
+            <button type="button" class="ks-button ks-button--ghost platform-btn active" data-value="x" onclick="togglePlatform(this)">𝕏 X/Twitter</button>
+            <button type="button" class="ks-button ks-button--ghost platform-btn" data-value="linkedin" onclick="togglePlatform(this)">💼 LinkedIn</button>
+            <button type="button" class="ks-button ks-button--ghost platform-btn" data-value="reddit" onclick="togglePlatform(this)">🔴 Reddit</button>
+          </div>
+          <input type="hidden" name="platforms" id="platforms-input" value='["x"]'>
+        </div>
+
+        <div class="flex gap-sm flex-wrap mb-md">
+          <span class="ks-button ks-button--ghost ks-button--sm" onclick="setSample(1)" tabindex="0" role="button" style="font-size:var(--cw-text-xs)">📱 Product</span>
+          <span class="ks-button ks-button--ghost ks-button--sm" onclick="setSample(2)" tabindex="0" role="button" style="font-size:var(--cw-text-xs)">📝 Experience</span>
+          <span class="ks-button ks-button--ghost ks-button--sm" onclick="setSample(3)" tabindex="0" role="button" style="font-size:var(--cw-text-xs)">🏢 Company</span>
+        </div>
+
+        <button type="submit" class="ks-button ks-button--primary ks-button--block ks-button--lg" id="submit-btn">
+          <span data-i18n="bridge.submit">✦ Bridge to English</span>
         </button>
       </form>
     </div>
 
-    <!-- Results injected here by HTMX -->
-    <div id="results" class="results"></div>
-
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <!-- ── Pricing ────────────────────────────────────────────────── -->
-    <!-- ══════════════════════════════════════════════════════════════ -->
-    <section class="section" id="pricing">
-      <div class="section-header">
-        <h2 class="section-title i18n" data-en="Pricing" data-zh="定价">Pricing</h2>
-        <p class="section-subtitle i18n" data-en="Choose the plan that fits your content journey." data-zh="选择适合你内容出海之旅的方案。">Choose the plan that fits your content journey.</p>
+    <!-- Results -->
+    <div id="results" class="mt-lg">
+      <div class="stagger" style="display:none">
+        <div class="ks-skeleton ks-skeleton--block mb-sm"></div>
+        <div class="ks-skeleton ks-skeleton--block mb-sm"></div>
+        <div class="ks-skeleton ks-skeleton--text-sm"></div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <div class="pricing-name i18n" data-en="Free" data-zh="免费">Free</div>
-          <div class="pricing-price">
-            <span class="price">$0</span>
-            <span class="period">/mo</span>
-          </div>
-          <ul class="pricing-features">
-            <li class="i18n" data-en="10 translations/month" data-zh="10 次翻译/月">10 translations/month</li>
-            <li class="i18n" data-en="All platforms" data-zh="支持所有平台">All platforms</li>
-            <li class="i18n" data-en="Mock mode (no API key)" data-zh="模拟模式（无需 API Key）">Mock mode (no API key)</li>
-          </ul>
-          <a href="/signup" class="btn btn-outline btn-block">
-            <span class="i18n" data-en="Get Started" data-zh="免费开始">Get Started</span>
-          </a>
-        </div>
+<!-- ═══ FAQ ═══ -->
+<section class="section" id="faq">
+  <div class="container" style="max-width:720px">
+    <div class="section__header reveal">
+      <span class="section__eyebrow" data-i18n="faq.eyebrow">Support</span>
+      <h2 class="section__title" data-i18n="faq.title">FAQ</h2>
+    </div>
 
-        <div class="pricing-card pricing-featured">
-          <div class="popular-badge">POPULAR</div>
-          <div class="pricing-name i18n" data-en="Starter" data-zh="入门">Starter</div>
-          <div class="pricing-price">
-            <span class="price">$19</span>
-            <span class="period">/mo</span>
-          </div>
-          <ul class="pricing-features">
-            <li class="i18n" data-en="100 translations/month" data-zh="100 次翻译/月">100 translations/month</li>
-            <li class="i18n" data-en="1 social account" data-zh="1 个社交账户">1 social account</li>
-            <li class="i18n" data-en="Direct publishing" data-zh="直接发布">Direct publishing</li>
-          </ul>
-          <a href="/signup" class="btn btn-primary btn-block">
-            <span class="i18n" data-en="Subscribe" data-zh="订阅">Subscribe</span>
-          </a>
-        </div>
-
-        <div class="pricing-card">
-          <div class="pricing-name i18n" data-en="Pro" data-zh="专业">Pro</div>
-          <div class="pricing-price">
-            <span class="price">$49</span>
-            <span class="period">/mo</span>
-          </div>
-          <ul class="pricing-features">
-            <li class="i18n" data-en="Unlimited translations" data-zh="无限次翻译">Unlimited translations</li>
-            <li class="i18n" data-en="All platforms" data-zh="所有平台">All platforms</li>
-            <li class="i18n" data-en="Priority support" data-zh="优先支持">Priority support</li>
-          </ul>
-          <a href="/signup" class="btn btn-outline btn-block">
-            <span class="i18n" data-en="Get Pro" data-zh="升级专业">Get Pro</span>
-          </a>
-        </div>
+    <div class="ks-card faq-list" id="faq-list">
+      <div class="faq-item" style="border-bottom:1px solid var(--cw-border)">
+        <button class="faq-q flex flex-between w-full" onclick="toggleFaq(this)" style="padding:var(--cw-space-md) 0;font-weight:600;text-align:left;background:none;border:none;cursor:pointer;width:100%;font-size:var(--cw-text-sm)" data-i18n="faq.q1">How is this different from Google Translate?</button>
+        <div class="faq-a text-muted" style="display:none;padding-bottom:var(--cw-space-md);font-size:var(--cw-text-sm);line-height:1.7" data-i18n="faq.a1">We do cultural transcreation — we analyze content, understand context, and rewrite it as if a native English marketing expert wrote it.</div>
       </div>
-    </section>
+      <div class="faq-item" style="border-bottom:1px solid var(--cw-border)">
+        <button class="faq-q flex flex-between w-full" onclick="toggleFaq(this)" style="padding:var(--cw-space-md) 0;font-weight:600;text-align:left;background:none;border:none;cursor:pointer;width:100%;font-size:var(--cw-text-sm)" data-i18n="faq.q2">Is my content private?</button>
+        <div class="faq-a text-muted" style="display:none;padding-bottom:var(--cw-space-md);font-size:var(--cw-text-sm);line-height:1.7" data-i18n="faq.a2">Yes. Your content is processed in real-time and not stored. We use encrypted API connections.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q flex flex-between w-full" onclick="toggleFaq(this)" style="padding:var(--cw-space-md) 0;font-weight:600;text-align:left;background:none;border:none;cursor:pointer;width:100%;font-size:var(--cw-text-sm)" data-i18n="faq.q3">Do I need an API key?</button>
+        <div class="faq-a text-muted" style="display:none;padding-bottom:var(--cw-space-md);font-size:var(--cw-text-sm);line-height:1.7" data-i18n="faq.a3">Free tier works in demo mode. Starter and Pro plans include API access — no additional key needed.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  </main>
+<!-- ═══ CTA ═══ -->
+<section class="section">
+  <div class="container text-center reveal">
+    <h2 class="section__title" data-i18n="cta.title">Ready to Go Global?</h2>
+    <p class="section__subtitle" data-i18n="cta.subtitle">Start free — upgrade when you grow. No credit card required.</p>
+    <div class="mt-lg">
+      <a href="/signup" class="ks-button ks-button--primary ks-button--lg" data-i18n="cta.button">✦ Start Free</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
 
-  <!-- ══════════════════════════════════════════════════════════════ -->
-  <!-- ── Footer ─────────────────────────────────────────────────── -->
-  <!-- ══════════════════════════════════════════════════════════════ -->
-  <footer class="footer">
-    <p class="i18n" data-en="Built with ❤️ for the global Chinese creator community" data-zh="为全球中文创作者社区而生 ❤️">Built with ❤️ for the global Chinese creator community</p>
-    <p style="margin-top:4px; font-size:0.8rem;">
-      <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
-      &nbsp;•&nbsp;
-      <span class="i18n" data-en="AI Content Bridge v0.1" data-zh="AI Content Bridge v0.1">AI Content Bridge v0.1</span>
-    </p>
-  </footer>
-
-  <!-- ══════════════════════════════════════════════════════════════ -->
-  <!-- ── Scripts ────────────────────────────────────────────────── -->
-  <!-- ══════════════════════════════════════════════════════════════ -->
-  <script>
-    /* ══════════════════════════════════════════════════════════════
-       Floating Particles Background
-       ══════════════════════════════════════════════════════════════ */
-    (function createParticles() {
-      const container = document.getElementById('particles');
-      if (!container) return;
-      for (let i = 0; i < 35; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = Math.random() * 100 + '%';
-        p.style.animationDuration = (15 + Math.random() * 30) + 's';
-        p.style.animationDelay = (Math.random() * 20) + 's';
-        p.style.width = p.style.height = (1.5 + Math.random() * 2.5) + 'px';
-        p.style.opacity = (0.05 + Math.random() * 0.15);
-        container.appendChild(p);
-      }
-    })();
-
-    /* ══════════════════════════════════════════════════════════════
-       Animated Trust Counters — IntersectionObserver
-       ══════════════════════════════════════════════════════════════ */
-    (function setupCounters() {
-      const trustBar = document.getElementById('trust-bar');
-      if (!trustBar) return;
-      let counted = false;
-
-      function animateCounters() {
-        if (counted) return;
-        counted = true;
-        document.querySelectorAll('.trust-num').forEach(el => {
-          const text = el.textContent.trim();
-          const rawNum = parseInt(text.replace(/[^0-9]/g, ''), 10);
-          if (!rawNum) return;
-          const suffix = text.replace(/[0-9+]/g, '');
-          const duration = 1800;
-          const startTime = performance.now();
-
-          function update(now) {
-            const elapsed = now - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            // ease-out quart
-            const eased = 1 - Math.pow(1 - progress, 4);
-            const current = Math.floor(eased * rawNum);
-            el.textContent = current + suffix;
-            if (progress < 1) {
-              requestAnimationFrame(update);
-            } else {
-              el.textContent = rawNum + suffix;
-            }
-          }
-          requestAnimationFrame(update);
-        });
-      }
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            animateCounters();
-            observer.disconnect();
-          }
-        });
-      }, { threshold: 0.5 });
-      observer.observe(trustBar);
-    })();
-
-    /* ══════════════════════════════════════════════════════════════
-       Sample presets
-       ══════════════════════════════════════════════════════════════ */
-    const SAMPLES = [
-      "",
-      "我们是一家AI驱动的跨境电商营销公司，帮助中国卖家在Shopify和Amazon上提升转化率。我们的AI系统能自动分析产品卖点，生成多语言的产品描述和广告文案。使用我们服务的卖家平均转化率提升30%，客单价提升15%。目前已经有超过2000家商户在使用我们的平台。",
-      "做独立开发三年，最大的感悟是：不要等产品完美了再发布。我的第一个产品做了6个月，上线后无人问津。第二个产品只花了2周做MVP，发布当天就有3个付费用户。现在我的策略是：2周出MVP，2周收集反馈，然后决定是否继续。",
-      "我们公司专注于为企业提供AI驱动的数字化转型解决方案。成立于2020年，总部位于深圳，团队规模50人，服务客户涵盖金融、医疗、制造等行业。我们的核心产品是一款低代码AI平台，帮助企业快速构建和部署AI应用。2024年完成了2000万美元的A轮融资。",
-    ];
-
-    function setSample(n) {
-      document.getElementById('text').value = SAMPLES[n];
-      document.getElementById('results').innerHTML = '';
-      document.getElementById('submit-btn').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    /* ══════════════════════════════════════════════════════════════
-       Platform toggle
-       ══════════════════════════════════════════════════════════════ */
-    function togglePlatform(btn) {
-      btn.classList.toggle('active');
-      const selected = [...document.querySelectorAll('.platform-btn.active')].map(b => b.dataset.value);
-      document.getElementById('platforms-input').value = JSON.stringify(selected.length ? selected : ['x']);
-    }
-
-    /* ══════════════════════════════════════════════════════════════
-       Mobile nav
-       ══════════════════════════════════════════════════════════════ */
-    function toggleMobile() {
-      const nav = document.getElementById('mobile-nav');
-      const ham = document.querySelector('.hamburger');
-      nav.classList.toggle('open');
-      ham.classList.toggle('active');
-      document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
-    }
-
-    function closeMobile() {
-      document.getElementById('mobile-nav').classList.remove('open');
-      document.querySelector('.hamburger').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    /* ══════════════════════════════════════════════════════════════
-       HTMX handlers
-       ══════════════════════════════════════════════════════════════ */
-    document.body.addEventListener('htmx:afterSwap', function(evt) {
-      if (evt.detail.target.id === 'results') {
-        document.getElementById('results').classList.add('show');
-        document.getElementById('submit-btn').querySelector('span').textContent = '✦ Bridge Again';
-        document.getElementById('submit-btn').querySelector('span').dataset.en = '✦ Bridge Again';
-        document.getElementById('submit-btn').querySelector('span').dataset.zh = '✦ 再次生成';
-        // Scroll to results
-        document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-
-    document.body.addEventListener('htmx:beforeSend', function(evt) {
-      if (evt.detail.target.id === 'results') {
-        document.getElementById('results').classList.remove('show');
-      }
-    });
-
-    // ── Bug 1: Fix platforms serialization for HTMX ────────────────
-    document.getElementById("bridge-form").addEventListener("htmx:configRequest", function(evt) {
-      try {
-        const raw = document.getElementById("platforms-input").value;
-        const parsed = JSON.parse(raw);
-        evt.detail.parameters["platforms"] = parsed;
-      } catch(e) {
-        evt.detail.parameters["platforms"] = ["x"];
-      }
-    });
-
-    // ── Bug 2: Loading indicator ────────────────────────────────────
-    document.getElementById("bridge-form").addEventListener("htmx:beforeRequest", function() {
-      document.getElementById("submit-btn").classList.add("loading");
-    });
-    document.getElementById("bridge-form").addEventListener("htmx:afterRequest", function() {
-      document.getElementById("submit-btn").classList.remove("loading");
-    });
-
-    // ── Bug 3: Error handling ──────────────────────────────────────
-    document.getElementById("bridge-form").addEventListener("htmx:responseError", function(evt) {
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = '<div class="error-card"><h3>❌ 错误 / Error</h3><p>' +
-        (evt.detail.xhr.responseText || '请求失败，请重试 / Request failed, please try again.') +
-        '</p></div>';
-      resultsDiv.classList.add('show');
-    });
-
-    /* ══════════════════════════════════════════════════════════════
-       FAQ toggle
-       ══════════════════════════════════════════════════════════════ */
-    function toggleFaq(el) {
-      el.classList.toggle('open');
-      const answer = el.nextElementSibling;
-      answer.classList.toggle('open');
-    }
-
-    /* ══════════════════════════════════════════════════════════════
-       Language toggle (simple client-side i18n)
-       ══════════════════════════════════════════════════════════════ */
-    let currentLang = localStorage.getItem('lang') || 'en';
-
-    function applyLang(lang) {
-      currentLang = lang;
-      localStorage.setItem('lang', lang);
-      document.querySelectorAll('.i18n').forEach(el => {
-        if (el.dataset[lang]) {
-          el.textContent = el.dataset[lang];
-        }
-      });
-      // Update toggle buttons
-      document.querySelectorAll('.lang-toggle').forEach(el => {
-        el.textContent = lang === 'en' ? '🇨🇳 中文' : '🇬🇧 English';
-      });
-      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
-    }
-
-    function toggleLang() {
-      applyLang(currentLang === 'en' ? 'zh' : 'en');
-    }
-
-    /* ══════════════════════════════════════════════════════════════
-       Waitlist email capture
-       ══════════════════════════════════════════════════════════════ */
-    function submitEmail(evt) {
-      evt.preventDefault();
-      const email = document.getElementById('waitlist-email').value;
-      // Store in localStorage + send to backend
-      let list = JSON.parse(localStorage.getItem('waitlist') || '[]');
-      if (!list.includes(email)) {
-        list.push(email);
-        localStorage.setItem('waitlist', JSON.stringify(list));
-      }
-      // Try to send to backend
-      fetch('/api/waitlist', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email: email})
-      }).catch(function(){});
-      document.getElementById('waitlist-form').style.display = 'none';
-      document.getElementById('waitlist-thanks').style.display = 'block';
-      return false;
-    }
-
-    // ── Initial language apply ──────────────────────────────────────
-    applyLang(currentLang);
-  </script>
-</body>
-</html>
+{% block scripts %}
+<script src="/static/js/effects/scroll-reveal.js"></script>
+<script src="/static/js/pages/bridge.js"></script>
+{% endblock %}

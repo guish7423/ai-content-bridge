@@ -21,3 +21,8 @@ Thumbs.db
 # Project
 *.db
 *.sqlite3
+.opencode/
+*.db
+waitlist.csv
+stripe-login.png
+3d-research-plan.md

@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   AI Content Bridge — Design Tokens v1.0 (oklch)
+   Source of truth: ALL color/type/spacing/radius values are defined here.
+   Do NOT duplicate values in other CSS files.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand Anchors ──────────────────────────────────────────────── */
+  --cw-brand-blue:    oklch(62% 0.18 255);     /* primary accent */
+  --cw-brand-cyan:    oklch(72% 0.14 210);     /* secondary glow */
+  --cw-brand-green:   oklch(65% 0.16 155);     /* success state */
+
+  /* ── Surfaces (Dark) ────────────────────────────────────────────── */
+  --cw-bg-deep:       oklch(4%  0.008 260);
+  --cw-bg:            oklch(7%  0.010 260);
+  --cw-bg-raised:     oklch(11% 0.012 260);
+  --cw-bg-overlay:    oklch(15% 0.014 260);
+  --cw-bg-glass:      oklch(92% 0.004 260 / 0.04);
+
+  /* ── Surfaces (Light) ───────────────────────────────────────────── */
+  --cw-bg-light:       oklch(97% 0.008 260);
+  --cw-bg-raised-light: oklch(99% 0.004 260);
+  --cw-bg-overlay-light: oklch(93% 0.010 260);
+
+  /* ── Text ───────────────────────────────────────────────────────── */
+  --cw-text:           oklch(92% 0.004 260);
+  --cw-text-secondary: oklch(72% 0.010 260);
+  --cw-text-tertiary:  oklch(58% 0.012 260);
+  --cw-text-inverse:   oklch(12% 0.010 260);
+
+  /* ── Borders ────────────────────────────────────────────────────── */
+  --cw-border:         oklch(92% 0.004 260 / 0.08);
+  --cw-border-hover:   oklch(92% 0.004 260 / 0.15);
+  --cw-border-accent:  oklch(62% 0.18 255 / 0.30);
+
+  /* ── Semantic ───────────────────────────────────────────────────── */
+  --cw-green:         oklch(65% 0.16 155);
+  --cw-red:           oklch(58% 0.18 30);
+  --cw-orange:        oklch(68% 0.16 70);
+  --cw-green-subtle:  oklch(65% 0.16 155 / 0.12);
+  --cw-red-subtle:    oklch(58% 0.18 30 / 0.12);
+  --cw-orange-subtle: oklch(68% 0.16 70 / 0.12);
+
+  /* ── Typography ─────────────────────────────────────────────────── */
+  --cw-font-display: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --cw-font-body:    'Inter', system-ui, sans-serif;
+  --cw-font-mono:    'JetBrains Mono', 'SF Mono', monospace;
+
+  --cw-text-xs:    0.75rem;
+  --cw-text-sm:    0.875rem;
+  --cw-text-base:  1rem;
+  --cw-text-lg:    1.125rem;
+  --cw-text-xl:    1.25rem;
+  --cw-text-2xl:   1.5rem;
+  --cw-text-3xl:   2rem;
+  --cw-text-4xl:   2.5rem;
+  --cw-text-5xl:   3.5rem;
+
+  /* ── Spacing ────────────────────────────────────────────────────── */
+  --cw-space-xs:   4px;
+  --cw-space-sm:   8px;
+  --cw-space-md:   16px;
+  --cw-space-lg:   24px;
+  --cw-space-xl:   32px;
+  --cw-space-2xl:  48px;
+  --cw-space-3xl:  64px;
+  --cw-space-4xl:  96px;
+
+  /* ── Radii ──────────────────────────────────────────────────────── */
+  --cw-radius-sm:  4px;
+  --cw-radius-md:  8px;
+  --cw-radius-lg:  12px;
+  --cw-radius-xl:  16px;
+  --cw-radius-full: 9999px;
+
+  /* ── Shadows ────────────────────────────────────────────────────── */
+  --cw-shadow-sm:  0 1px 2px oklch(0% 0 0 / 0.3);
+  --cw-shadow-md:  0 4px 12px oklch(0% 0 0 / 0.3);
+  --cw-shadow-lg:  0 8px 32px oklch(0% 0 0 / 0.4);
+  --cw-shadow-glow: 0 0 40px var(--cw-brand-blue / 0.15);
+
+  /* ── Z-Index ────────────────────────────────────────────────────── */
+  --cw-z-base:    1;
+  --cw-z-dropdown: 50;
+  --cw-z-dock:    100;
+  --cw-z-modal:   200;
+  --cw-z-toast:   300;
+
+  /* ── Transitions ────────────────────────────────────────────────── */
+  --cw-ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --cw-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --cw-duration-fast: 150ms;
+  --cw-duration-normal: 250ms;
+  --cw-duration-slow: 400ms;
+}
+
+/* ── Light Theme ──────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --cw-bg-deep:       oklch(95% 0.008 260);
+  --cw-bg:            oklch(97% 0.008 260);
+  --cw-bg-raised:     oklch(99% 0.004 260);
+  --cw-bg-overlay:    oklch(93% 0.010 260);
+  --cw-bg-glass:      oklch(0% 0 0 / 0.03);
+  --cw-text:          oklch(18% 0.012 260);
+  --cw-text-secondary: oklch(45% 0.010 260);
+  --cw-text-tertiary:  oklch(45% 0.008 260);
+  --cw-text-inverse:  oklch(97% 0.004 260);
+  --cw-border:        oklch(0% 0 0 / 0.08);
+  --cw-border-hover:  oklch(0% 0 0 / 0.14);
+  --cw-border-accent: oklch(62% 0.18 255 / 0.25);
+  --cw-shadow-sm:     0 1px 2px oklch(0% 0 0 / 0.06);
+  --cw-shadow-md:     0 4px 12px oklch(0% 0 0 / 0.08);
+  --cw-shadow-lg:     0 8px 32px oklch(0% 0 0 / 0.10);
+}
+
+/* ── Reduced Motion ───────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

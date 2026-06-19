@@ -1,0 +1,92 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   AI Content Bridge — Base Styles v1.0
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--cw-font-body);
+  background: var(--cw-bg);
+  color: var(--cw-text);
+  overflow-x: hidden;
+}
+
+/* ── Typography ────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--cw-font-display);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 { font-size: var(--cw-text-4xl); }
+h2 { font-size: var(--cw-text-3xl); }
+h3 { font-size: var(--cw-text-2xl); }
+h4 { font-size: var(--cw-text-xl); }
+
+p { 
+  font-size: var(--cw-text-base);
+  color: var(--cw-text-secondary);
+  line-height: 1.7;
+  max-width: 65ch;
+}
+
+a {
+  color: var(--cw-brand-blue);
+  transition: color var(--cw-duration-fast) var(--cw-ease-out);
+}
+
+a:hover {
+  color: oklch(72% 0.18 255);
+}
+
+/* ── Skip to content (accessibility) ──────────────────────────────────── */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: var(--cw-z-modal);
+  padding: var(--cw-space-sm) var(--cw-space-md);
+  background: var(--cw-bg-raised);
+  color: var(--cw-text);
+  border: 1px solid var(--cw-border);
+  border-radius: var(--cw-radius-sm);
+  font-size: var(--cw-text-sm);
+  transition: top var(--cw-duration-fast) var(--cw-ease-out);
+}
+
+.skip-to-content:focus {
+  top: var(--cw-space-sm);
+}
+
+/* ── Ambient background grid ──────────────────────────────────────────── */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(oklch(92% 0.004 260 / 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(92% 0.004 260 / 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.bg-glow {
+  position: fixed;
+  top: -20vh;
+  left: -10vw;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(ellipse at center, var(--cw-brand-blue / 0.05), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Main content area ────────────────────────────────────────────────── */
+.main {
+  position: relative;
+  z-index: var(--cw-z-base);
+  min-height: calc(100vh - 64px);
+  min-height: calc(100dvh - 64px);
+}

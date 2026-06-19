@@ -1,123 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="pricing.title">Pricing - AI Content Bridge</title>
-  <meta name="description" content="Simple, transparent pricing for AI Content Bridge. Start free, upgrade when you grow. Cultural adaptation for X, LinkedIn & Reddit.">
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-  <!-- Ambient Backgrounds -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
-
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">
-        <span class="nav-brand-logo">✦</span>
-        AI Content Bridge
-      </a>
-      <div class="nav-links">
-        <a href="/#features">Features</a>
-        <a href="/pricing">Pricing</a>
-        <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
-        <a href="/login" class="btn btn-sm btn-outline">Sign In</a>
-        <a href="/signup" class="btn btn-sm btn-primary">Get Started</a>
-      </div>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- Mobile Nav -->
-  <div class="mobile-nav" id="mobile-nav">
-    <a href="/#features">Features</a>
-    <a href="/pricing">Pricing</a>
-    <a href="https://github.com/guish7423/ai-content-bridge" target="_blank">GitHub</a>
-    <a href="/login" class="btn btn-outline btn-lg">Sign In</a>
-    <a href="/signup" class="btn btn-primary btn-lg">Get Started</a>
+{% extends "base.html" %}
+{% block title %}Pricing - AI Content Bridge{% endblock %}
+{% block content %}
+<div class="section">
+  <div class="section__header">
+    <h1 class="section__title" data-i18n="pricing.title">Simple, Transparent Pricing</h1>
+    <p class="section__subtitle" data-i18n="pricing.subtitle">Start free, upgrade when you need more</p>
   </div>
 
-  <!-- Main Content -->
-  <main class="main">
-    <div class="section-header" style="padding-top:100px;">
-      <h1 class="section-title" data-i18n="pricing.title">Simple, Transparent Pricing</h1>
-      <p class="section-subtitle" data-i18n="pricing.subtitle">Start free, upgrade when you need more</p>
+  <!-- Billing Toggle -->
+  <div class="flex flex-center gap-md mb-xl">
+    <span class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="pricing.monthly">Monthly</span>
+    <label class="theme-toggle" style="position:relative;width:48px;height:26px;cursor:pointer">
+      <input type="checkbox" id="billing-toggle" onchange="toggleBilling()" style="opacity:0;width:0;height:0">
+      <span style="position:absolute;top:0;left:0;right:0;bottom:0;background:var(--cw-bg-overlay);border:1px solid var(--cw-border);border-radius:var(--cw-radius-full);transition:0.3s"></span>
+    </label>
+    <span class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="pricing.annual">Annual</span>
+    <span class="ks-badge ks-badge--success" data-i18n="pricing.save">Save 20%</span>
+  </div>
+
+  <div class="ks-bento" style="max-width:960px;margin:0 auto">
+    <!-- Free Plan -->
+    <div class="ks-bento__tile text-center">
+      <h3 class="ks-bento__tile-title" data-i18n="pricing.free.name">Free</h3>
+      <div class="ks-bento__tile-text mb-lg" style="font-size:var(--cw-text-4xl);font-weight:800;color:var(--cw-text)">
+        <span class="price" data-monthly="$0" data-annual="$0">$0</span>
+        <span class="period text-muted" style="font-size:var(--cw-text-sm)">/mo</span>
+      </div>
+      <ul class="mb-lg text-muted" style="font-size:var(--cw-text-sm);line-height:2">
+        <li data-i18n="pricing.free.feature1">10 conversions/month</li>
+        <li data-i18n="pricing.free.feature2">All platforms</li>
+        <li data-i18n="pricing.free.feature3">Mock mode (no API key)</li>
+      </ul>
+      <a href="/signup" class="ks-button ks-button--secondary ks-button--block" data-i18n="pricing.free.cta">Get Started</a>
     </div>
 
-    <div class="pricing-grid">
-      <!-- Free Plan -->
-      <div class="pricing-card">
-        <h2 class="pricing-name" data-i18n="pricing.free.name">Free</h2>
-        <div class="pricing-price">
-          <span class="price">$0</span>
-          <span class="period" data-i18n="pricing.month">/mo</span>
-        </div>
-        <ul class="pricing-features">
-          <li data-i18n="pricing.free.feature1">10 conversions/month</li>
-          <li data-i18n="pricing.free.feature2">All platforms (X/LinkedIn/Reddit)</li>
-          <li data-i18n="pricing.free.feature3">Basic localization</li>
-          <li data-i18n="pricing.free.feature4">Web interface</li>
-        </ul>
-        <a href="/signup" class="btn btn-outline btn-block" data-i18n="pricing.free.cta">Get Started</a>
+    <!-- Starter Plan (Featured) -->
+    <div class="ks-bento__tile text-center" style="border-color:var(--cw-border-accent);position:relative">
+      <span class="ks-badge ks-badge--info" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%)" data-i18n="pricing.popular">Most Popular</span>
+      <h3 class="ks-bento__tile-title" data-i18n="pricing.starter.name">Starter</h3>
+      <div class="ks-bento__tile-text mb-lg" style="font-size:var(--cw-text-4xl);font-weight:800;color:var(--cw-text)">
+        <span class="price" data-monthly="$19" data-annual="$15">$19</span>
+        <span class="period text-muted" style="font-size:var(--cw-text-sm)">/mo</span>
       </div>
-
-      <!-- Starter Plan (Featured) -->
-      <div class="pricing-card pricing-featured">
-        <div class="pricing-badge" data-i18n="pricing.popular">Most Popular</div>
-        <h2 class="pricing-name" data-i18n="pricing.starter.name">Starter</h2>
-        <div class="pricing-price">
-          <span class="price">$19</span>
-          <span class="period" data-i18n="pricing.month">/mo</span>
-        </div>
-        <ul class="pricing-features">
-          <li data-i18n="pricing.starter.feature1">100 conversions/month</li>
-          <li data-i18n="pricing.starter.feature2">All platforms + X Threads</li>
-          <li data-i18n="pricing.starter.feature3">Advanced cultural adaptation</li>
-          <li data-i18n="pricing.starter.feature4">API access (1,000 req/hr)</li>
-          <li data-i18n="pricing.starter.feature5">Direct social publishing</li>
-        </ul>
-        <a href="/pricing?stripe=coming-soon" class="btn btn-primary btn-block" onclick="alert('Paid plans coming soon! Free tier available now.')" data-i18n="pricing.coming_soon">Coming Soon</a>
-      </div>
-
-      <!-- Pro Plan -->
-      <div class="pricing-card">
-        <h2 class="pricing-name" data-i18n="pricing.pro.name">Pro</h2>
-        <div class="pricing-price">
-          <span class="price">$49</span>
-          <span class="period" data-i18n="pricing.month">/mo</span>
-        </div>
-        <ul class="pricing-features">
-          <li data-i18n="pricing.pro.feature1">10,000 conversions/month</li>
-          <li data-i18n="pricing.pro.feature2">All platforms + API priority</li>
-          <li data-i18n="pricing.pro.feature3">Custom brand voice training</li>
-          <li data-i18n="pricing.pro.feature4">API access (10,000 req/hr)</li>
-          <li data-i18n="pricing.pro.feature5">Priority support</li>
-        </ul>
-        <a href="/pricing?stripe=coming-soon" class="btn btn-outline btn-block" onclick="alert('Paid plans coming soon! Free tier available now.')" data-i18n="pricing.coming_soon">Coming Soon</a>
-      </div>
+      <ul class="mb-lg text-muted" style="font-size:var(--cw-text-sm);line-height:2">
+        <li data-i18n="pricing.starter.feature1">100 conversions/month</li>
+        <li data-i18n="pricing.starter.feature2">All platforms + X Threads</li>
+        <li data-i18n="pricing.starter.feature3">Advanced cultural adaptation</li>
+        <li data-i18n="pricing.starter.feature4">API access</li>
+        <li data-i18n="pricing.starter.feature5">Direct social publishing</li>
+      </ul>
+      <button class="ks-button ks-button--primary ks-button--block" onclick="startCheckout('starter')" data-i18n="pricing.starter.cta">Subscribe</button>
     </div>
-  </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>Built with ❤️ for the global Chinese creator community</p>
-    <p style="margin-top:4px; font-size:0.8rem;">
-      <a href="https://github.com/guish7423/ai-content-bridge">GitHub</a> · AI Content Bridge v0.1
-    </p>
-  </footer>
+    <!-- Pro Plan -->
+    <div class="ks-bento__tile text-center">
+      <h3 class="ks-bento__tile-title" data-i18n="pricing.pro.name">Pro</h3>
+      <div class="ks-bento__tile-text mb-lg" style="font-size:var(--cw-text-4xl);font-weight:800;color:var(--cw-text)">
+        <span class="price" data-monthly="$49" data-annual="$39">$49</span>
+        <span class="period text-muted" style="font-size:var(--cw-text-sm)">/mo</span>
+      </div>
+      <ul class="mb-lg text-muted" style="font-size:var(--cw-text-sm);line-height:2">
+        <li data-i18n="pricing.pro.feature1">10,000 conversions/month</li>
+        <li data-i18n="pricing.pro.feature2">All platforms + API priority</li>
+        <li data-i18n="pricing.pro.feature3">Custom brand voice training</li>
+        <li data-i18n="pricing.pro.feature4">API access (10,000 req/hr)</li>
+        <li data-i18n="pricing.pro.feature5">Priority support</li>
+      </ul>
+      <button class="ks-button ks-button--secondary ks-button--block" onclick="startCheckout('pro')" data-i18n="pricing.pro.cta">Subscribe</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/effects/tilt-3d.js"></script>
+<script>
+function toggleBilling() {
+  var isAnnual = document.getElementById('billing-toggle').checked;
+  document.querySelectorAll('.price').forEach(function(p) {
+    p.textContent = isAnnual ? p.dataset.annual : p.dataset.monthly;
+  });
+  document.querySelectorAll('.period').forEach(function(p) {
+    p.textContent = isAnnual ? '/yr' : '/mo';
+  });
+}
 
-  <script src="/static/animations.js"></script>
-  <script src="/static/i18n.js"></script>
-  <script>
-    // Hamburger toggle
-    document.getElementById('hamburger').addEventListener('click', function() {
-      this.classList.toggle('active');
-      document.getElementById('mobile-nav').classList.toggle('open');
+function startCheckout(plan) {
+  fetch('/api/auth/me')
+    .then(function(r) {
+      if (!r.ok) { window.location.href = '/login?redirect=/pricing'; return null; }
+      return r.json();
+    })
+    .then(function(user) {
+      if (!user) return;
+      fetch('/api/stripe/create-checkout', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({plan: plan, success_url: window.location.origin + '/dashboard', cancel_url: window.location.origin + '/pricing'})
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.url) {
+          if (data.url.startsWith('http')) window.location.href = data.url;
+          else showToast(data.message || 'Stripe payments coming soon.', 'info');
+        }
+      })
+      .catch(function() { showToast('Payment error. Please try again.', 'error'); });
     });
-  </script>
-</body>
-</html>
+}
+</script>
+{% endblock %}

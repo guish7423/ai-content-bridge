@@ -1,103 +1,70 @@
-<div class="show" style="animation: fadeInUp 0.4s var(--ease-out);">
+<div class="stagger visible" style="animation:ks-fade-in 0.4s var(--cw-ease-out)">
 
-<script>
-function copyContent(key) {
-  const container = document.getElementById('content-' + key);
-  let text = container.innerText;
-  const posts = container.closest('.platform-result')
-    .querySelectorAll('.thread-post');
-  if (posts.length) {
-    text += '\n\n--- Thread ---\n';
-    posts.forEach(function(post, i) {
-      text += (i + 1) + '. ' + post.innerText.trim() + '\n';
-    });
-  }
-  navigator.clipboard.writeText(text);
-}
-</script>
-
-<!-- Analysis Summary -->
+<!-- Analysis Card -->
 {% if analysis and analysis.get("core_message") %}
-<div class="analysis-section" style="animation: fadeInUp 0.5s var(--ease-out);">
-  <h3>📋 分析 / Analysis</h3>
-  <p><strong style="color: var(--text);">核心信息:</strong> {{ analysis.get("core_message", "") }}</p>
+<div class="ks-result-card">
+  <div class="ks-result-card__header">
+    <div class="flex gap-sm">
+      <span style="font-size:1.3rem">📋</span>
+      <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.analysis">Analysis</h3>
+    </div>
+  </div>
+  <p><strong class="text-brand" data-i18n="result.core_message">Core Message:</strong> <span class="text-muted">{{ analysis.get("core_message", "") }}</span></p>
   {% if analysis.get("target_audience") %}
-  <p><strong style="color: var(--text);">目标受众:</strong> {{ analysis.get("target_audience", "") }}</p>
+  <p class="mt-sm"><strong class="text-brand" data-i18n="result.target_audience">Target Audience:</strong> <span class="text-muted">{{ analysis.get("target_audience", "") }}</span></p>
   {% endif %}
   {% if analysis.get("tone") %}
-  <p><strong style="color: var(--text);">语气:</strong> {{ analysis.get("tone", "") }}</p>
-  {% endif %}
-  {% if analysis.get("usp") or analysis.get("unique_selling_point") %}
-  <p><strong style="color: var(--text);">独特卖点:</strong> {{ analysis.get("usp", analysis.get("unique_selling_point", "")) }}</p>
+  <p class="mt-sm"><strong class="text-brand" data-i18n="result.tone">Tone:</strong> <span class="text-muted">{{ analysis.get("tone", "") }}</span></p>
   {% endif %}
 </div>
 {% endif %}
 
 <!-- Localized Version -->
 {% if localized %}
-<div class="analysis-section" style="animation: fadeInUp 0.5s var(--ease-out) 0.05s both;">
-  <h3>🌐 本地化 / Localized</h3>
-  <div style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8; white-space: pre-wrap;">{{ localized }}</div>
-  <div class="char-counter">{{ localized|length }} 字符</div>
+<div class="ks-result-card">
+  <div class="ks-result-card__header">
+    <div class="flex gap-sm">
+      <span style="font-size:1.3rem">🌐</span>
+      <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.localized">Localized Version</h3>
+    </div>
+    <span class="ks-badge">{{ localized|length }} <span data-i18n="result.chars">chars</span></span>
+  </div>
+  <div class="ks-result-card__content">{{ localized }}</div>
 </div>
 {% endif %}
 
 <!-- Platform Versions -->
 {% if versions %}
   {% for platform_key, item in versions.items() %}
-  <div class="platform-result" style="animation: fadeInUp 0.5s var(--ease-out) 0.1s both;">
-    <h3>
-      {% if platform_key == "x" %}𝕏
-      {% elif platform_key == "linkedin" %}💼
-      {% elif platform_key == "reddit" %}🔴
-      {% else %}📝{% endif %}
-      {{ platform_key|capitalize }}
-      <button class="copy-btn" onclick="copyContent('{{ platform_key }}')">📋 复制</button>
-    </h3>
-    <div class="content" id="content-{{ platform_key }}">{{ item.get("content", item.get("result", "")) }}</div>
+  <div class="ks-result-card">
+    <div class="ks-result-card__header">
+      <div class="flex gap-sm">
+        <span class="ks-platform-badge ks-platform-badge--{{ platform_key }}">
+          {% if platform_key == "x" %}𝕏{% elif platform_key == "linkedin" %}💼{% elif platform_key == "reddit" %}🔴{% else %}📝{% endif %}
+          {{ platform_key|capitalize }}
+        </span>
+        {% if item.get("content") %}
+        <span class="ks-badge">{{ item.content|length }} chars</span>
+        {% endif %}
+      </div>
+      <button class="ks-copy-btn" onclick="copyContent('{{ platform_key }}')">
+        <span>📋</span>
+        <span data-i18n="result.copy">Copy</span>
+      </button>
+    </div>
+    <div class="ks-result-card__content" id="content-{{ platform_key }}">{{ item.get("content", item.get("result", "")) }}</div>
 
     <!-- Thread posts for X -->
     {% if item.get("thread_posts") and item.thread_posts|length > 0 %}
-    <div class="thread-section" style="border-top: 1px solid var(--border); padding: var(--space-md) var(--space-lg);">
-      <strong style="
-        display: block;
-        margin-bottom: var(--space-md);
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--brand);
-      ">🧵 线程 / Thread</strong>
+    <div style="border-top:1px solid var(--cw-border);padding-top:var(--cw-space-md);margin-top:var(--cw-space-md)">
+      <div class="flex gap-sm mb-md">
+        <span>🧵</span>
+        <strong style="font-size:var(--cw-text-xs);text-transform:uppercase;letter-spacing:0.06em;color:var(--cw-brand-blue)" data-i18n="result.thread">Thread</strong>
+      </div>
       {% for post in item.thread_posts %}
-      <div class="thread-post" style="
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius-md);
-        padding: 14px 16px;
-        margin-bottom: var(--space-sm);
-        font-size: 0.9rem;
-        line-height: 1.7;
-        color: var(--text-secondary);
-        position: relative;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        box-shadow: var(--glass-shadow);
-        animation: fadeInUp 0.4s var(--ease-out) both;
-      ">
-        <span style="
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 22px;
-          height: 22px;
-          border-radius: var(--radius-full);
-          background: var(--brand-subtle);
-          color: var(--brand);
-          font-size: 0.7rem;
-          font-weight: 700;
-          margin-right: 8px;
-          float: left;
-        ">{{ loop.index }}</span>
-        {{ post }}
+      <div class="ks-card thread-post" style="padding:var(--cw-space-md);margin-bottom:var(--cw-space-sm);animation:ks-fade-in-up 0.3s var(--cw-ease-out) both;animation-delay:{{ loop.index * 0.05 }}s">
+        <span class="ks-badge ks-badge--info" style="margin-right:var(--cw-space-sm)">{{ loop.index }}</span>
+        <span style="vertical-align:middle">{{ post }}</span>
       </div>
       {% endfor %}
     </div>
@@ -106,18 +73,28 @@ function copyContent(key) {
   {% endfor %}
 {% endif %}
 
-<!-- Usage -->
+<!-- Usage Summary -->
 {% if usage %}
-<div style="
-  text-align: center;
-  padding: var(--space-sm) var(--space-md);
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  border-top: 1px solid var(--border);
-  margin-top: var(--space-md);
-  animation: fadeInUp 0.5s var(--ease-out) 0.15s both;
-">
-  消耗 tokens: {{ usage.get("total_tokens", 0) }} | 成本: ${{ "%.4f"|format(usage.get("cost_usd", usage.get("total_cost_usd", 0))) }}
+<div class="text-center pt-md" style="border-top:1px solid var(--cw-border);margin-top:var(--cw-space-md);padding-top:var(--cw-space-md)">
+  <span class="text-tertiary" style="font-size:var(--cw-text-xs)">
+    <span data-i18n="result.tokens">Tokens consumed:</span> {{ usage.get("total_tokens", 0) }}
+    <span style="margin:0 6px">·</span>
+    <span data-i18n="result.cost">Cost:</span> ${{ "%.4f"|format(usage.get("cost_usd", usage.get("total_cost_usd", 0))) }}
+  </span>
 </div>
 {% endif %}
 </div>
+
+<script>
+function copyContent(key) {
+  var container = document.getElementById('content-' + key);
+  if (!container) return;
+  var text = container.innerText;
+  var threadPosts = container.closest('.ks-result-card').querySelectorAll('.thread-post span:last-child');
+  if (threadPosts.length) {
+    text += '\n\n--- Thread ---\n';
+    threadPosts.forEach(function(post, i) { text += (i + 1) + '. ' + post.textContent.trim() + '\n'; });
+  }
+  copyToClipboard(text, 'Copied!');
+}
+</script>

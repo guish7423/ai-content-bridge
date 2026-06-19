@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}AI Content Bridge — China → Global in One Click{% endblock %}</title>
+  <meta name="description" content="{% block description %}AI-powered content localization: transform Chinese content into culturally-adapted English posts for X, LinkedIn & Reddit.{% endblock %}" />
+
+  <!-- OG -->
+  <meta property="og:title" content="{% block og_title %}AI Content Bridge{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}AI-powered CN→EN cultural adaptation for X, LinkedIn & Reddit.{% endblock %}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.url.scheme }}://{{ request.url.netloc }}" />
+  <meta property="og:image" content="{{ request.url.scheme }}://{{ request.url.netloc }}/static/og-image.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://unpkg.com/htmx.org@2.0.4" as="script" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/static/css/01-tokens.css" />
+  <link rel="stylesheet" href="/static/css/02-reset.css" />
+  <link rel="stylesheet" href="/static/css/03-base.css" />
+  <link rel="stylesheet" href="/static/css/04-layout.css" />
+  <link rel="stylesheet" href="/static/css/05-components.css" />
+  <link rel="stylesheet" href="/static/css/06-utilities.css" />
+  <link rel="stylesheet" href="/static/css/07-animations.css" />
+
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <!-- Ambient Background -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Nav -->
+  {% include "partials/nav.html" %}
+
+  <!-- Mobile Nav -->
+  {% include "partials/mobile-nav.html" %}
+
+  <!-- Main Content -->
+  <main id="main-content" class="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  {% include "partials/footer.html" %}
+
+  <!-- Mobile Dock -->
+  {% include "partials/mobile-dock.html" %}
+
+  <!-- Toast Container -->
+  <div class="ks-toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <script src="https://unpkg.com/htmx.org@2.0.4/dist/ext/json-enc.js"></script>
+  <script src="/static/js/core/theme.js"></script>
+  <script src="/static/js/core/toast.js"></script>
+  <script src="/static/js/core/i18n.js"></script>
+  <script src="/static/js/lib/utils.js"></script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

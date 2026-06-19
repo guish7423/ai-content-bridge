@@ -1,183 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - AI Content Bridge</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/style.css" />
-</head>
-<body>
-  <!-- Ambient Background -->
-  <div class="bg-grid"></div>
-  <div class="bg-glow"></div>
-
-  <!-- Glassmorphism Navbar -->
-  <nav class="nav" id="navbar">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">
-        <span class="nav-brand-logo">✦</span>
-        Content Bridge
-      </a>
-      <div class="nav-links">
-        <a href="/">Bridge</a>
-        <a href="/pricing">Pricing</a>
-        <a href="/logout" id="logout-link">Logout</a>
-      </div>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
+{% extends "base.html" %}
+{% block title %}Dashboard - AI Content Bridge{% endblock %}
+{% block content %}
+<div class="dashboard container">
+  <div class="flex flex-between flex-wrap mb-lg">
+    <div>
+      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="dashboard.title">Dashboard</h1>
+      <p class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="dashboard.subtitle">Your content bridge activity overview</p>
     </div>
-  </nav>
-
-  <!-- Mobile Nav Overlay -->
-  <div class="mobile-nav" id="mobile-nav">
-    <a href="/">Bridge</a>
-    <a href="/pricing">Pricing</a>
-    <a href="/logout" id="logout-link-mobile">Logout</a>
+    <a href="/" class="ks-button ks-button--primary" data-i18n="dashboard.new_bridge">New Bridge</a>
   </div>
 
-  <!-- Main Content -->
-  <main class="main">
-    <div class="dashboard">
-      <!-- Dashboard Header with CTA -->
-      <div class="dashboard-header">
-        <h1>Dashboard</h1>
-        <a href="/" class="btn btn-primary">
-          <span>+</span> New Bridge
-        </a>
-      </div>
-
-      <!-- Stats Grid — Glass Dashboard -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.plan">Plan</div>
-          <div class="stat-value" id="stat-plan">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.usage">Usage (month)</div>
-          <div class="stat-value" id="stat-usage">—</div>
-          <div class="stat-bar" id="usage-bar"><div class="stat-fill" style="width:0%"></div></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.limit">Limit</div>
-          <div class="stat-value" id="stat-limit">—</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label" data-i18n="dashboard.api_key">API Key</div>
-          <div class="stat-value" id="stat-apikey" style="font-size:0.7em;font-family:var(--font-mono)">—</div>
-          <button class="btn btn-sm btn-ghost" onclick="copyApiKey()" style="margin-top:4px" data-i18n="dashboard.copy">Copy</button>
-        </div>
-      </div>
-
-      <!-- Recent Conversions -->
-      <section class="dash-section">
-        <h2 data-i18n="dashboard.recent">Recent Conversions</h2>
-        <div id="recent-list" class="conv-list">
-          <p class="text-muted" data-i18n="dashboard.loading">Loading…</p>
-        </div>
-      </section>
-
-      <!-- Upgrade CTA for Free Users -->
-      <div id="upgrade-cta" class="upgrade-banner" style="display:none">
-        <p data-i18n="dashboard.upgrade_cta">Upgrade to Starter ($19/mo) for 100 conversions/month and social publishing.</p>
-        <a href="/pricing" class="btn btn-primary" data-i18n="dashboard.upgrade_btn">See Plans</a>
+  <!-- Stats Grid -->
+  <div class="ks-bento">
+    <div class="ks-bento__tile">
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.plan">Plan</span>
+      <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-plan">—</div>
+    </div>
+    <div class="ks-bento__tile">
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.usage">Monthly Usage</span>
+      <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-usage">—</div>
+      <div class="ks-skeleton ks-skeleton--text-sm" style="height:4px;border-radius:2px;overflow:hidden;margin-top:var(--cw-space-sm)">
+        <div id="usage-bar-fill" style="height:100%;width:0%;border-radius:2px;transition:width 0.5s var(--cw-ease-out)"></div>
       </div>
     </div>
-  </main>
+    <div class="ks-bento__tile">
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.limit">Monthly Limit</span>
+      <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-limit">—</div>
+    </div>
+    <div class="ks-bento__tile">
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.api_key">API Key</span>
+      <div class="ks-bento__tile-title font-mono" style="font-size:var(--cw-text-sm)" id="stat-apikey">—</div>
+      <button class="ks-button ks-button--ghost ks-button--sm mt-sm" onclick="copyApiKey()" data-i18n="dashboard.copy">Copy</button>
+    </div>
+  </div>
 
-  <!-- Footer — Design System Aligned -->
-  <footer class="footer">
-    <p>Built with ❤️ for the global Chinese creator community</p>
-    <p style="margin-top:4px; font-size:0.8rem; color:var(--text-tertiary)">
-      <a href="https://github.com/guish7423/ai-content-bridge" style="color:var(--brand)">GitHub</a>
-      · AI Content Bridge v0.1
-    </p>
-  </footer>
+  <!-- Recent Activity -->
+  <section class="section" style="padding:var(--cw-space-2xl) 0">
+    <h2 class="ks-bento__tile-title mb-md" data-i18n="dashboard.recent">Recent Activity</h2>
+    <div id="recent-list">
+      <div class="ks-empty" id="empty-state">
+        <span class="ks-empty__icon">🌐</span>
+        <h3 class="ks-empty__title" data-i18n="dashboard.empty_title">No conversions yet</h3>
+        <p class="ks-empty__text" data-i18n="dashboard.empty_text">Bridge your first Chinese content to English. It only takes a few seconds.</p>
+        <a href="/" class="ks-button ks-button--primary" data-i18n="dashboard.empty_cta">Try It Now</a>
+      </div>
+    </div>
+  </section>
 
-  <script src="/static/animations.js"></script>
-  <script src="/static/i18n.js"></script>
-  <script>
-    async function loadDashboard() {
-      try {
-        const resp = await fetch('/api/auth/me');
-        if (!resp.ok) { window.location.href = '/login'; return; }
-        const data = await resp.json();
+  <!-- Upgrade CTA -->
+  <div id="upgrade-cta" style="display:none" class="ks-card" style="border-color:var(--cw-border-accent);background:var(--cw-brand-blue / 0.05)">
+    <div class="flex flex-between flex-wrap gap-md">
+      <div>
+        <h3 style="font-size:var(--cw-text-lg)" data-i18n="dashboard.upgrade_title">Upgrade to Starter</h3>
+        <p class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="dashboard.upgrade_text">Get 100 conversions/month and direct social publishing for $19/mo.</p>
+      </div>
+      <a href="/pricing" class="ks-button ks-button--primary" data-i18n="dashboard.upgrade_btn">See Plans</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+async function loadDashboard() {
+  try {
+    var resp = await fetch('/api/auth/me');
+    if (!resp.ok) { window.location.href = '/login'; return; }
+    var data = await resp.json();
+    document.getElementById('stat-plan').textContent = data.plan || 'free';
+    document.getElementById('stat-usage').textContent = data.monthly_usage ?? 0;
+    document.getElementById('stat-limit').textContent = data.plan_details?.translations_per_month ?? 10;
+    document.getElementById('stat-apikey').textContent = data.api_key ? data.api_key.slice(0,16) + '…' : '—';
 
-        document.getElementById('stat-plan').textContent = data.plan || 'free';
-        document.getElementById('stat-usage').textContent = data.monthly_usage ?? 0;
-        document.getElementById('stat-limit').textContent = data.plan_limit ?? 10;
-        document.getElementById('stat-apikey').textContent = data.api_key
-          ? data.api_key.slice(0, 16) + '…' : '—';
+    var pct = data.plan_details?.translations_per_month > 0
+      ? Math.min(100, ((data.monthly_usage ?? 0) / data.plan_details.translations_per_month) * 100) : 0;
+    var fill = document.getElementById('usage-bar-fill');
+    fill.style.width = pct + '%';
+    fill.style.background = pct > 80 ? 'var(--cw-red)' : pct > 50 ? 'var(--cw-orange)' : 'var(--cw-green)';
 
-        const pct = data.plan_limit > 0
-          ? Math.min(100, ((data.monthly_usage ?? 0) / data.plan_limit) * 100)
-          : 0;
-        const fill = document.querySelector('#usage-bar .stat-fill');
-        fill.style.width = pct + '%';
-        fill.style.background = pct > 80 ? '#ef4444' : pct > 50 ? '#f59e0b' : '#22c55e';
+    if (data.plan === 'free') document.getElementById('upgrade-cta').style.display = 'block';
+    loadRecent();
+  } catch (e) { window.location.href = '/login'; }
+}
 
-        if (data.plan === 'free') {
-          document.getElementById('upgrade-cta').style.display = 'block';
-        }
+async function loadRecent() {
+  var el = document.getElementById('recent-list');
+  try {
+    var resp = await fetch('/api/bridge/history?limit=10');
+    if (!resp.ok) { el.innerHTML = '<p class="text-muted" data-i18n="dashboard.load_error">Failed to load.</p>'; return; }
+    var items = await resp.json();
+    if (!items.length) return;
+    document.getElementById('empty-state').style.display = 'none';
+    el.innerHTML = items.map(function(item) {
+      return '<div class="ks-card" style="padding:var(--cw-space-md);margin-bottom:var(--cw-space-sm)">' +
+        '<div class="ks-bento__tile-text" style="font-size:var(--cw-text-sm)">' + escapeHtml(item.original_text?.slice(0,80) || '') + '…</div>' +
+        '<div class="text-tertiary mt-sm" style="font-size:var(--cw-text-xs)">' + (item.created_at?.slice(0,10) || '') + ' · ' + (item.platforms?.join(', ') || '') + '</div>' +
+      '</div>';
+    }).join('');
+  } catch (e) { el.innerHTML = '<p class="text-muted">Failed to load.</p>'; }
+}
 
-        loadRecent();
-      } catch (e) {
-        window.location.href = '/login';
-      }
-    }
+function copyApiKey() {
+  fetch('/api/auth/me').then(function(r) { return r.json(); }).then(function(d) {
+    copyToClipboard(d.api_key || '', 'API key copied!');
+  });
+}
 
-    async function loadRecent() {
-      const el = document.getElementById('recent-list');
-      try {
-        const resp = await fetch('/api/bridge/history?limit=10');
-        if (!resp.ok) { el.innerHTML = '<p class="text-muted">No conversions yet.</p>'; return; }
-        const items = await resp.json();
-        if (!items.length) {
-          el.innerHTML = '<p class="text-muted">No conversions yet.</p>';
-          return;
-        }
-        el.innerHTML = items.map(item => `
-          <div class="conv-item">
-            <div class="conv-text">${escapeHtml(item.original_text?.slice(0, 80) || '')}…</div>
-            <div class="conv-meta">${item.created_at?.slice(0, 10) || ''} · ${item.platforms?.join(', ') || ''}</div>
-          </div>
-        `).join('');
-      } catch {
-        el.innerHTML = '<p class="text-muted">Failed to load.</p>';
-      }
-    }
-
-    function escapeHtml(text) {
-      const d = document.createElement('div');
-      d.textContent = text;
-      return d.innerHTML;
-    }
-
-    function copyApiKey() {
-      fetch('/api/auth/me')
-        .then(r => r.json())
-        .then(d => {
-          navigator.clipboard.writeText(d.api_key || '');
-          const btn = document.querySelector('.stat-card:last-child .btn');
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-        });
-    }
-
-    function handleLogout(e) {
-      e.preventDefault();
-      fetch('/api/auth/logout', { method: 'POST' }).then(() => {
-        window.location.href = '/';
-      });
-    }
-
-    document.getElementById('logout-link')?.addEventListener('click', handleLogout);
-    document.getElementById('logout-link-mobile')?.addEventListener('click', handleLogout);
-
-    loadDashboard();
-  </script>
-</body>
-</html>
+loadDashboard();
+</script>
+{% endblock %}
