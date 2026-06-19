@@ -4,43 +4,43 @@
 <div class="dashboard container">
   <div class="flex flex-between flex-wrap mb-lg">
     <div>
-      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="dashboard.title">Dashboard</h1>
-      <p class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="dashboard.subtitle">Your content bridge activity overview</p>
+      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="dashboard.title">仪表盘</h1>
+      <p class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="dashboard.subtitle">你的内容出海活动概览</p>
     </div>
-    <a href="/" class="ks-button ks-button--primary" data-i18n="dashboard.new_bridge">New Bridge</a>
+    <a href="/" class="ks-button ks-button--primary" data-i18n="dashboard.new_bridge">新建翻译</a>
   </div>
 
   <!-- Stats Grid -->
   <div class="ks-bento">
     <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.plan">Plan</span>
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.plan">当前方案</span>
       <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-plan">—</div>
     </div>
     <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.usage">Monthly Usage</span>
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.usage">本月已用</span>
       <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-usage">—</div>
       <div class="ks-skeleton ks-skeleton--text-sm" style="height:4px;border-radius:2px;overflow:hidden;margin-top:var(--cw-space-sm)">
         <div id="usage-bar-fill" style="height:100%;width:0%;border-radius:2px;transition:width 0.5s var(--cw-ease-out)"></div>
       </div>
     </div>
     <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.limit">Monthly Limit</span>
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.limit">每月限额</span>
       <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-limit">—</div>
     </div>
     <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.api_key">API Key</span>
+      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.api_key">API 密钥</span>
       <div class="ks-bento__tile-title font-mono" style="font-size:var(--cw-text-sm)" id="stat-apikey">—</div>
-      <button class="ks-button ks-button--ghost ks-button--sm mt-sm" onclick="copyApiKey()" data-i18n="dashboard.copy">Copy</button>
+      <button class="ks-button ks-button--ghost ks-button--sm mt-sm" onclick="copyApiKey()" data-i18n="dashboard.copy">复制</button>
     </div>
   </div>
 
   <!-- Recent Activity -->
   <section class="section" style="padding:var(--cw-space-2xl) 0">
-    <h2 class="ks-bento__tile-title mb-md" data-i18n="dashboard.recent">Recent Activity</h2>
+    <h2 class="ks-bento__tile-title mb-md" data-i18n="dashboard.recent">最近活动</h2>
     <div id="recent-list">
       <div class="ks-empty" id="empty-state">
         <span class="ks-empty__icon"><i class="ph ph-globe"></i></span>
-        <h3 class="ks-empty__title" data-i18n="dashboard.empty_title">No conversions yet</h3>
+        <h3 class="ks-empty__title" data-i18n="dashboard.empty_title">还没有翻译记录</h3>
         <p class="ks-empty__text" data-i18n="dashboard.empty_text">Bridge your first Chinese content to English. It only takes a few seconds.</p>
         <div class="ks-card" style="margin-top:var(--cw-space-lg);text-align:left;background:var(--cw-brand-blue / 0.05);border-color:var(--cw-border-accent)">
           <p style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary)" data-i18n="dashboard.empty_hint">Try pasting Chinese text about your product, experience, or company story on the bridge page.</p>
@@ -54,10 +54,10 @@
   <div id="upgrade-cta" style="display:none" class="ks-card" style="border-color:var(--cw-border-accent);background:var(--cw-brand-blue / 0.05)">
     <div class="flex flex-between flex-wrap gap-md">
       <div>
-        <h3 style="font-size:var(--cw-text-lg)" data-i18n="dashboard.upgrade_title">Upgrade to Starter</h3>
+        <h3 style="font-size:var(--cw-text-lg)" data-i18n="dashboard.upgrade_title">升级到入门版</h3>
         <p class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="dashboard.upgrade_text">Get 100 conversions/month and direct social publishing for $19/mo.</p>
       </div>
-      <a href="/pricing" class="ks-button ks-button--primary" data-i18n="dashboard.upgrade_btn">See Plans</a>
+      <a href="/pricing" class="ks-button ks-button--primary" data-i18n="dashboard.upgrade_btn">查看方案</a>
     </div>
   </div>
 </div>

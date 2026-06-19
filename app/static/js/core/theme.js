@@ -7,6 +7,16 @@
   if (saved) {
     document.documentElement.setAttribute('data-theme', saved);
   }
+
+  // Default to Chinese for Chinese entrepreneurs (our target users)
+  var savedLang = localStorage.getItem('cw-lang');
+  if (!savedLang) {
+    // Detect browser language
+    var browserLang = (navigator.language || '').toLowerCase();
+    savedLang = browserLang.startsWith('zh') ? 'zh' : 'en';
+  }
+  currentLang = savedLang;
+  applyLang(currentLang);
 })();
 
 function toggleTheme() {

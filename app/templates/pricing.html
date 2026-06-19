@@ -3,70 +3,70 @@
 {% block content %}
 <div class="section">
   <div class="section__header">
-    <h1 class="section__title" data-i18n="pricing.title">Simple, Transparent Pricing</h1>
-    <p class="section__subtitle" data-i18n="pricing.subtitle">Start free, upgrade when you need more</p>
+    <h1 class="section__title" data-i18n="pricing.title">简单透明的定价</h1>
+    <p class="section__subtitle" data-i18n="pricing.subtitle">免费开始，按需升级</p>
   </div>
 
   <!-- Billing Toggle -->
   <div class="flex flex-center gap-md mb-xl">
-    <span class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="pricing.monthly">Monthly</span>
+    <span class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="pricing.monthly">月付</span>
     <label class="theme-toggle" style="position:relative;width:48px;height:26px;cursor:pointer">
       <input type="checkbox" id="billing-toggle" onchange="toggleBilling()" style="opacity:0;width:0;height:0">
       <span style="position:absolute;top:0;left:0;right:0;bottom:0;background:var(--cw-bg-overlay);border:1px solid var(--cw-border);border-radius:var(--cw-radius-full);transition:0.3s"></span>
     </label>
-    <span class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="pricing.annual">Annual</span>
-    <span class="ks-badge ks-badge--success" data-i18n="pricing.save">Save 20%</span>
+    <span class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="pricing.annual">年付</span>
+    <span class="ks-badge ks-badge--success" data-i18n="pricing.save">省 20%</span>
   </div>
 
   <div class="ks-bento" style="max-width:960px;margin:0 auto">
     <!-- Free Plan -->
     <div class="ks-bento__tile text-center">
-      <h3 class="ks-bento__tile-title" data-i18n="pricing.free.name">Free</h3>
+      <h3 class="ks-bento__tile-title" data-i18n="pricing.free.name">免费</h3>
       <div class="ks-bento__tile-text mb-lg" style="font-size:var(--cw-text-4xl);font-weight:800;color:var(--cw-text)">
         <span class="price" data-monthly="$0" data-annual="$0">$0</span>
         <span class="period text-muted" style="font-size:var(--cw-text-sm)">/mo</span>
       </div>
       <ul class="mb-lg text-muted" style="font-size:var(--cw-text-sm);line-height:2">
-        <li data-i18n="pricing.free.feature1">10 conversions/month</li>
-        <li data-i18n="pricing.free.feature2">All platforms</li>
+        <li data-i18n="pricing.free.feature1">每月 10 次翻译</li>
+        <li data-i18n="pricing.free.feature2">支持所有平台</li>
         <li data-i18n="pricing.free.feature3">Mock mode (no API key)</li>
       </ul>
-      <a href="/signup" class="ks-button ks-button--secondary ks-button--block" data-i18n="pricing.free.cta">Get Started</a>
+      <a href="/signup" class="ks-button ks-button--secondary ks-button--block" data-i18n="pricing.free.cta">免费开始</a>
     </div>
 
     <!-- Starter Plan (Featured) -->
     <div class="ks-bento__tile text-center" style="border-color:var(--cw-border-accent);position:relative">
-      <span class="ks-badge ks-badge--info" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%)" data-i18n="pricing.popular">Most Popular</span>
-      <h3 class="ks-bento__tile-title" data-i18n="pricing.starter.name">Starter</h3>
+      <span class="ks-badge ks-badge--info" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%)" data-i18n="pricing.popular">最受欢迎</span>
+      <h3 class="ks-bento__tile-title" data-i18n="pricing.starter.name">入门版</h3>
       <div class="ks-bento__tile-text mb-lg" style="font-size:var(--cw-text-4xl);font-weight:800;color:var(--cw-text)">
         <span class="price" data-monthly="$19" data-annual="$15">$19</span>
         <span class="period text-muted" style="font-size:var(--cw-text-sm)">/mo</span>
       </div>
       <ul class="mb-lg text-muted" style="font-size:var(--cw-text-sm);line-height:2">
-        <li data-i18n="pricing.starter.feature1">100 conversions/month</li>
-        <li data-i18n="pricing.starter.feature2">All platforms + X Threads</li>
-        <li data-i18n="pricing.starter.feature3">Advanced cultural adaptation</li>
-        <li data-i18n="pricing.starter.feature4">API access</li>
-        <li data-i18n="pricing.starter.feature5">Direct social publishing</li>
+        <li data-i18n="pricing.starter.feature1">每月 100 次翻译</li>
+        <li data-i18n="pricing.starter.feature2">所有平台 + X 推文串</li>
+        <li data-i18n="pricing.starter.feature3">深度文化适配</li>
+        <li data-i18n="pricing.starter.feature4">API 访问</li>
+        <li data-i18n="pricing.starter.feature5">一键发布到社交平台</li>
       </ul>
-      <button class="ks-button ks-button--primary ks-button--block" onclick="startCheckout('starter')" data-i18n="pricing.starter.cta">Subscribe</button>
+      <button class="ks-button ks-button--primary ks-button--block" onclick="startCheckout('starter')" data-i18n="pricing.starter.cta">立即订阅</button>
     </div>
 
     <!-- Pro Plan -->
     <div class="ks-bento__tile text-center">
-      <h3 class="ks-bento__tile-title" data-i18n="pricing.pro.name">Pro</h3>
+      <h3 class="ks-bento__tile-title" data-i18n="pricing.pro.name">专业版</h3>
       <div class="ks-bento__tile-text mb-lg" style="font-size:var(--cw-text-4xl);font-weight:800;color:var(--cw-text)">
         <span class="price" data-monthly="$49" data-annual="$39">$49</span>
         <span class="period text-muted" style="font-size:var(--cw-text-sm)">/mo</span>
       </div>
       <ul class="mb-lg text-muted" style="font-size:var(--cw-text-sm);line-height:2">
-        <li data-i18n="pricing.pro.feature1">10,000 conversions/month</li>
-        <li data-i18n="pricing.pro.feature2">All platforms + API priority</li>
-        <li data-i18n="pricing.pro.feature3">Custom brand voice training</li>
+        <li data-i18n="pricing.pro.feature1">每月 10,000 次翻译</li>
+        <li data-i18n="pricing.pro.feature2">所有平台 + API 优先</li>
+        <li data-i18n="pricing.pro.feature3">自定义品牌语调</li>
         <li data-i18n="pricing.pro.feature4">API access (10,000 req/hr)</li>
-        <li data-i18n="pricing.pro.feature5">Priority support</li>
+        <li data-i18n="pricing.pro.feature5">优先支持</li>
       </ul>
-      <button class="ks-button ks-button--secondary ks-button--block" onclick="startCheckout('pro')" data-i18n="pricing.pro.cta">Subscribe</button>
+      <button class="ks-button ks-button--secondary ks-button--block" onclick="startCheckout('pro')" data-i18n="pricing.pro.cta">立即订阅</button>
     </div>
   </div>
 </div>

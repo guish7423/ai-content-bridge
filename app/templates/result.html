@@ -6,7 +6,7 @@
   <div class="ks-result-card__header">
     <div class="flex gap-sm">
       <span style="font-size:1.3rem"><i class="ph ph-clipboard-text"></i></span>
-      <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.analysis">Analysis</h3>
+      <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.analysis">分析结果</h3>
     </div>
   </div>
   <p><strong class="text-brand" data-i18n="result.core_message">Core Message:</strong> <span class="text-muted">{{ analysis.get("core_message", "") }}</span></p>
@@ -25,7 +25,7 @@
   <div class="ks-result-card__header">
     <div class="flex gap-sm">
       <span style="font-size:1.3rem"><i class="ph ph-globe"></i></span>
-      <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.localized">Localized Version</h3>
+      <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.localized">本地化版本</h3>
     </div>
     <span class="ks-badge">{{ localized|length }} <span data-i18n="result.chars">chars</span></span>
   </div>
@@ -49,7 +49,7 @@
       </div>
       <button class="ks-copy-btn" onclick="copyContent('{{ platform_key }}')">
         <span><i class="ph ph-clipboard-text"></i></span>
-        <span data-i18n="result.copy">Copy</span>
+        <span data-i18n="result.copy">复制</span>
       </button>
     </div>
     <div class="ks-result-card__content" id="content-{{ platform_key }}">{{ item.get("content", item.get("result", "")) }}</div>

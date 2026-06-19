@@ -270,15 +270,54 @@
   .mobile-nav { display: flex; }
   .dock { display: block; }
 
-  .hero { padding: var(--cw-space-3xl) 0 var(--cw-space-2xl); }
-  .hero__title { font-size: var(--cw-text-4xl); }
+  .hero { padding: var(--cw-space-2xl) 0 var(--cw-space-2xl); }
+  .hero__title { font-size: clamp(1.6rem, 7vw, 2.4rem); letter-spacing: -0.02em; }
+  .hero__badge { font-size: 0.7rem; padding: 3px 12px; }
+  .hero__subtitle { font-size: var(--cw-text-sm); }
   .hero__actions { flex-direction: column; align-items: center; }
   .hero__actions .ks-button { width: 100%; max-width: 320px; }
 
-  .section { padding: var(--cw-space-3xl) 0; }
+  .section { padding: var(--cw-space-2xl) 0; }
+  .section__header { margin-bottom: var(--cw-space-xl); }
   .section__title { font-size: var(--cw-text-2xl); }
+  .section__subtitle { font-size: var(--cw-text-sm); }
+
+  .container { padding: 0 var(--cw-space-md); }
+
+  /* Bento grid full width on mobile */
+  .ks-bento { grid-template-columns: 1fr; gap: var(--cw-space-sm); }
+  .ks-bento__tile, .ks-bento__tile--wide { grid-column: span 1; padding: var(--cw-space-md); }
+  .ks-bento__tile-title { font-size: var(--cw-text-base); }
+
+  /* Pricing cards stacked */
+  .pricing-grid { grid-template-columns: 1fr; max-width: 100%; padding: 0 var(--cw-space-md); }
+
+  /* Dashboard stats 2-col */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: var(--cw-space-sm); }
+  .stat-card { padding: var(--cw-space-md); }
+
+  /* Auth cards full width */
+  .auth-card { margin: 0 var(--cw-space-md); }
+
+  /* Dock items spacing */
+  .dock__items { padding: 0 var(--cw-space-md); }
+  .dock__item { min-width: 48px; font-size: 0.6rem; }
+
+  /* FAQ */
+  .faq-q { font-size: var(--cw-text-sm) !important; padding: var(--cw-space-sm) 0 !important; }
+
+  /* Bridge form */
+  #bridge .ks-card { padding: var(--cw-space-md); }
+  .platform-btn { font-size: var(--cw-text-xs) !important; padding: 6px 10px !important; }
 }
 
-@media (min-width: 769px) {
-  .dock { display: none !important; }
+/* Smaller phones */
+@media (max-width: 480px) {
+  .hero__title { font-size: clamp(1.4rem, 6vw, 1.8rem); }
+  .hero { padding: var(--cw-space-xl) 0 var(--cw-space-lg); }
+  .section__title { font-size: var(--cw-text-xl); }
+  .nav__brand { font-size: var(--cw-text-sm); }
+  .nav__brand-logo { width: 28px; height: 28px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .dock__item-icon { font-size: 1rem; }
 }

@@ -4,26 +4,26 @@
 <div class="auth-page flex flex-center" style="min-height:80vh">
   <div class="auth-card ks-card" style="max-width:420px;width:100%">
     <div class="text-center mb-lg">
-      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="login.title">Welcome Back</h1>
-      <p class="section__subtitle" style="font-size:var(--cw-text-sm)" data-i18n="login.subtitle">Sign in to your account</p>
+      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="login.title">欢迎回来</h1>
+      <p class="section__subtitle" style="font-size:var(--cw-text-sm)" data-i18n="login.subtitle">登录你的账号</p>
     </div>
 
     <form id="login-form">
       <div class="ks-form-group">
-        <label class="ks-label" for="email" data-i18n="login.email">Email</label>
+        <label class="ks-label" for="email" data-i18n="login.email">邮箱</label>
         <input type="email" id="email" name="email" required class="ks-input" placeholder="you@example.com" />
       </div>
       <div class="ks-form-group">
-        <label class="ks-label" for="password" data-i18n="login.password">Password</label>
+        <label class="ks-label" for="password" data-i18n="login.password">密码</label>
         <input type="password" id="password" name="password" required class="ks-input" />
       </div>
       <div id="login-error" class="ks-badge ks-badge--error mb-md" style="display:none"></div>
-      <button type="submit" class="ks-button ks-button--primary ks-button--block" data-i18n="login.submit">Sign In</button>
+      <button type="submit" class="ks-button ks-button--primary ks-button--block" data-i18n="login.submit">登录</button>
     </form>
 
     <p class="text-center mt-lg text-muted" style="font-size:var(--cw-text-sm)">
       <span data-i18n="login.no_account">Don't have an account?</span>
-      <a href="/signup" data-i18n="login.signup">Sign up</a>
+      <a href="/signup" data-i18n="login.signup">注册</a>
     </p>
   </div>
 </div>
@@ -53,7 +53,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     error.style.display = 'flex';
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '<span data-i18n="login.submit">Sign In</span>';
+    btn.innerHTML = '<span data-i18n="login.submit">登录</span>';
   }
 });
 </script>
