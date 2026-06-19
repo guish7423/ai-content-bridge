@@ -51,6 +51,10 @@
         <span><i class="ph ph-clipboard-text"></i></span>
         <span data-i18n="result.copy">复制</span>
       </button>
+      <button class="ks-copy-btn" onclick="publishTo('{{ platform_key }}')" style="margin-left:2px">
+        <span><i class="ph ph-paper-plane-right"></i></span>
+        <span>发布</span>
+      </button>
     </div>
     <div class="ks-result-card__content" id="content-{{ platform_key }}">{{ item.get("content", item.get("result", "")) }}</div>
 
@@ -90,11 +94,30 @@ function copyContent(key) {
   var container = document.getElementById('content-' + key);
   if (!container) return;
   var text = container.innerText;
-  var threadPosts = container.closest('.ks-result-card').querySelectorAll('.thread-post span:last-child');
-  if (threadPosts.length) {
-    text += '\n\n--- Thread ---\n';
-    threadPosts.forEach(function(post, i) { text += (i + 1) + '. ' + post.textContent.trim() + '\n'; });
-  }
-  copyToClipboard(text, 'Copied!');
+  copyToClipboard(text, '已复制！');
+}
+
+function publishTo(platform) {
+  var container = document.getElementById('content-' + platform);
+  if (!container) return;
+  var text = container.innerText;
+  var btn = event.target.closest('.ks-copy-btn') || event.target;
+  btn.innerHTML = '<span><i class="ph ph-spinner ph-spin"></i></span><span>发布中...</span>';
+  fetch('/publish', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({platform: platform, text: text})
+  }).then(function(r){return r.json()}).then(function(d){
+    if(d.success) {
+      btn.innerHTML = '<span><i class="ph ph-check-circle" style="color:var(--cw-green)"></i></span><span>已发布</span>';
+      showToast('已发布到 ' + platform, 'success');
+    } else {
+      btn.innerHTML = '<span><i class="ph ph-paper-plane-right"></i></span><span>发布</span>';
+      showToast(d.error || '发布失败', 'error');
+    }
+  }).catch(function(){
+    btn.innerHTML = '<span><i class="ph ph-paper-plane-right"></i></span><span>发布</span>';
+    showToast('发布失败，请重试', 'error');
+  });
 }
 </script>
