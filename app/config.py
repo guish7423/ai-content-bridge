@@ -55,7 +55,7 @@ class Settings:
 
     # Mock mode for testing
     llm_api_mock: bool = field(
-        default_factory=lambda: os.getenv("LLM_API_MOCK", "false").lower()
+        default_factory=lambda: os.getenv("LLM_API_MOCK", "true").lower()
         in ("true", "1")
     )
     llm_mock_response: str = field(
