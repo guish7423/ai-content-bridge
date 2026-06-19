@@ -67,8 +67,8 @@ a:hover {
   pointer-events: none;
   z-index: 0;
   background-image:
-    linear-gradient(oklch(92% 0.004 260 / 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, oklch(92% 0.004 260 / 0.02) 1px, transparent 1px);
+    linear-gradient(oklch(92% 0.004 260 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(92% 0.004 260 / 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -78,9 +78,54 @@ a:hover {
   left: -10vw;
   width: 60vw;
   height: 60vh;
-  background: radial-gradient(ellipse at center, var(--cw-brand-blue / 0.05), transparent 70%);
+  background: radial-gradient(ellipse at center, var(--cw-brand-blue / 0.06), transparent 70%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* ── 3D Floating Orbs (premium depth) ─────────────────────────────────── */
+.floating-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+  opacity: 0.3;
+  animation: orb-float 20s ease-in-out infinite;
+}
+
+.floating-orb--1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  right: -100px;
+  background: var(--cw-brand-blue / 0.15);
+  animation-delay: 0s;
+}
+
+.floating-orb--2 {
+  width: 300px;
+  height: 300px;
+  bottom: 10%;
+  left: -80px;
+  background: var(--cw-brand-cyan / 0.10);
+  animation-delay: -7s;
+}
+
+.floating-orb--3 {
+  width: 200px;
+  height: 200px;
+  top: 40%;
+  right: 20%;
+  background: var(--cw-brand-green / 0.08);
+  animation-delay: -14s;
+}
+
+@keyframes orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -30px) scale(1.05); }
+  50% { transform: translate(-20px, 20px) scale(0.95); }
+  75% { transform: translate(20px, 30px) scale(1.02); }
 }
 
 /* ── Main content area ────────────────────────────────────────────────── */

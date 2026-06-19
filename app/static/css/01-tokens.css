@@ -6,21 +6,21 @@
 
 :root {
   /* ── Brand Anchors ──────────────────────────────────────────────── */
-  --cw-brand-blue:    oklch(62% 0.18 255);     /* primary accent */
-  --cw-brand-cyan:    oklch(72% 0.14 210);     /* secondary glow */
-  --cw-brand-green:   oklch(65% 0.16 155);     /* success state */
+  --cw-brand-blue:    oklch(65% 0.16 255);     /* primary accent — brighter */
+  --cw-brand-cyan:    oklch(75% 0.12 210);     /* secondary glow — brighter */
+  --cw-brand-green:   oklch(68% 0.14 155);     /* success state */
 
-  /* ── Surfaces (Dark) ────────────────────────────────────────────── */
-  --cw-bg-deep:       oklch(4%  0.008 260);
-  --cw-bg:            oklch(7%  0.010 260);
-  --cw-bg-raised:     oklch(11% 0.012 260);
-  --cw-bg-overlay:    oklch(15% 0.014 260);
+  /* ── Surfaces (Dark — premium depth, not harsh) ─────────────────── */
+  --cw-bg-deep:       oklch(10% 0.012 260);    /* page ground — deep charcoal, not pure black */
+  --cw-bg:            oklch(13% 0.014 260);    /* default surface */
+  --cw-bg-raised:     oklch(17% 0.016 260);    /* cards, panels */
+  --cw-bg-overlay:    oklch(21% 0.018 260);    /* hover, active */
   --cw-bg-glass:      oklch(92% 0.004 260 / 0.04);
 
   /* ── Surfaces (Light) ───────────────────────────────────────────── */
-  --cw-bg-light:       oklch(97% 0.008 260);
-  --cw-bg-raised-light: oklch(99% 0.004 260);
-  --cw-bg-overlay-light: oklch(93% 0.010 260);
+  --cw-bg-light:       oklch(96% 0.008 260);   
+  --cw-bg-raised-light: oklch(98% 0.004 260); 
+  --cw-bg-overlay-light: oklch(92% 0.010 260);
 
   /* ── Text ───────────────────────────────────────────────────────── */
   --cw-text:           oklch(92% 0.004 260);
