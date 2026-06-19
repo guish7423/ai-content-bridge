@@ -2,6 +2,53 @@
    AI Content Bridge — Bridge Tool Interactions v1.0
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ── Live Preview (实时预览) ──────────────────────────────────────────── */
+var previewController = null;
+var previewTimer = null;
+
+function updateLivePreview(text) {
+  var previewEl = document.getElementById('live-preview');
+  var contentEl = document.getElementById('preview-content');
+  var statusEl = document.getElementById('preview-status');
+  if (!previewEl || !contentEl) return;
+
+  text = text || document.getElementById('text').value;
+
+  if (!text.trim()) {
+    contentEl.innerHTML = '<span class="live-preview__placeholder">输入中文后，这里会实时显示英文结果</span>';
+    previewEl.classList.remove('active');
+    if (statusEl) statusEl.textContent = '⏎';
+    return;
+  }
+
+  // Cancel previous request
+  if (previewController) previewController.abort();
+  previewController = new AbortController();
+
+  if (statusEl) statusEl.textContent = '⏳ 生成中...';
+  previewEl.classList.add('active');
+
+  fetch('/quick', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: text, platform: 'x' }),
+    signal: previewController.signal,
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('Preview failed');
+    return r.json();
+  })
+  .then(function(data) {
+    contentEl.textContent = data.content || '';
+    if (statusEl) statusEl.textContent = '✅ 实时';
+  })
+  .catch(function(err) {
+    if (err.name === 'AbortError') return;
+    contentEl.innerHTML = '<span class="live-preview__placeholder">预览生成中...</span>';
+    if (statusEl) statusEl.textContent = '⏎';
+  });
+}
+
 /* ── Sample presets ────────────────────────────────────────────────────── */
 var SAMPLES = [
   "",
@@ -80,7 +127,10 @@ function closeMobile() {
 document.addEventListener('DOMContentLoaded', function() {
   var textarea = document.getElementById('text');
   if (textarea) {
-    textarea.addEventListener('input', debounce(updateBridgeUI, 100));
+    textarea.addEventListener('input', debounce(function() {
+      updateBridgeUI();
+      updateLivePreview(this.value);
+    }, 400));
   }
 
   var form = document.getElementById('bridge-form');

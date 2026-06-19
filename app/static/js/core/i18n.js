@@ -107,6 +107,8 @@ window.I18N = {
     'bridge.input_label': 'Chinese Input',
     'bridge.platforms_label': 'Target Platforms',
     'bridge.submit': '✦ Bridge to English',
+    'live_preview.title': 'Live Preview',
+    'live_preview.placeholder': 'Type Chinese to see English result in real time',
 
     'faq.eyebrow': 'Support',
     'faq.title': 'FAQ',
@@ -238,6 +240,8 @@ window.I18N = {
     'bridge.input_label': '中文输入',
     'bridge.platforms_label': '目标平台',
     'bridge.submit': '✦ 生成英文内容',
+    'live_preview.title': '实时预览',
+    'live_preview.placeholder': '输入中文后，这里会实时显示英文结果',
 
     'faq.eyebrow': '帮助',
     'faq.title': '常见问题',

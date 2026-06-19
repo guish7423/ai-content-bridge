@@ -312,7 +312,43 @@
   flex-shrink: 0;
 }
 
-/* ── Copy button ────────────────────────────────────────────────────────── */
+/* ── Live Preview ─────────────────────────────────────────────────────── */
+.live-preview {
+  margin-top: var(--cw-space-md);
+  padding: var(--cw-space-md);
+  border-radius: var(--cw-radius-md);
+  background: var(--cw-bg-overlay);
+  border: 1px solid var(--cw-border);
+  min-height: 60px;
+  position: relative;
+  transition: all var(--cw-duration-normal) var(--cw-ease-out);
+}
+
+.live-preview.active {
+  border-color: var(--cw-border-accent);
+}
+
+.live-preview__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--cw-space-sm);
+  font-size: var(--cw-text-xs);
+  color: var(--cw-text-tertiary);
+}
+
+.live-preview__content {
+  font-size: var(--cw-text-sm);
+  color: var(--cw-text-secondary);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.live-preview__placeholder {
+  color: var(--cw-text-tertiary);
+  font-size: var(--cw-text-sm);
+  font-style: italic;
+}
 .ks-copy-btn {
   display: inline-flex;
   align-items: center;
