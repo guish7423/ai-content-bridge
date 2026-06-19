@@ -8,8 +8,11 @@
       <a href="/#features" class="nav__link nav__link--desktop" data-i18n="nav.features">功能</a>
       <a href="/pricing" class="nav__link nav__link--desktop" data-i18n="nav.pricing">定价</a>
       <a href="https://github.com/guish7423/ai-content-bridge" target="_blank" class="nav__link nav__link--desktop">GitHub</a>
-      <a href="/login" class="nav__link nav__link--desktop" data-i18n="nav.login">登录</a>
-      <a href="/signup" class="ks-button ks-button--primary ks-button--sm nav__link--desktop" data-i18n="nav.signup">免费开始</a>
+      <!-- Auth-aware links (toggled by JS) -->
+      <a href="/dashboard" id="nav-dashboard" class="nav__link nav__link--desktop" style="display:none">仪表盘</a>
+      <a href="/login" id="nav-login" class="nav__link nav__link--desktop" data-i18n="nav.login">登录</a>
+      <a href="/signup" id="nav-signup" class="ks-button ks-button--primary ks-button--sm nav__link--desktop" data-i18n="nav.signup">免费开始</a>
+      <a href="#" id="nav-logout" class="nav__link nav__link--desktop" style="display:none;color:var(--cw-text-tertiary)" onclick="handleLogout(event)">退出</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
       <button class="hamburger" onclick="toggleMobile()" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -17,3 +20,26 @@
     </div>
   </div>
 </nav>
+
+<script>
+// Check auth status and toggle nav links
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('/api/auth/me', { credentials: 'same-origin' })
+    .then(function(r) {
+      if (r.ok) {
+        document.getElementById('nav-dashboard').style.display = '';
+        document.getElementById('nav-login').style.display = 'none';
+        document.getElementById('nav-signup').style.display = 'none';
+        document.getElementById('nav-logout').style.display = '';
+      }
+    })
+    .catch(function() {});
+});
+
+function handleLogout(e) {
+  if (e) e.preventDefault();
+  fetch('/api/auth/logout', { method: 'POST' }).then(function() {
+    window.location.href = '/';
+  });
+}
+</script>

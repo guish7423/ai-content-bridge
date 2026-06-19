@@ -2,6 +2,8 @@
   <a href="/#features" onclick="closeMobile()" data-i18n="nav.features">功能</a>
   <a href="/pricing" onclick="closeMobile()" data-i18n="nav.pricing">定价</a>
   <a href="https://github.com/guish7423/ai-content-bridge" target="_blank" onclick="closeMobile()">GitHub</a>
-  <a href="/login" onclick="closeMobile()" class="ks-button ks-button--ghost" data-i18n="nav.login">登录</a>
-  <a href="/signup" onclick="closeMobile()" class="ks-button ks-button--primary" data-i18n="nav.signup">免费开始</a>
+  <a href="/dashboard" id="mnav-dashboard" onclick="closeMobile()" style="display:none">仪表盘</a>
+  <a href="/login" id="mnav-login" onclick="closeMobile()" class="ks-button ks-button--ghost" data-i18n="nav.login">登录</a>
+  <a href="/signup" id="mnav-signup" onclick="closeMobile()" class="ks-button ks-button--primary" data-i18n="nav.signup">免费开始</a>
+  <a href="#" id="mnav-logout" onclick="closeMobile(); handleLogout(event);" style="display:none;color:var(--cw-text-tertiary)">退出</a>
 </div>
