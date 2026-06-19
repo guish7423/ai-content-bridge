@@ -7,6 +7,7 @@ Pipeline: Analyze → Localize → Adapt → Polish
 import json
 import os
 import re
+import threading
 import time
 from dataclasses import dataclass, field
 from typing import Literal
@@ -26,29 +27,29 @@ class Usage:
     calls: int = 0
 
     def record(self, prompt_t: int, completion_t: int, model: str):
-        self.prompt_tokens += prompt_t
-        self.completion_tokens += completion_t
-        self.total_tokens += prompt_t + completion_t
-        self.calls += 1
-        # Multi-model pricing per million tokens
-        model_lower = model.lower()
-        if 'llama' in model_lower or 'nvidia' in model_lower:
-            # Llama 3.1 8B: $0.10 in + $0.10 out
-            cost = (prompt_t + completion_t) * 0.10 / 1_000_000
-        elif 'deepseek' in model_lower or 'flash' in model_lower:
-            cost = prompt_t * 0.07 / 1_000_000 + completion_t * 0.28 / 1_000_000
-        elif 'pro' in model_lower:
-            cost = prompt_t * 0.14 / 1_000_000 + completion_t * 0.56 / 1_000_000
-        else:
-            cost = (prompt_t + completion_t) * 0.15 / 1_000_000
-        self.cost_usd += cost
+        with _usage_lock:
+            self.prompt_tokens += prompt_t
+            self.completion_tokens += completion_t
+            self.total_tokens += prompt_t + completion_t
+            self.calls += 1
+            model_lower = model.lower()
+            if 'llama' in model_lower or 'nvidia' in model_lower:
+                cost = (prompt_t + completion_t) * 0.10 / 1_000_000
+            elif 'deepseek' in model_lower or 'flash' in model_lower:
+                cost = prompt_t * 0.07 / 1_000_000 + completion_t * 0.28 / 1_000_000
+            elif 'pro' in model_lower:
+                cost = prompt_t * 0.14 / 1_000_000 + completion_t * 0.56 / 1_000_000
+            else:
+                cost = (prompt_t + completion_t) * 0.15 / 1_000_000
+            self.cost_usd += cost
 
     def summary(self) -> dict:
-        return {
-            "calls": self.calls,
-            "tokens": self.total_tokens,
-            "cost_usd": round(self.cost_usd, 4),
-        }
+        with _usage_lock:
+            return {
+                "calls": self.calls,
+                "tokens": self.total_tokens,
+                "cost_usd": round(self.cost_usd, 4),
+            }
 
 usage = Usage()
 

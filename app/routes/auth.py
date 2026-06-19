@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from sqlalchemy import select
 
 from app.auth import (
@@ -26,10 +26,11 @@ class SignupRequest(BaseModel):
     password: str
     name: str = ""
 
+    @field_validator("password")
     @classmethod
-    def validate_password(cls, v: str) -> str:
+    def password_min_length(cls, v: str) -> str:
         if len(v) < 8:
-            raise ValueError("Password must be at least 8 characters")
+            raise ValueError("密码至少 8 个字符")
         return v
 
 

@@ -123,8 +123,8 @@ async def bridge_endpoint(
 
 
 @router.post("/quick")
-async def quick_endpoint(req: QuickRequest):
-    """Quick mode: single platform, returns just text."""
+async def quick_endpoint(req: QuickRequest, user: User | None = Depends(get_current_user)):
+    """Quick mode: single platform, returns just text. Requires auth in production."""
     if not req.text.strip():
         raise HTTPException(status_code=400, detail="text is required")
     try:
@@ -138,8 +138,8 @@ async def quick_endpoint(req: QuickRequest):
 
 
 @router.get("/usage")
-async def usage_endpoint():
-    """Get global LLM API usage stats."""
+async def usage_endpoint(user: User = Depends(require_user)):
+    """Get global LLM API usage stats (admin only)."""
     return usage.summary()
 
 
