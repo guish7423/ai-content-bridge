@@ -98,8 +98,8 @@
 /* ── Scroll reveal classes ──────────────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s var(--cw-ease-out), transform 0.5s var(--cw-ease-out);
+  transform: translateY(8px);
+  transition: opacity 0.4s var(--cw-ease-out), transform 0.4s var(--cw-ease-out);
 }
 
 .reveal.visible {
@@ -109,8 +109,8 @@
 
 .reveal-left {
   opacity: 0;
-  transform: translateX(-20px);
-  transition: opacity 0.5s var(--cw-ease-out), transform 0.5s var(--cw-ease-out);
+  transform: translateX(-8px);
+  transition: opacity 0.4s var(--cw-ease-out), transform 0.4s var(--cw-ease-out);
 }
 
 .reveal-left.visible {
@@ -120,8 +120,8 @@
 
 .reveal-right {
   opacity: 0;
-  transform: translateX(20px);
-  transition: opacity 0.5s var(--cw-ease-out), transform 0.5s var(--cw-ease-out);
+  transform: translateX(8px);
+  transition: opacity 0.4s var(--cw-ease-out), transform 0.4s var(--cw-ease-out);
 }
 
 .reveal-right.visible {

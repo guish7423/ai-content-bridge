@@ -8,14 +8,8 @@
     document.documentElement.setAttribute('data-theme', saved);
   }
 
-  // Default to Chinese for Chinese entrepreneurs (our target users)
-  var savedLang = localStorage.getItem('cw-lang');
-  if (!savedLang) {
-    // Detect browser language
-    var browserLang = (navigator.language || '').toLowerCase();
-    savedLang = browserLang.startsWith('zh') ? 'zh' : 'en';
-  }
-  currentLang = savedLang;
+  // 始终默认中文（目标用户是中国创业者）
+  currentLang = localStorage.getItem('cw-lang') || 'zh';
   applyLang(currentLang);
 })();
 

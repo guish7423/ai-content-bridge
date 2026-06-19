@@ -15,8 +15,8 @@
         var x = (e.clientX - rect.left) / rect.width;
         var y = (e.clientY - rect.top) / rect.height;
 
-        // 3D tilt
-        card.style.transform = 'perspective(800px) rotateY(' + ((x - 0.5) * 8) + 'deg) rotateX(' + ((0.5 - y) * 8) + 'deg) translateZ(10px)';
+        // Gentle 3D tilt (Apple/Linear subtlety)
+        card.style.transform = 'perspective(800px) rotateY(' + ((x - 0.5) * 4) + 'deg) rotateX(' + ((0.5 - y) * 4) + 'deg) translateZ(5px)';
 
         // Light glow follows cursor
         card.style.setProperty('--glow-x', (x * 100) + '%');

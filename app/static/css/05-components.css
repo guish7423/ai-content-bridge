@@ -76,32 +76,28 @@
 
 /* ── Cards ─────────────────────────────────────────────────────────────── */
 .ks-card {
-  background: var(--cw-bg-raised);
-  border: 1px solid var(--cw-border);
   border-radius: var(--cw-radius-lg);
   padding: var(--cw-space-xl);
-  transition: border-color var(--cw-duration-normal) var(--cw-ease-out);
+  transition: background var(--cw-duration-normal) var(--cw-ease-out);
 }
 
-.ks-card:hover { border-color: var(--cw-border-accent); }
+.ks-card:hover { background: var(--cw-bg-glass); }
 
 /* ── Bento Grid ────────────────────────────────────────────────────────── */
 .ks-bento {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--cw-space-md);
+  gap: var(--cw-space-lg);
 }
 
 .ks-bento__tile {
   grid-column: span 4;
-  background: var(--cw-bg-raised);
-  border: 1px solid var(--cw-border);
   border-radius: var(--cw-radius-lg);
-  padding: var(--cw-space-xl);
-  transition: all var(--cw-duration-normal) var(--cw-ease-out);
+  padding: var(--cw-space-2xl);
+  transition: background var(--cw-duration-normal) var(--cw-ease-out);
 }
 
-.ks-bento__tile:hover { border-color: var(--cw-border-accent); }
+.ks-bento__tile:hover { background: var(--cw-bg-glass); }
 
 .ks-bento__tile--wide { grid-column: span 6; }
 .ks-bento__tile--full { grid-column: span 12; }
