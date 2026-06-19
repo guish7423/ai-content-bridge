@@ -1,42 +1,53 @@
 {% extends "base.html" %}
-{% block title %}Login - AI Content Bridge{% endblock %}
+{% block title %}登录 - AI Content Bridge{% endblock %}
 {% block content %}
-<div class="auth-page flex flex-center" style="min-height:80vh">
-  <div class="auth-card ks-card" style="max-width:420px;width:100%">
-    <div class="text-center mb-lg">
-      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="login.title">欢迎回来</h1>
-      <p class="section__subtitle" style="font-size:var(--cw-text-sm)" data-i18n="login.subtitle">登录你的账号</p>
+<div class="auth-page" style="min-height:90vh;display:flex;align-items:center;justify-content:center;padding:var(--cw-space-lg)">
+  <div style="max-width:420px;width:100%;animation:ks-fade-in-up 0.4s var(--cw-ease-out)">
+    <!-- Brand mark -->
+    <div style="text-align:center;margin-bottom:var(--cw-space-lg)">
+      <div style="width:48px;height:48px;border-radius:var(--cw-radius-lg);background:linear-gradient(135deg,var(--cw-brand-blue),var(--cw-brand-cyan));display:flex;align-items:center;justify-content:center;margin:0 auto var(--cw-space-md);font-size:1.3rem;color:white;font-weight:800">◆</div>
+      <h1 style="font-size:var(--cw-text-2xl);font-weight:700;margin-bottom:var(--cw-space-xs)">欢迎回来</h1>
+      <p style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary)">登录你的账号继续使用</p>
     </div>
 
-    <form id="login-form">
-      <div class="ks-form-group">
-        <label class="ks-label" for="email" data-i18n="login.email">邮箱</label>
-        <input type="email" id="email" name="email" required class="ks-input" placeholder="you@example.com" />
-      </div>
-      <div class="ks-form-group">
-        <label class="ks-label" for="password" data-i18n="login.password">密码</label>
-        <input type="password" id="password" name="password" required class="ks-input" />
-      </div>
-      <div id="login-error" class="ks-badge ks-badge--error mb-md" style="display:none"></div>
-      <button type="submit" class="ks-button ks-button--primary ks-button--block" data-i18n="login.submit">登录</button>
-    </form>
+    <!-- Login card -->
+    <div style="background:var(--cw-bg-raised);border:1px solid var(--cw-border);border-radius:var(--cw-radius-xl);padding:var(--cw-space-2xl)">
+      <form id="login-form">
+        <div class="ks-form-group">
+          <label class="ks-label" for="email">邮箱</label>
+          <input type="email" id="email" name="email" required class="ks-input" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="ks-form-group">
+          <label class="ks-label" for="password">密码</label>
+          <input type="password" id="password" name="password" required class="ks-input" autocomplete="current-password" />
+        </div>
+        <div id="login-error" style="display:none;padding:var(--cw-space-sm);border-radius:var(--cw-radius-md);background:var(--cw-red-subtle);color:var(--cw-red);font-size:var(--cw-text-sm);margin-bottom:var(--cw-space-md)"></div>
+        <button type="submit" class="ks-button ks-button--primary ks-button--block ks-button--lg" style="margin-top:var(--cw-space-md)">
+          <span class="btn-text">登录</span>
+          <span class="btn-spinner" style="display:none"><span class="ks-spinner"></span></span>
+        </button>
+      </form>
 
-    <p class="text-center mt-lg text-muted" style="font-size:var(--cw-text-sm)">
-      <span data-i18n="login.no_account">Don't have an account?</span>
-      <a href="/signup" data-i18n="login.signup">注册</a>
-    </p>
+      <div style="text-align:center;margin-top:var(--cw-space-xl);font-size:var(--cw-text-sm);color:var(--cw-text-secondary)">
+        还没有账号？<a href="/signup" style="color:var(--cw-brand-blue);font-weight:600">注册</a>
+      </div>
+    </div>
   </div>
 </div>
-{% endblock %}
-{% block scripts %}
+
 <script>
 document.getElementById('login-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   var btn = this.querySelector('button[type="submit"]');
+  var btnText = btn.querySelector('.btn-text');
+  var btnSpinner = btn.querySelector('.btn-spinner');
   var error = document.getElementById('login-error');
+  
   btn.disabled = true;
-  btn.innerHTML = '<span class="ks-spinner"></span>';
+  btnText.style.display = 'none';
+  btnSpinner.style.display = 'inline-flex';
   error.style.display = 'none';
+  
   try {
     var resp = await fetch('/api/auth/login-form', {
       method: 'POST',
@@ -45,15 +56,16 @@ document.getElementById('login-form').addEventListener('submit', async function(
     });
     if (!resp.ok) {
       var data = await resp.json();
-      throw new Error(data.detail || 'Login failed');
+      throw new Error(data.detail || '邮箱或密码错误');
     }
     window.location.href = '/dashboard';
   } catch (err) {
     error.textContent = err.message;
-    error.style.display = 'flex';
+    error.style.display = 'block';
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '<span data-i18n="login.submit">登录</span>';
+    btnText.style.display = 'inline';
+    btnSpinner.style.display = 'none';
   }
 });
 </script>

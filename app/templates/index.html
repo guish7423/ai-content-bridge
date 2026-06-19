@@ -14,15 +14,20 @@
 
 <!-- ═══ Hero ═══ -->
 <section class="hero">
-  <div class="hero__badge">
-    <span class="badge-icon">◆</span>
-    <span data-i18n="hero.badge">AI 文化适配 · 一键搞定</span>
-  </div>
-  <h1 class="hero__title" data-i18n="hero.title">用母语写，用英文发</h1>
-  <p class="hero__subtitle" data-i18n="hero.subtitle">把你的中文想法一键变成地道的英文帖子。不是翻译，是文化适配。</p>
-  <div class="hero__actions">
-    <a href="#bridge" class="ks-button ks-button--primary ks-button--lg" data-i18n="hero.cta"><i class="ph ph-sparkle"></i> 免费试用</a>
-    <a href="#showcase" class="ks-button ks-button--secondary ks-button--lg" data-i18n="hero.examples">看看效果</a>
+  <div class="hero__layout">
+    <div class="hero__content">
+      <div class="hero__badge">
+        <span class="badge-icon">◆</span>
+        <span data-i18n="hero.badge">AI 文化适配 · 一键搞定</span>
+      </div>
+      <h1 class="hero__title" data-i18n="hero.title">用母语写，用英文发</h1>
+      <p class="hero__subtitle" data-i18n="hero.subtitle">把你的中文想法一键变成地道的英文帖子。不是翻译，是文化适配。</p>
+      <div class="hero__actions">
+        <a href="#bridge" class="ks-button ks-button--primary ks-button--lg" data-i18n="hero.cta"><i class="ph ph-sparkle"></i> 免费试用</a>
+        <a href="#showcase" class="ks-button ks-button--secondary ks-button--lg" data-i18n="hero.examples">看看效果</a>
+      </div>
+    </div>
+    <div class="hero__visual" id="product-globe"></div>
   </div>
 </section>
 
@@ -182,5 +187,7 @@
 {% block scripts %}
 <script src="/static/js/effects/scroll-reveal.js"></script>
 <script src="/static/js/effects/tracing-beam.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/static/js/effects/product-globe.js"></script>
 <script src="/static/js/pages/bridge.js"></script>
 {% endblock %}
