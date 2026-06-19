@@ -13,7 +13,7 @@ from typing import Literal
 
 from app.config import settings
 
-Platform = Literal["x", "linkedin", "reddit", "blog"]
+Platform = Literal["x", "linkedin", "reddit"]
 
 # ── Cost tracking ─────────────────────────────────────────────────────────────
 

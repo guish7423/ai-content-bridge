@@ -133,11 +133,13 @@ init_db()  # Ensure tables exist
 from app.routes.auth import router as auth_router
 from app.routes.bridge import router as bridge_router
 from app.routes.billing import router as billing_router
+from app.routes.brand import router as brand_router
 from app.routes.pages import router as pages_router
 
 app.include_router(auth_router)
 app.include_router(bridge_router)
 app.include_router(billing_router)
+app.include_router(brand_router)
 app.include_router(pages_router)
 
 

@@ -111,6 +111,32 @@
         <p style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary);margin-bottom:var(--cw-space-md)">每月 100 次翻译 + 直接发布到社交平台</p>
         <a href="/pricing" class="ks-button ks-button--primary ks-button--sm">查看方案</a>
       </div>
+      <!-- Brand Voice Settings -->
+      <div style="background:var(--cw-bg-raised);border-radius:var(--cw-radius-xl);padding:var(--cw-space-xl)">
+        <h2 style="font-size:var(--cw-text-lg);font-weight:600;margin-bottom:var(--cw-space-lg)"><i class="ph ph-pen-nib"></i> 品牌语调</h2>
+        <p style="font-size:var(--cw-text-xs);color:var(--cw-text-tertiary);margin-bottom:var(--cw-space-md)">设置品牌声音后，所有翻译会自动保持一致</p>
+        
+        <div class="ks-form-group">
+          <label class="ks-label">品牌名称</label>
+          <input id="brand-name" class="ks-input" placeholder="e.g. TechFlow AI">
+        </div>
+        <div class="ks-form-group">
+          <label class="ks-label">品牌描述</label>
+          <textarea id="brand-desc" class="ks-input" style="min-height:60px;resize:vertical" placeholder="简单描述你的业务"></textarea>
+        </div>
+        <div class="ks-form-group">
+          <label class="ks-label">语调</label>
+          <select id="brand-tone" class="ks-input">
+            <option value="professional">专业严谨</option>
+            <option value="casual">轻松随意</option>
+            <option value="humorous">幽默风趣</option>
+            <option value="inspiring">鼓舞人心</option>
+            <option value="authoritative">权威可信</option>
+          </select>
+        </div>
+        <button class="ks-button ks-button--primary ks-button--sm" onclick="saveBrandVoice()">保存设置</button>
+        <span id="brand-saved" style="display:none;margin-left:var(--cw-space-sm);font-size:var(--cw-text-xs);color:var(--cw-green)">✅ 已保存</span>
+      </div>
     </div>
   </div>
 </div>
@@ -165,6 +191,30 @@ async function loadRecent() {
   } catch(e) {}
 }
 
+
+function saveBrandVoice() {
+  fetch('/api/brand/profile', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      brand_name: document.getElementById('brand-name').value,
+      brand_description: document.getElementById('brand-desc').value,
+      tone: document.getElementById('brand-tone').value
+    })
+  }).then(function(r){return r.json()}).then(function(d){
+    document.getElementById('brand-saved').style.display = 'inline';
+    setTimeout(function(){document.getElementById('brand-saved').style.display='none'}, 2000);
+  });
+}
+
+function loadBrandProfile() {
+  fetch('/api/brand/profile').then(function(r){return r.json()}).then(function(d){
+    if(d.brand_name) document.getElementById('brand-name').value = d.brand_name;
+    if(d.brand_description) document.getElementById('brand-desc').value = d.brand_description;
+    if(d.tone) document.getElementById('brand-tone').value = d.tone;
+  }).catch(function(){});
+}
+
 function copyApiKey() {
   fetch('/api/auth/me').then(function(r){return r.json()}).then(function(d){
     copyToClipboard(d.api_key || '', '已复制 API 密钥');
@@ -172,5 +222,6 @@ function copyApiKey() {
 }
 
 loadDashboard();
+loadBrandProfile();
 </script>
 {% endblock %}

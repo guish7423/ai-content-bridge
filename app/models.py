@@ -127,6 +127,23 @@ def _load_plan_price_ids() -> dict:
         "pro": os.getenv("STRIPE_PRO_PRICE_ID", ""),
     }
 
+
+
+class BrandProfile(Base):
+    """Brand voice settings for content adaptation."""
+    __tablename__ = "brand_profiles"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    brand_name = Column(String(255), default="")
+    brand_description = Column(Text, default="")
+    tone = Column(String(50), default="professional")
+    target_audience = Column(String(500), default="")
+    key_topics = Column(Text, default="")
+    avoid_words = Column(Text, default="")
+    created_at = Column(DateTime, default=lambda: __import__("datetime").datetime.now(__import__("datetime").timezone.utc))
+    updated_at = Column(DateTime, default=lambda: __import__("datetime").datetime.now(__import__("datetime").timezone.utc))
+
 PLANS = {
     "free": {
         "name": "Free",

@@ -3,7 +3,7 @@ import pytest
 from pathlib import Path
 
 os.environ["DATABASE_URL"] = "sqlite:///./test_bridge.db"
-os.environ["JWT_SECRET"] = "test-secret"
+os.environ["SECRET_KEY"] = "test-secret-key-not-default-32char!!"
 os.environ["LLM_API_BASE_URL"] = "http://mock"
 os.environ["LLM_API_KEY"] = "test-key"
 os.environ["LLM_API_MOCK"] = "true"

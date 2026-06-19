@@ -59,7 +59,7 @@ async def bridge_endpoint(
         )
 
     platforms = req.platforms or ["x", "linkedin", "reddit"]
-    valid = {"x", "linkedin", "reddit", "blog"}
+    valid = {"x", "linkedin", "reddit"}
     for p in platforms:
         if p not in valid:
             raise HTTPException(status_code=400, detail=f"Invalid platform: {p}")
