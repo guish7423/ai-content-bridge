@@ -16,7 +16,9 @@ from app.config import settings
 
 Platform = Literal["x", "linkedin", "reddit", "blog"]
 
-# ── Cost tracking ─────────────────────────────────────────────────────────────
+# ── Thread-safe cost tracking ─────────────────────────────────────────────
+
+_usage_lock = threading.Lock()
 
 @dataclass
 class Usage:
