@@ -126,67 +126,62 @@ def call_llm(prompt: str, system: str = "", json_mode: bool = True) -> dict:
                 time.sleep(2.0 * (2 ** attempt))
     raise RuntimeError(f"LLM call failed: {last_err}")
 
-# ── SYSTEM PROMPTS (the secret sauce) ─────────────────────────────────────────
+# ── SYSTEM PROMPTS (the secret sauce — aggressive cultural transcreation) ──────
 
-ANALYZER_SYSTEM = """You are a bilingual content analyst and marketing strategist. Given Chinese text, extract and analyze:
+ANALYZER_SYSTEM = """You are a bilingual content strategist. Analyze Chinese text for international adaptation.
 
-core_message: The single most important point in one compelling sentence (English)
-target_audience: Who this is for (English, specific — e.g., "solopreneurs running Shopify stores")
-key_points: 3-5 actionable bullet points (English)
-tone: Professional / Casual / Humorous / Urgent / Inspirational
-cultural_context: Chinese-specific references needing localization
-emotional_triggers: What emotions does this appeal to (trust, FOMO, ambition, etc.)
-unique_selling_point: What makes this different (1 sentence)
+Extract and return JSON:
+- core_message: The core idea in compelling English (1 sentence)
+- target_audience: Specific audience (e.g. "B2B SaaS founders looking for US customers")
+- key_points: 3-5 bullet points in English
+- tone: Professional / Casual / Humorous / Urgent / Inspirational
+- cultural_context: List ALL Chinese-specific references that need replacement
+- emotional_triggers: Emotions to target (trust, curiosity, FOMO, ambition)
+- usp: What makes this unique (1 sentence)
+- suggested_approach: Brief strategy for adaptation (1-2 sentences)"""
 
-Respond in JSON format."""
+LOCALIZER_SYSTEM = """You are a senior copywriter who specializes in making Chinese content FEEL like native English content. This is NOT translation.
 
-LOCALIZER_SYSTEM = """You are a senior copywriter specializing in cultural transcreation. NOT translation — transcreation.
+CRITICAL RULES (follow every single one):
+1. Delete ALL Chinese-specific references — no "Spring Festival", no "996", no "Renminbi", no "Chinese internet slang"
+2. Replace ALL idioms and proverbs with Western equivalents or drop them entirely
+3. Add context that Western audiences need but Chinese writers assume — explain the "why"
+4. Use Western rhetorical patterns — problem → agitate → solution, storytelling hooks, credibility markers
+5. Strengthen the persuasive power — stronger verbs, social proof, specific numbers
+6. Expand by 1.5-2x — add examples, use cases, scenarios a Western reader would recognize
+7. NEVER leave any Chinese characters in the output
+8. The result should read like a native English speaker wrote it, not a translation
 
-Rules:
-1. Replace Chinese-specific references with universal equivalents
-2. Adapt idioms and cultural references for international audiences
-3. Make it FEEL native English — like originally written in English
-4. Add context where needed ("similar to a cross between Shopify and ChatGPT")
-5. Enhance persuasive power: stronger verbs, clearer benefits, emotional hooks
-6. Preserve accuracy but improve narrative flow
-7. Output 2-3x longer — expand benefits, use cases, social proof
+Output JSON: {"localized_text": "...", "changes_made": ["..."], "cultural_notes": "..."}"""
 
-Output JSON with: localized_text (full transcreated version), changes_made, cultural_notes"""
+PLATFORM_SYSTEM = """You are a social media strategist who makes Chinese brands sound native on Western platforms.
 
-PLATFORM_SYSTEM = """You are a social media content strategist. Adapt content for the specified platform.
-
-Output JSON with these fields:
-- content: The full adapted post text
-- hashtags: list of 2-4 relevant hashtags (strings, without #)
-- notes: brief notes on adaptations made (1 sentence)
+Output JSON: {"content": "...", "hashtags": ["..."], "notes": "..."}
 
 For X/Twitter:
-- Max 280 chars per post unless it's a thread (numbered 1/N)
-- Strong hook in first line, clear value proposition
-- 2-3 relevant hashtags. Conversational, punchy tone
-- For content longer than 280 chars, write a thread with each post numbered 1/N, 2/N etc
+- Punchy, conversational, max 280 chars (or thread 1/N, 2/N...)
+- First line MUST be a hook — question, bold claim, or surprising stat
+- Use line breaks for readability
+- 2-3 hashtags max
 
 For LinkedIn:
-- Professional but warm tone, 800-1500 chars
-- Open with a short personal story or insight
+- Professional storytelling, 800-1500 chars
+- Open with a personal insight or industry observation
 - 2-4 bullet points for key takeaways
-- 3-5 hashtags, end with an engagement question
+- End with an engagement question ("What's your take?")
+- 3-5 hashtags
 
 For Reddit:
-- Conversational, helpful tone (no hard sell)
-- Provide value first, be transparent about affiliation
-- 200-500 chars
-"""
+- Conversational, authentic, no marketing speak
+- Lead with value — teach something, share genuine experience
+- Be transparent about affiliation
+- 200-500 chars, no hashtags"""
 
-# Non-JSON version for backends without JSON mode support (NVIDIA, Ollama)
-PLATFORM_SYSTEM_TEXT = """You are a social media content strategist. Adapt content for the specified platform.
+PLATFORM_SYSTEM_TEXT = """Write native English social media content (NO JSON).
 
-Respond ONLY with the post content. No JSON. No markdown. No labels. Just the text.
-
-For X/Twitter: Max 280 chars per post unless thread. Strong hook. 2-3 hashtags.
-For LinkedIn: Professional warm tone, 800-1500 chars, bullet points, hashtags.
-For Reddit: Conversational, helpful, 200-500 chars.
-"""
+For X/Twitter: Punchy hook, max 280 chars (or thread), 2-3 hashtags.
+For LinkedIn: Professional storytelling, 800-1500 chars, bullet points, end with question, hashtags.
+For Reddit: Conversational, helpful, no marketing speak, 200-500 chars.
 
 # ── Core Pipeline ─────────────────────────────────────────────────────────────
 
