@@ -41,15 +41,16 @@ class LoginRequest(BaseModel):
 
 # ── Helpers ────────────────────────────────────────────────────────────────
 
-def _set_auth_cookie(redirect: "RedirectResponse", token: str) -> "RedirectResponse":
-    """Set secure auth cookie with consistent settings."""
+def _set_auth_cookie(redirect: "RedirectResponse", token: str, request: "Request" = None) -> "RedirectResponse":
+    """Set auth cookie. Only secure flag when HTTPS."""
+    is_secure = bool(request and request.url.scheme == "https")
     redirect.set_cookie(
         key="token",
         value=token,
         httponly=True,
-        secure=True,
+        secure=is_secure,
         samesite="lax",
-        max_age=604800,  # 7 days
+        max_age=604800,
         path="/",
     )
     return redirect
@@ -148,29 +149,21 @@ async def change_plan(
 # ── HTMX Form Endpoints ────────────────────────────────────────────────────
 
 @router.post("/login-form")
-async def login_form(req: LoginRequest, db=Depends(get_db)):
+async def login_form(req: LoginRequest, request: Request, db=Depends(get_db)):
     """Login form endpoint for HTMX — returns redirect with cookie."""
     result = await login(req, db)
     token = result["token"]
     redirect = RedirectResponse(url="/dashboard", status_code=302)
-    redirect.set_cookie(
-        key="token", value=token, httponly=True, secure=True,
-        samesite="lax", max_age=604800, path="/",
-    )
-    return redirect
+    return _set_auth_cookie(redirect, token, request)
 
 
 @router.post("/signup-form")
-async def signup_form(req: SignupRequest, db=Depends(get_db)):
+async def signup_form(req: SignupRequest, request: Request, db=Depends(get_db)):
     """Signup form endpoint for HTMX — returns redirect with cookie."""
     result = await signup(req, db)
     token = result["token"]
     redirect = RedirectResponse(url="/dashboard", status_code=302)
-    redirect.set_cookie(
-        key="token", value=token, httponly=True, secure=True,
-        samesite="lax", max_age=604800, path="/",
-    )
-    return redirect
+    return _set_auth_cookie(redirect, token, request)
 
 
 @router.post("/logout")
