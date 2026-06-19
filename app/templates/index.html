@@ -137,6 +137,52 @@
       </div>
     </div>
 
+    <!-- Batch Mode Toggle -->
+    <div style="text-align:center;margin-top:var(--cw-space-md)">
+      <button class="ks-button ks-button--ghost ks-button--sm" onclick="toggleBatch()" id="batch-toggle">
+        <i class="ph ph-list-bullets"></i> 批量翻译
+      </button>
+    </div>
+
+    <!-- Batch Mode -->
+    <div id="batch-mode" style="display:none;margin-top:var(--cw-space-md)">
+      <div class="ks-card">
+        <div class="ks-form-group">
+          <label class="ks-label" data-i18n="bridge.batch_label">多条中文内容（每行一条）</label>
+          <textarea id="batch-text" class="ks-input" style="min-height:200px;resize:vertical;font-family:var(--cw-font-mono);font-size:var(--cw-text-sm)" placeholder="产品A：我们是一家AI公司...
+产品B：我们做跨境电商..."></textarea>
+        </div>
+        <button class="ks-button ks-button--primary ks-button--block" onclick="doBatch()" id="batch-btn">
+          <i class="ph ph-lightning"></i> 批量翻译（最多 50 条）
+        </button>
+        <div id="batch-results" class="mt-md" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- Ideas Generator -->
+    <div style="text-align:center;margin-top:var(--cw-space-sm)">
+      <button class="ks-button ks-button--ghost ks-button--sm" onclick="toggleIdeas()" id="ideas-toggle">
+        <i class="ph ph-bulb"></i> 内容创意生成
+      </button>
+    </div>
+    <div id="ideas-mode" style="display:none;margin-top:var(--cw-space-md)">
+      <div class="ks-card">
+        <div class="ks-form-group">
+          <label class="ks-label">描述你的产品/业务</label>
+          <textarea id="ideas-desc" class="ks-input" style="min-height:80px;resize:vertical" placeholder="我们是一家AI驱动的跨境电商营销平台，帮助中国卖家在海外市场获客..."></textarea>
+        </div>
+        <select id="ideas-platform" class="ks-input" style="margin-bottom:var(--cw-space-md)">
+          <option value="x">X / Twitter</option>
+          <option value="linkedin">LinkedIn</option>
+          <option value="reddit">Reddit</option>
+        </select>
+        <button class="ks-button ks-button--primary ks-button--block" onclick="doIdeas()" id="ideas-btn">
+          <i class="ph ph-magic-wand"></i> 生成 5 个帖子创意
+        </button>
+        <div id="ideas-results" class="mt-md" style="display:none"></div>
+      </div>
+    </div>
+
     <!-- Results -->
     <div id="results" class="mt-lg">
       <div class="stagger" style="display:none">

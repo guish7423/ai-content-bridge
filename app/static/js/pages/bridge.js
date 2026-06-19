@@ -2,6 +2,96 @@
    AI Content Bridge — Bridge Tool Interactions v1.0
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ── Batch Translation ──────────────────────────────────────────────── */
+function toggleBatch() {
+  var el = document.getElementById('batch-mode');
+  var btn = document.getElementById('batch-toggle');
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    btn.textContent = '收起批量翻译';
+  } else {
+    el.style.display = 'none';
+    btn.textContent = '批量翻译';
+  }
+}
+
+function doBatch() {
+  var textarea = document.getElementById('batch-text');
+  var btn = document.getElementById('batch-btn');
+  var results = document.getElementById('batch-results');
+  var texts = textarea.value.split('\n').filter(function(t){return t.trim()});
+  if (!texts.length) { showToast('请输入内容', 'error'); return; }
+  if (texts.length > 50) { showToast('最多 50 条', 'error'); return; }
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ks-spinner"></span> 翻译中...';
+  results.style.display = 'block';
+  results.innerHTML = '<p style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary)">处理中，请稍候...</p>';
+  
+  fetch('/batch', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({texts: texts, platform: 'x'})
+  }).then(function(r){return r.json()}).then(function(d){
+    results.innerHTML = '<div style="font-size:var(--cw-text-xs);color:var(--cw-text-tertiary);margin-bottom:var(--cw-space-sm)">共 ' + d.total + ' 条</div>' +
+      d.results.map(function(item, i){
+        return '<div style="padding:var(--cw-space-sm);border-bottom:1px solid var(--cw-border);font-size:var(--cw-text-sm)">' +
+          '<div style="color:var(--cw-text-tertiary);margin-bottom:2px">#' + (i+1) + ' ' + item.original.slice(0,60) + '</div>' +
+          '<div style="color:var(--cw-text-secondary)">' + (item.content || '<span style="color:var(--cw-red)">' + item.error + '</span>') + '</div></div>';
+      }).join('');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ph ph-lightning"></i> 批量翻译';
+  }).catch(function(){
+    results.innerHTML = '<p style="color:var(--cw-red);font-size:var(--cw-text-sm)">请求失败</p>';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ph ph-lightning"></i> 批量翻译';
+  });
+}
+
+/* ── Content Ideas Generator ────────────────────────────────────────── */
+function toggleIdeas() {
+  var el = document.getElementById('ideas-mode');
+  var btn = document.getElementById('ideas-toggle');
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    btn.textContent = '收起创意生成';
+  } else {
+    el.style.display = 'none';
+    btn.textContent = '内容创意生成';
+  }
+}
+
+function doIdeas() {
+  var desc = document.getElementById('ideas-desc');
+  var platform = document.getElementById('ideas-platform');
+  var btn = document.getElementById('ideas-btn');
+  var results = document.getElementById('ideas-results');
+  
+  if (!desc.value.trim()) { showToast('请输入产品描述', 'error'); return; }
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ks-spinner"></span> 生成中...';
+  results.style.display = 'block';
+  results.innerHTML = '<p style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary)">生成创意中...</p>';
+  
+  fetch('/ideas', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({description: desc.value, platform: platform.value})
+  }).then(function(r){return r.json()}).then(function(d){
+    var ideas = typeof d.ideas === 'string' ? [{title: d.ideas}] : (d.ideas || []);
+    results.innerHTML = ideas.map(function(item, i){
+      return '<div style="padding:var(--cw-space-md);border-bottom:1px solid var(--cw-border)">' +
+        '<div style="font-weight:600;font-size:var(--cw-text-sm);margin-bottom:4px">💡 创意 ' + (i+1) + '</div>' +
+        '<div style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary)">' + (item.title || item.hook || '') + '</div></div>';
+    }).join('');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ph ph-magic-wand"></i> 生成 5 个帖子创意';
+  }).catch(function(){
+    results.innerHTML = '<p style="color:var(--cw-red)">生成失败</p>';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ph ph-magic-wand"></i> 生成 5 个帖子创意';
+  });
+}
+
 /* ── Live Preview (实时预览) ──────────────────────────────────────────── */
 var previewController = null;
 var previewTimer = null;

@@ -121,6 +121,55 @@ async def bridge_endpoint(
     }
 
 
+@router.post("/batch")
+async def batch_endpoint(req: Request, user: User | None = Depends(get_current_user), db=Depends(get_db)):
+    """Batch translate multiple texts at once."""
+    try:
+        data = await req.json()
+        texts = data.get("texts", [])
+        platform = data.get("platform", "x")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+    
+    if not texts or not isinstance(texts, list):
+        raise HTTPException(status_code=400, detail="texts must be a non-empty array")
+    
+    if len(texts) > 50:
+        raise HTTPException(status_code=400, detail="Maximum 50 texts per batch")
+    
+    results = []
+    for text in texts:
+        if not text.strip():
+            results.append({"original": text, "content": "", "error": "empty"})
+            continue
+        try:
+            content = process_quick(text.strip(), platform)
+            results.append({"original": text, "content": content.get("content", content.get("result", "")), "error": None})
+        except RuntimeError:
+            results.append({"original": text, "content": "", "error": "LLM call failed"})
+    
+    return {"results": results, "total": len(results), "platform": platform}
+
+
+@router.post("/ideas")
+async def ideas_endpoint(req: Request):
+    """Generate content ideas from a product description."""
+    try:
+        data = await req.json()
+        description = data.get("description", "")
+        platform = data.get("platform", "x")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+    if not description.strip():
+        raise HTTPException(status_code=400, detail="description is required")
+    from app.bridge import call_llm
+    result = call_llm(
+        prompt=f"Generate 5 social media post ideas for {platform} based on:\n\n{description}\n\nReturn JSON array: [{{\"title\":\"...\",\"hook\":\"...\",\"angle\":\"...\"}}]",
+        system="You are a creative social media strategist.",
+    )
+    return {"ideas": result.get("result", result.get("ideas", [])), "platform": platform}
+
+
 @router.post("/quick")
 async def quick_endpoint(req: QuickRequest, user: User | None = Depends(get_current_user)):
     """Quick mode: single platform, returns just text. Requires auth in production."""
