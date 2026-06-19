@@ -209,7 +209,36 @@ async def history_endpoint(
     return [r.to_dict() for r in rows]
 
 
-@router.post("/publish")
+@router.post("/publish-all")
+async def publish_all_endpoint(req: Request, user=Depends(require_user)):
+    """Publish to ALL configured platforms at once. The killer feature."""
+    try:
+        data = await req.json()
+        text = data.get("text", "")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+    
+    if not text.strip():
+        raise HTTPException(status_code=400, detail="text is required")
+    
+    results = {}
+    platforms = ["x", "linkedin"]  # Reddit not yet implemented
+    
+    for platform in platforms:
+        result = publish_content(platform, text)
+        results[platform] = {
+            "success": result.success,
+            "post_id": result.post_id,
+            "url": result.url,
+            "error": result.error,
+        }
+    
+    all_success = all(r["success"] for r in results.values())
+    return {
+        "success": all_success,
+        "results": results,
+        "message": "全部发布成功!" if all_success else "部分发布失败",
+    }
 async def publish_endpoint(
     req: PublishRequest,
     user=Depends(require_user),

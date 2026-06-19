@@ -102,6 +102,19 @@
         <p style="font-size:var(--cw-text-xs);color:var(--cw-text-tertiary);margin-top:var(--cw-space-md)">
           在 Railway 环境变量中配置 API Key 即可启用一键发布
         </p>
+        <div style="margin-top:var(--cw-space-sm)">
+          <a href="#" onclick="toggleSocialGuide();return false" style="font-size:var(--cw-text-xs);color:var(--cw-brand-blue)" id="social-guide-link">如何配置？</a>
+          <div id="social-guide" style="display:none;margin-top:var(--cw-space-sm);font-size:var(--cw-text-xs);color:var(--cw-text-tertiary);line-height:1.8">
+            <strong>X/Twitter:</strong><br>
+            1. 打开 developer.twitter.com → Projects & Apps<br>
+            2. 创建 App → 生成 API Key + Secret<br>
+            3. 配置到 Railway: X_API_KEY, X_API_KEY_SECRET<br><br>
+            <strong>LinkedIn:</strong><br>
+            1. 打开 linkedin.com/developers → Create App<br>
+            2. 请求 Marketing Developer Platform 权限<br>
+            3. 生成 Access Token → 配置到 Railway
+          </div>
+        </div>
       </div>
 
       <!-- Upgrade CTA -->
@@ -213,6 +226,18 @@ function loadBrandProfile() {
     if(d.brand_description) document.getElementById('brand-desc').value = d.brand_description;
     if(d.tone) document.getElementById('brand-tone').value = d.tone;
   }).catch(function(){});
+}
+
+function toggleSocialGuide() {
+  var el = document.getElementById('social-guide');
+  var link = document.getElementById('social-guide-link');
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    link.textContent = '收起';
+  } else {
+    el.style.display = 'none';
+    link.textContent = '如何配置？';
+  }
 }
 
 function copyApiKey() {

@@ -89,6 +89,14 @@
 {% endif %}
 </div>
 
+<!-- Publish All CTA -->
+<div style="text-align:center;margin-top:var(--cw-space-md);padding-bottom:var(--cw-space-md)">
+  <button class="ks-button ks-button--primary ks-button--lg" onclick="publishAll()" id="publish-all-btn" style="width:100%;max-width:400px">
+    <i class="ph ph-paper-plane-right"></i> 一键发布到 X + LinkedIn
+  </button>
+  <p style="font-size:var(--cw-text-xs);color:var(--cw-text-tertiary);margin-top:var(--cw-space-sm)">一次中文输入，同时发布到多个海外平台</p>
+</div>
+
 <script>
 function copyContent(key) {
   var container = document.getElementById('content-' + key);
@@ -118,6 +126,36 @@ function publishTo(platform) {
   }).catch(function(){
     btn.innerHTML = '<span><i class="ph ph-paper-plane-right"></i></span><span>发布</span>';
     showToast('发布失败，请重试', 'error');
+  });
+}
+
+function publishAll() {
+  var btn = document.getElementById('publish-all-btn');
+  if (!btn) return;
+  var originalText = '';
+  var firstCard = document.querySelector('.ks-result-card .ks-result-card__content');
+  if (firstCard) originalText = firstCard.innerText;
+  if (!originalText) { showToast('没有可发布的内容', 'error'); return; }
+  
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ks-spinner"></span> 发布到全部平台...';
+  
+  fetch('/publish-all', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text: originalText})
+  }).then(function(r){return r.json()}).then(function(d){
+    if (d.success) {
+      btn.innerHTML = '<i class="ph ph-check-circle" style="color:var(--cw-green)"></i> 全部发布成功';
+      showToast('✅ X + LinkedIn 已发布', 'success');
+    } else {
+      btn.innerHTML = '<i class="ph ph-paper-plane-right"></i> 一键发布到全部平台';
+      var errors = Object.entries(d.results || {}).filter(function(e){return !e[1].success}).map(function(e){return e[0]+': '+e[1].error}).join('; ');
+      showToast('部分失败: ' + errors, 'error');
+    }
+  }).catch(function(){
+    btn.innerHTML = '<i class="ph ph-paper-plane-right"></i> 一键发布到全部平台';
+    showToast('发布请求失败', 'error');
+    btn.disabled = false;
   });
 }
 </script>
