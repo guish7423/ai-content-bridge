@@ -1,5 +1,5 @@
-# 3D 产品球体背景 — Three.js
-# 在 Hero 区域显示一个带有品牌色的旋转 3D 球体
+// 3D product globe
+// Three.js spinning sphere in hero section
 
 (function initProductGlobe() {
   if ('ontouchstart' in window) return;

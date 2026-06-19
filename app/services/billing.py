@@ -146,9 +146,10 @@ async def handle_subscription_deleted(event_data: dict, db) -> None:
         user.stripe_subscription_id = None
         # Reset usage to prevent immediately hitting free tier limit
         from app.models import PLANS
+        from datetime import datetime, timezone
         if user.monthly_usage and user.monthly_usage > PLANS["free"]["translations_per_month"]:
             user.monthly_usage = 0
-            user.usage_reset_at = __import__("datetime").datetime.now(__import__("datetime").timezone.utc)
+            user.usage_reset_at = datetime.now(timezone.utc)
         db.commit()
 
 

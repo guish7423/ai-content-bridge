@@ -6,7 +6,6 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
-from pathlib import Path
 
 from app.bridge import process, process_quick, generate_thread, usage
 from app.social import publish_content

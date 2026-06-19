@@ -268,7 +268,6 @@ def generate_thread(content: str, max_chars: int = 280) -> list[str]:
     """Split long text into X thread posts."""
     if len(content) <= max_chars:
         return []
-    import re
     sentences = re.split(r'(?<=[.!?])\s+', content)
     posts, current = [], ""
     for s in sentences:
