@@ -1,66 +1,101 @@
 {% extends "base.html" %}
-{% block title %}Dashboard - AI Content Bridge{% endblock %}
+{% block title %}仪表盘 - AI Content Bridge{% endblock %}
 {% block content %}
-<div class="dashboard container">
-  <div class="flex flex-between flex-wrap mb-lg">
+<div class="dashboard container" style="padding-top:var(--cw-space-xl)">
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--cw-space-md);margin-bottom:var(--cw-space-2xl)">
     <div>
-      <h1 class="section__title" style="font-size:var(--cw-text-2xl)" data-i18n="dashboard.title">仪表盘</h1>
-      <p class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="dashboard.subtitle">你的内容出海活动概览</p>
+      <h1 style="font-size:var(--cw-text-2xl);font-weight:700;margin-bottom:4px">仪表盘</h1>
+      <p style="color:var(--cw-text-secondary);font-size:var(--cw-text-sm)">你的内容出海活动概览</p>
     </div>
-    <a href="/" class="ks-button ks-button--primary" data-i18n="dashboard.new_bridge">新建翻译</a>
+    <a href="/" class="ks-button ks-button--primary"><i class="ph ph-plus"></i> 新建翻译</a>
   </div>
 
-  <!-- Stats Grid -->
-  <div class="ks-bento">
-    <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.plan">当前方案</span>
-      <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-plan">—</div>
+  <!-- Stats Cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--cw-space-md);margin-bottom:var(--cw-space-2xl)">
+    <div style="background:var(--cw-bg-raised);border-radius:var(--cw-radius-lg);padding:var(--cw-space-lg);transition:background 0.2s">
+      <div style="display:flex;align-items:center;gap:var(--cw-space-sm);margin-bottom:var(--cw-space-sm)">
+        <div style="width:36px;height:36px;border-radius:var(--cw-radius-md);background:var(--cw-brand-blue / 0.12);display:flex;align-items:center;justify-content:center;color:var(--cw-brand-blue)"><i class="ph ph-crown"></i></div>
+        <span style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary)">当前方案</span>
+      </div>
+      <div style="font-size:var(--cw-text-2xl);font-weight:700" id="stat-plan">—</div>
     </div>
-    <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.usage">本月已用</span>
-      <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-usage">—</div>
-      <div class="ks-skeleton ks-skeleton--text-sm" style="height:4px;border-radius:2px;overflow:hidden;margin-top:var(--cw-space-sm)">
-        <div id="usage-bar-fill" style="height:100%;width:0%;border-radius:2px;transition:width 0.5s var(--cw-ease-out)"></div>
+
+    <div style="background:var(--cw-bg-raised);border-radius:var(--cw-radius-lg);padding:var(--cw-space-lg)">
+      <div style="display:flex;align-items:center;gap:var(--cw-space-sm);margin-bottom:var(--cw-space-sm)">
+        <div style="width:36px;height:36px;border-radius:var(--cw-radius-md);background:var(--cw-brand-green / 0.12);display:flex;align-items:center;justify-content:center;color:var(--cw-brand-green)"><i class="ph ph-gauge"></i></div>
+        <span style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary)">本月已用</span>
+      </div>
+      <div style="font-size:var(--cw-text-2xl);font-weight:700" id="stat-usage">—</div>
+      <div style="height:6px;background:var(--cw-bg-overlay);border-radius:3px;overflow:hidden;margin-top:var(--cw-space-sm)">
+        <div id="usage-bar-fill" style="height:100%;width:0%;border-radius:3px;transition:width 0.6s var(--cw-ease-out)"></div>
       </div>
     </div>
-    <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.limit">每月限额</span>
-      <div class="ks-bento__tile-title" style="font-size:var(--cw-text-2xl)" id="stat-limit">—</div>
+
+    <div style="background:var(--cw-bg-raised);border-radius:var(--cw-radius-lg);padding:var(--cw-space-lg)">
+      <div style="display:flex;align-items:center;gap:var(--cw-space-sm);margin-bottom:var(--cw-space-sm)">
+        <div style="width:36px;height:36px;border-radius:var(--cw-radius-md);background:var(--cw-orange-subtle);display:flex;align-items:center;justify-content:center;color:var(--cw-orange)"><i class="ph ph-arrow-counter-clockwise"></i></div>
+        <span style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary)">每月限额</span>
+      </div>
+      <div style="font-size:var(--cw-text-2xl);font-weight:700" id="stat-limit">—</div>
     </div>
-    <div class="ks-bento__tile">
-      <span class="text-muted" style="font-size:var(--cw-text-xs)" data-i18n="dashboard.api_key">API 密钥</span>
-      <div class="ks-bento__tile-title font-mono" style="font-size:var(--cw-text-sm)" id="stat-apikey">—</div>
-      <button class="ks-button ks-button--ghost ks-button--sm mt-sm" onclick="copyApiKey()" data-i18n="dashboard.copy">复制</button>
+
+    <div style="background:var(--cw-bg-raised);border-radius:var(--cw-radius-lg);padding:var(--cw-space-lg)">
+      <div style="display:flex;align-items:center;gap:var(--cw-space-sm);margin-bottom:var(--cw-space-sm)">
+        <div style="width:36px;height:36px;border-radius:var(--cw-radius-md);background:var(--cw-brand-cyan / 0.12);display:flex;align-items:center;justify-content:center;color:var(--cw-brand-cyan)"><i class="ph ph-key"></i></div>
+        <span style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary)">API 密钥</span>
+      </div>
+      <div style="font-size:var(--cw-text-sm);font-weight:600;font-family:var(--cw-font-mono);word-break:break-all" id="stat-apikey">—</div>
+      <button class="ks-button ks-button--ghost ks-button--sm mt-sm" onclick="copyApiKey()"><i class="ph ph-copy-simple"></i> <span id="copy-btn-text">复制</span></button>
     </div>
   </div>
 
-  <!-- Recent Activity -->
-  <section class="section" style="padding:var(--cw-space-2xl) 0">
-    <h2 class="ks-bento__tile-title mb-md" data-i18n="dashboard.recent">最近活动</h2>
-    <div id="recent-list">
-      <div class="ks-empty" id="empty-state">
-        <span class="ks-empty__icon"><i class="ph ph-globe"></i></span>
-        <h3 class="ks-empty__title" data-i18n="dashboard.empty_title">还没有翻译记录</h3>
-        <p class="ks-empty__text" data-i18n="dashboard.empty_text">Bridge your first Chinese content to English. It only takes a few seconds.</p>
-        <div class="ks-card" style="margin-top:var(--cw-space-lg);text-align:left;background:var(--cw-brand-blue / 0.05);border-color:var(--cw-border-accent)">
-          <p style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary)" data-i18n="dashboard.empty_hint">Try pasting Chinese text about your product, experience, or company story on the bridge page.</p>
+  <!-- Activity & Quick Actions -->
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--cw-space-lg);align-items:start">
+
+    <!-- Recent Activity -->
+    <div style="background:var(--cw-bg-raised);border-radius:var(--cw-radius-xl);padding:var(--cw-space-xl)">
+      <h2 style="font-size:var(--cw-text-lg);font-weight:600;margin-bottom:var(--cw-space-lg)">最近活动</h2>
+      <div id="recent-list">
+        <div id="empty-state" style="text-align:center;padding:var(--cw-space-2xl) 0">
+          <i class="ph ph-globe" style="font-size:3rem;color:var(--cw-text-tertiary);display:block;margin-bottom:var(--cw-space-md)"></i>
+          <h3 style="font-size:var(--cw-text-xl);font-weight:600;margin-bottom:var(--cw-space-sm)">还没有翻译记录</h3>
+          <p style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary);margin-bottom:var(--cw-space-lg);max-width:320px;margin-left:auto;margin-right:auto">去翻译页面粘贴你的中文内容，生成地道的英文帖子</p>
+          <a href="/" class="ks-button ks-button--primary">开始翻译</a>
         </div>
-        <a href="/" class="ks-button ks-button--primary mt-lg" data-i18n="dashboard.empty_cta">Try It Now</a>
       </div>
     </div>
-  </section>
 
-  <!-- Upgrade CTA -->
-  <div id="upgrade-cta" style="display:none" class="ks-card" style="border-color:var(--cw-border-accent);background:var(--cw-brand-blue / 0.05)">>
-    <div class="flex flex-between flex-wrap gap-md">
-      <div>
-        <h3 style="font-size:var(--cw-text-lg)" data-i18n="dashboard.upgrade_title">升级到入门版</h3>
-        <p class="text-muted" style="font-size:var(--cw-text-sm)" data-i18n="dashboard.upgrade_text">Get 100 conversions/month and direct social publishing for $19/mo.</p>
+    <!-- Quick Actions -->
+    <div>
+      <div style="background:var(--cw-bg-raised);border-radius:var(--cw-radius-xl);padding:var(--cw-space-xl);margin-bottom:var(--cw-space-md)">
+        <h2 style="font-size:var(--cw-text-lg);font-weight:600;margin-bottom:var(--cw-space-lg)">快捷操作</h2>
+        <div style="display:flex;flex-direction:column;gap:var(--cw-space-sm)">
+          <a href="/" style="display:flex;align-items:center;gap:var(--cw-space-md);padding:var(--cw-space-md);border-radius:var(--cw-radius-md);transition:background 0.15s;color:var(--cw-text)" class="hover-bg">
+            <div style="width:36px;height:36px;border-radius:var(--cw-radius-md);background:var(--cw-brand-blue / 0.12);display:flex;align-items:center;justify-content:center;color:var(--cw-brand-blue);flex-shrink:0"><i class="ph ph-translate"></i></div>
+            <div><div style="font-weight:600;font-size:var(--cw-text-sm)">新建翻译</div><div style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary)">中文 → 英文</div></div>
+          </a>
+          <a href="/pricing" style="display:flex;align-items:center;gap:var(--cw-space-md);padding:var(--cw-space-md);border-radius:var(--cw-radius-md);transition:background 0.15s;color:var(--cw-text)" class="hover-bg">
+            <div style="width:36px;height:36px;border-radius:var(--cw-radius-md);background:var(--cw-orange-subtle);display:flex;align-items:center;justify-content:center;color:var(--cw-orange);flex-shrink:0"><i class="ph ph-rocket-launch"></i></div>
+            <div><div style="font-weight:600;font-size:var(--cw-text-sm)">升级套餐</div><div style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary)">获取更多翻译额度</div></div>
+          </a>
+        </div>
       </div>
-      <a href="/pricing" class="ks-button ks-button--primary" data-i18n="dashboard.upgrade_btn">查看方案</a>
+
+      <!-- Upgrade CTA -->
+      <div id="upgrade-cta" style="display:none;background:linear-gradient(135deg,var(--cw-brand-blue / 0.08),var(--cw-brand-cyan / 0.08));border:1px solid var(--cw-border-accent);border-radius:var(--cw-radius-xl);padding:var(--cw-space-lg)">
+        <i class="ph ph-sparkle" style="font-size:1.5rem;color:var(--cw-brand-blue);display:block;margin-bottom:var(--cw-space-sm)"></i>
+        <h3 style="font-size:var(--cw-text-base);font-weight:600;margin-bottom:4px">升级到入门版</h3>
+        <p style="font-size:var(--cw-text-xs);color:var(--cw-text-secondary);margin-bottom:var(--cw-space-md)">每月 100 次翻译 + 直接发布到社交平台</p>
+        <a href="/pricing" class="ks-button ks-button--primary ks-button--sm">查看方案</a>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+.hover-bg:hover { background: var(--cw-bg-glass); }
+</style>
 {% endblock %}
 {% block scripts %}
 <script>
@@ -69,10 +104,11 @@ async function loadDashboard() {
     var resp = await fetch('/api/auth/me');
     if (!resp.ok) { window.location.href = '/login'; return; }
     var data = await resp.json();
-    document.getElementById('stat-plan').textContent = data.plan || 'free';
-    document.getElementById('stat-usage').textContent = data.monthly_usage ?? 0;
-    document.getElementById('stat-limit').textContent = data.plan_details?.translations_per_month ?? 10;
-    document.getElementById('stat-apikey').textContent = data.api_key ? data.api_key.slice(0,16) + '…' : '—';
+
+    document.getElementById('stat-plan').textContent = data.plan === 'free' ? '免费版' : data.plan === 'starter' ? '入门版' : '专业版';
+    document.getElementById('stat-usage').textContent = (data.monthly_usage ?? 0) + ' / ' + (data.plan_details?.translations_per_month ?? 10);
+    document.getElementById('stat-limit').textContent = (data.plan_details?.translations_per_month ?? 10) + ' 次/月';
+    document.getElementById('stat-apikey').textContent = data.api_key ? data.api_key.slice(0,20) + '…' : '—';
 
     var pct = data.plan_details?.translations_per_month > 0
       ? Math.min(100, ((data.monthly_usage ?? 0) / data.plan_details.translations_per_month) * 100) : 0;
@@ -86,25 +122,30 @@ async function loadDashboard() {
 }
 
 async function loadRecent() {
-  var el = document.getElementById('recent-list');
   try {
     var resp = await fetch('/api/bridge/history?limit=10');
-    if (!resp.ok) { el.innerHTML = '<p class="text-muted" data-i18n="dashboard.load_error">Failed to load.</p>'; return; }
+    if (!resp.ok) return;
     var items = await resp.json();
     if (!items.length) return;
     document.getElementById('empty-state').style.display = 'none';
-    el.innerHTML = items.map(function(item) {
-      return '<div class="ks-card" style="padding:var(--cw-space-md);margin-bottom:var(--cw-space-sm)">' +
-        '<div class="ks-bento__tile-text" style="font-size:var(--cw-text-sm)">' + escapeHtml(item.original_text?.slice(0,80) || '') + '…</div>' +
-        '<div class="text-tertiary mt-sm" style="font-size:var(--cw-text-xs)">' + (item.created_at?.slice(0,10) || '') + ' · ' + (item.platforms?.join(', ') || '') + '</div>' +
-      '</div>';
+    document.getElementById('recent-list').innerHTML = items.map(function(item) {
+      var date = item.created_at ? item.created_at.slice(0,10) : '';
+      var platforms = (item.platforms || []).map(function(p) {
+        var icons = {x:'𝕏', linkedin:'💼', reddit:'🔴'};
+        return icons[p] || p;
+      }).join(' ');
+      return '<div style="display:flex;align-items:center;gap:var(--cw-space-md);padding:var(--cw-space-md);border-bottom:1px solid var(--cw-border)">' +
+        '<div style="flex:1;min-width:0">' +
+        '<div style="font-size:var(--cw-text-sm);color:var(--cw-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + escapeHtml(item.original_text || '') + '</div>' +
+        '<div style="font-size:var(--cw-text-xs);color:var(--cw-text-tertiary);margin-top:2px">' + date + '</div></div>' +
+        '<div style="font-size:var(--cw-text-xs);display:flex;gap:4px">' + platforms + '</div></div>';
     }).join('');
-  } catch (e) { el.innerHTML = '<p class="text-muted">Failed to load.</p>'; }
+  } catch(e) {}
 }
 
 function copyApiKey() {
-  fetch('/api/auth/me').then(function(r) { return r.json(); }).then(function(d) {
-    copyToClipboard(d.api_key || '', 'API key copied!');
+  fetch('/api/auth/me').then(function(r){return r.json()}).then(function(d){
+    copyToClipboard(d.api_key || '', '已复制 API 密钥');
   });
 }
 
