@@ -25,7 +25,6 @@ function toggleTheme() {
 }
 
 /* ── Language toggle ────────────────────────────────────────────────────── */
-var currentLang = localStorage.getItem('cw-lang') || 'en';
 
 function applyLang(lang) {
   currentLang = lang;

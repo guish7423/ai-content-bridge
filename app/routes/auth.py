@@ -149,7 +149,7 @@ async def change_plan(
 @router.post("/login-form")
 async def login_form(req: LoginRequest, db=Depends(get_db)):
     """Login form endpoint for HTMX — returns redirect with cookie."""
-    result = await login(req, db)
+    result = login(req, db)
     token = result["token"]
     redirect = RedirectResponse(url="/dashboard", status_code=302)
     redirect.set_cookie(
@@ -162,7 +162,7 @@ async def login_form(req: LoginRequest, db=Depends(get_db)):
 @router.post("/signup-form")
 async def signup_form(req: SignupRequest, db=Depends(get_db)):
     """Signup form endpoint for HTMX — returns redirect with cookie."""
-    result = await signup(req, db)
+    result = signup(req, db)
     token = result["token"]
     redirect = RedirectResponse(url="/dashboard", status_code=302)
     redirect.set_cookie(
