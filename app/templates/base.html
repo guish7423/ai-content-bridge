@@ -17,10 +17,16 @@
   <!-- Preload critical resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
   <link rel="preload" href="https://unpkg.com/htmx.org@2.0.4" as="script" />
 
-  <!-- Fonts -->
+  <!-- Fonts: Satoshi (display) + Inter (body) + JetBrains Mono (code) -->
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700,800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Phosphor Icons (replace emoji throughout the site) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="/static/css/01-tokens.css" />

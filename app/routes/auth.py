@@ -26,10 +26,32 @@ class SignupRequest(BaseModel):
     password: str
     name: str = ""
 
+    @classmethod
+    def validate_password(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        return v
+
 
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+# ── Helpers ────────────────────────────────────────────────────────────────
+
+def _set_auth_cookie(redirect: "RedirectResponse", token: str) -> "RedirectResponse":
+    """Set secure auth cookie with consistent settings."""
+    redirect.set_cookie(
+        key="token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=604800,  # 7 days
+        path="/",
+    )
+    return redirect
 
 
 # ── Routes ─────────────────────────────────────────────────────────────────
@@ -131,7 +153,8 @@ async def login_form(req: LoginRequest, db=Depends(get_db)):
     token = result["token"]
     redirect = RedirectResponse(url="/dashboard", status_code=302)
     redirect.set_cookie(
-        key="token", value=token, httponly=True, max_age=604800, samesite="lax"
+        key="token", value=token, httponly=True, secure=True,
+        samesite="lax", max_age=604800, path="/",
     )
     return redirect
 
@@ -143,7 +166,8 @@ async def signup_form(req: SignupRequest, db=Depends(get_db)):
     token = result["token"]
     redirect = RedirectResponse(url="/dashboard", status_code=302)
     redirect.set_cookie(
-        key="token", value=token, httponly=True, max_age=604800, samesite="lax"
+        key="token", value=token, httponly=True, secure=True,
+        samesite="lax", max_age=604800, path="/",
     )
     return redirect
 
@@ -152,5 +176,5 @@ async def signup_form(req: SignupRequest, db=Depends(get_db)):
 async def logout():
     """Logout — clear token cookie."""
     redirect = RedirectResponse(url="/", status_code=302)
-    redirect.delete_cookie("token")
+    redirect.delete_cookie("token", path="/")
     return redirect

@@ -119,6 +119,14 @@ class User(Base):
 
 # ── Pricing Plans ──────────────────────────────────────────────────────────
 
+def _load_plan_price_ids() -> dict:
+    """Load Stripe price IDs from environment into plans dict."""
+    import os
+    return {
+        "starter": os.getenv("STRIPE_STARTER_PRICE_ID", ""),
+        "pro": os.getenv("STRIPE_PRO_PRICE_ID", ""),
+    }
+
 PLANS = {
     "free": {
         "name": "Free",
@@ -132,13 +140,13 @@ PLANS = {
         "price_cents": 1999,
         "translations_per_month": 100,
         "social_accounts": 1,
-        "stripe_price_id": None,
+        "stripe_price_id": _load_plan_price_ids()["starter"],
     },
     "pro": {
         "name": "Pro",
         "price_cents": 4999,
         "translations_per_month": 10000,
         "social_accounts": 3,
-        "stripe_price_id": None,
+        "stripe_price_id": _load_plan_price_ids()["pro"],
     },
 }

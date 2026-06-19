@@ -40,7 +40,10 @@ async def create_checkout_session(
             "message": "Stripe payments coming soon. Your account is on Free plan for now.",
         }
 
-    price_id = get_price_id(plan)
+    # Use price_id from PLANS dict (loaded from env at startup)
+    from app.models import PLANS
+    plan_config = PLANS.get(plan)
+    price_id = plan_config["stripe_price_id"] if plan_config else None
     if not price_id:
         raise ValueError(f"Stripe price ID not configured for plan: {plan}")
 
@@ -74,10 +77,17 @@ async def handle_checkout_completed(event_data: dict, db) -> None:
     from app.models import User
 
     data = event_data.get("object", {})
+    event_id = event_data.get("id", "")
     user_id = data.get("metadata", {}).get("user_id")
     subscription_id = data.get("subscription")
     customer_id = data.get("customer")
     plan = data.get("metadata", {}).get("plan", "starter")
+
+    # Idempotency check — skip if already processed
+    if event_id:
+        existing = db.query(User).filter(User.stripe_customer_id == customer_id).first()
+        if existing and existing.stripe_subscription_id == subscription_id and existing.plan == plan:
+            return
 
     if user_id:
         user = db.get(User, int(user_id))
@@ -134,6 +144,11 @@ async def handle_subscription_deleted(event_data: dict, db) -> None:
     if user:
         user.plan = "free"
         user.stripe_subscription_id = None
+        # Reset usage to prevent immediately hitting free tier limit
+        from app.models import PLANS
+        if user.monthly_usage and user.monthly_usage > PLANS["free"]["translations_per_month"]:
+            user.monthly_usage = 0
+            user.usage_reset_at = __import__("datetime").datetime.now(__import__("datetime").timezone.utc)
         db.commit()
 
 

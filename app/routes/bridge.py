@@ -127,8 +127,14 @@ async def quick_endpoint(req: QuickRequest):
     """Quick mode: single platform, returns just text."""
     if not req.text.strip():
         raise HTTPException(status_code=400, detail="text is required")
-    content = process_quick(req.text, req.platform)
-    return {"platform": req.platform, "content": content}
+    try:
+        content = process_quick(req.text, req.platform)
+        return {"platform": req.platform, "content": content}
+    except RuntimeError:
+        raise HTTPException(
+            status_code=503,
+            detail="AI service unavailable. Please check your API key configuration or try again later."
+        )
 
 
 @router.get("/usage")

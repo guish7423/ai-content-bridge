@@ -67,6 +67,13 @@
 .ks-button--block { width: 100%; }
 .ks-button:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
+/* ── Button icon alignment ─────────────────────────────────────────────── */
+.ks-button .ph, .ks-button i {
+  font-size: 1.1em;
+  display: inline-flex;
+  align-items: center;
+}
+
 /* ── Cards ─────────────────────────────────────────────────────────────── */
 .ks-card {
   background: var(--cw-bg-raised);

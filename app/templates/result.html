@@ -5,7 +5,7 @@
 <div class="ks-result-card">
   <div class="ks-result-card__header">
     <div class="flex gap-sm">
-      <span style="font-size:1.3rem">📋</span>
+      <span style="font-size:1.3rem"><i class="ph ph-clipboard-text"></i></span>
       <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.analysis">Analysis</h3>
     </div>
   </div>
@@ -24,7 +24,7 @@
 <div class="ks-result-card">
   <div class="ks-result-card__header">
     <div class="flex gap-sm">
-      <span style="font-size:1.3rem">🌐</span>
+      <span style="font-size:1.3rem"><i class="ph ph-globe"></i></span>
       <h3 style="font-size:var(--cw-text-sm);font-weight:600" data-i18n="result.localized">Localized Version</h3>
     </div>
     <span class="ks-badge">{{ localized|length }} <span data-i18n="result.chars">chars</span></span>
@@ -40,7 +40,7 @@
     <div class="ks-result-card__header">
       <div class="flex gap-sm">
         <span class="ks-platform-badge ks-platform-badge--{{ platform_key }}">
-          {% if platform_key == "x" %}𝕏{% elif platform_key == "linkedin" %}💼{% elif platform_key == "reddit" %}🔴{% else %}📝{% endif %}
+          {% if platform_key == "x" %}𝕏{% elif platform_key == "linkedin" %}💼{% elif platform_key == "reddit" %}🔴{% else %}<i class="ph ph-note-pencil"></i>{% endif %}
           {{ platform_key|capitalize }}
         </span>
         {% if item.get("content") %}
@@ -48,7 +48,7 @@
         {% endif %}
       </div>
       <button class="ks-copy-btn" onclick="copyContent('{{ platform_key }}')">
-        <span>📋</span>
+        <span><i class="ph ph-clipboard-text"></i></span>
         <span data-i18n="result.copy">Copy</span>
       </button>
     </div>
@@ -58,7 +58,7 @@
     {% if item.get("thread_posts") and item.thread_posts|length > 0 %}
     <div style="border-top:1px solid var(--cw-border);padding-top:var(--cw-space-md);margin-top:var(--cw-space-md)">
       <div class="flex gap-sm mb-md">
-        <span>🧵</span>
+        <span><i class="ph ph-threads"></i></span>
         <strong style="font-size:var(--cw-text-xs);text-transform:uppercase;letter-spacing:0.06em;color:var(--cw-brand-blue)" data-i18n="result.thread">Thread</strong>
       </div>
       {% for post in item.thread_posts %}
